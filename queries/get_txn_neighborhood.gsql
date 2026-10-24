@@ -1,0 +1,82 @@
+/* @timeout 30000 */
+/*
+queries/get_txn_neighborhood.gsql — Ground Truth Corrected
+
+Traverses the real schema:
+  Transaction → (reverse MADE) → Card → (reverse OWNS) → Customer
+             → OWNS → all Cards → MADE → their Transactions
+             → FROM_DEVICE → DeviceProfile
+
+Returns the anchor transaction's neighborhood:
+  - Owning card and customer
+  - All sibling cards on same customer
+  - Recent transactions per sibling card
+  - DeviceProfiles linked to any transaction in scope
+  - Shared-device signal: DeviceProfiles with multiple incoming FROM_DEVICE edges
+
+Input parameters:
+  - txn_id STRING  : anchor transaction id e.g. "T3514030"
+  - max_hops INT   : how many NEXT edges to follow per card (default 5)
+*/
+
+CREATE QUERY get_txn_neighborhood(STRING txn_id, INT max_hops = 5) FOR GRAPH FraudGraph {
+
+  SetAccum<VERTEX<Card>>        @@cards;
+  SetAccum<VERTEX<Customer>>    @@customers;
+  SetAccum<VERTEX<Transaction>> @@transactions;
+  SetAccum<VERTEX<DeviceProfile>> @@device_profiles;
+  MapAccum<VERTEX<DeviceProfile>, INT> @@device_txn_count;  -- shared-device signal
+
+  OrAccum  @@found;
+
+  -- 1. Anchor transaction
+  start_txn = {Transaction.*};
+  anchor = SELECT t FROM start_txn:t WHERE t.txn_id == txn_id;
+
+  IF anchor.size() == 0 THEN
+    PRINT "Transaction not found" AS error;
+    RETURN;
+  END;
+
+  @@found = TRUE;
+
+  -- 2. Walk back to the owning card
+  owning_cards = SELECT c FROM anchor:t -(REVERSE_MADE:e)-> Card:c;
+  owning_cards ACCUM @@cards += c;
+
+  -- 3. Walk back to the customer
+  owning_customers = SELECT cu FROM owning_cards:c -(REVERSE_OWNS:e)-> Customer:cu;
+  owning_customers ACCUM @@customers += cu;
+
+  -- 4. All cards on the same customer (siblings)
+  all_cards = SELECT c FROM owning_customers:cu -(OWNS:e)-> Card:c;
+  all_cards ACCUM @@cards += c;
+
+  -- 5. Transactions on all cards (forward from each card via MADE)
+  nearby_txns = SELECT t FROM all_cards:c -(MADE:e)-> Transaction:t;
+  nearby_txns ACCUM @@transactions += t;
+
+  -- Also include anchor
+  anchor ACCUM @@transactions += t;
+
+  -- 6. DeviceProfiles linked to all in-scope transactions (online only)
+  linked_devices = SELECT d FROM @@transactions:t -(FROM_DEVICE:e)-> DeviceProfile:d
+    ACCUM @@device_profiles += d,
+          @@device_txn_count += (d -> 1);
+
+  -- 7. Count incoming FROM_DEVICE edges per DeviceProfile
+  --    A count > 1 means this profile links to multiple transactions (shared-device signal)
+  all_devices_in_graph = {DeviceProfile.*};
+  device_signal = SELECT d FROM all_devices_in_graph:d -(REVERSE_FROM_DEVICE:e)-> Transaction:t
+    WHERE d IN @@device_profiles
+    ACCUM @@device_txn_count += (d -> 1);
+
+  -- 8. Build output
+  PRINT anchor                                    AS anchor_transaction;
+  PRINT owning_cards                              AS owning_cards;
+  PRINT owning_customers                          AS customer;
+  PRINT all_cards                                 AS sibling_cards;
+  PRINT nearby_txns                               AS nearby_transactions;
+  PRINT linked_devices                            AS device_profiles;
+  PRINT @@device_txn_count                        AS device_txn_count;   -- >1 = shared device
+}

@@ -1,0 +1,21 @@
+/* @timeout 30000 */
+/*
+queries/get_policy_rules.gsql — Ground Truth Corrected
+
+Fetches PolicyRule vertices by rule_id (R1-R10).
+Returns rule_text for LLM prompt injection and rule_embedding for GraphRAG.
+
+Input: rule_ids SET<STRING>  — e.g. {"R1", "R5", "R8"} — or empty for all 10
+*/
+
+CREATE QUERY get_policy_rules(SET<STRING> rule_ids) FOR GRAPH FraudGraph {
+
+  all_rules = {PolicyRule.*};
+
+  results =
+    SELECT r FROM all_rules:r
+    WHERE rule_ids.size() == 0 OR r.rule_id IN rule_ids
+    ORDER BY r.rule_id ASC;
+
+  PRINT results;
+}

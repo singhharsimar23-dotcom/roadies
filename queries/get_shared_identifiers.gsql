@@ -1,0 +1,76 @@
+/* @timeout 30000 */
+/*
+queries/get_shared_identifiers.gsql — Ground Truth Corrected
+
+Finds cards/transactions that share the same DeviceProfile, BillingRegion,
+or EmailDomain as the anchor transaction.
+
+This replaces ALL precomputed SHARES_DEVICE / SHARES_EMAIL_DOMAIN / SHARES_ADDRESS
+edges with a single live traversal. No derived edge job needed.
+
+Input: txn_id STRING  — anchor transaction (e.g. "T3514030")
+*/
+
+CREATE QUERY get_shared_identifiers(STRING txn_id) FOR GRAPH FraudGraph {
+
+  SetAccum<VERTEX<DeviceProfile>>  @@anchor_devices;
+  SetAccum<VERTEX<BillingRegion>>  @@anchor_regions;
+  SetAccum<VERTEX<EmailDomain>>    @@anchor_emails;
+  SetAccum<VERTEX<Transaction>>    @@other_txns;
+  SetAccum<VERTEX<Card>>           @@other_cards;
+  MapAccum<STRING, INT>            @@shared_device_card_count;
+  MapAccum<STRING, INT>            @@shared_region_card_count;
+  MapAccum<STRING, INT>            @@shared_email_card_count;
+
+  -- 1. Anchor transaction
+  start_txn = {Transaction.*};
+  anchor = SELECT t FROM start_txn:t WHERE t.txn_id == txn_id;
+
+  -- 2. Identifiers on anchor
+  anchor_devices = SELECT d FROM anchor:t -(FROM_DEVICE:e)-> DeviceProfile:d
+    ACCUM @@anchor_devices += d;
+
+  anchor_regions = SELECT r FROM anchor:t -(BILLED_IN:e)-> BillingRegion:r
+    ACCUM @@anchor_regions += r;
+
+  anchor_emails = SELECT em FROM anchor:t -(PURCHASER_EMAIL:e)-> EmailDomain:em
+    ACCUM @@anchor_emails += em;
+
+  -- 3a. Other transactions sharing the same DeviceProfile
+  other_by_device = SELECT t2 FROM @@anchor_devices:d -(REVERSE_FROM_DEVICE:e)-> Transaction:t2
+    WHERE t2.txn_id != txn_id
+    ACCUM @@other_txns += t2;
+
+  -- Walk back from those transactions to their cards
+  SELECT c FROM @@other_txns:t -(REVERSE_MADE:e)-> Card:c
+    ACCUM @@other_cards += c,
+          @@shared_device_card_count += (c.card_id -> 1);
+
+  -- 3b. Other transactions sharing the same BillingRegion
+  other_by_region = SELECT t2 FROM @@anchor_regions:r -(REVERSE_BILLED_IN:e)-> Transaction:t2
+    WHERE t2.txn_id != txn_id
+    ACCUM @@other_txns += t2;
+
+  SELECT c FROM other_by_region:t -(REVERSE_MADE:e)-> Card:c
+    ACCUM @@other_cards += c,
+          @@shared_region_card_count += (c.card_id -> 1);
+
+  -- 3c. Other transactions sharing the same P_emaildomain
+  other_by_email = SELECT t2 FROM @@anchor_emails:em -(REVERSE_PURCHASER_EMAIL:e)-> Transaction:t2
+    WHERE t2.txn_id != txn_id
+    ACCUM @@other_txns += t2;
+
+  SELECT c FROM other_by_email:t -(REVERSE_MADE:e)-> Card:c
+    ACCUM @@other_cards += c,
+          @@shared_email_card_count += (c.card_id -> 1);
+
+  -- 4. Output
+  PRINT @@anchor_devices        AS anchor_device_profiles;
+  PRINT @@anchor_regions        AS anchor_billing_regions;
+  PRINT @@anchor_emails         AS anchor_email_domains;
+  PRINT @@other_txns            AS other_transactions_sharing_identifier;
+  PRINT @@other_cards           AS other_cards_sharing_identifier;
+  PRINT @@shared_device_card_count  AS shared_device_card_counts;
+  PRINT @@shared_region_card_count  AS shared_region_card_counts;
+  PRINT @@shared_email_card_count   AS shared_email_card_counts;
+}

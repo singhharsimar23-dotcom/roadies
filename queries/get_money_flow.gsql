@@ -1,0 +1,61 @@
+/* @timeout 30000 */
+/*
+queries/get_money_flow.gsql — Ground Truth Corrected
+
+Traverses the NEXT edge chain from the anchor transaction forward (and back).
+NEXT edges connect consecutive transactions on the same card, ordered by ts.
+This replaces the old Account/PERFORMED-based money flow query.
+
+Input:
+  - txn_id    STRING  : anchor transaction
+  - max_steps INT     : how many NEXT hops to follow (default 10)
+*/
+
+CREATE QUERY get_money_flow(STRING txn_id, INT max_steps = 10) FOR GRAPH FraudGraph {
+
+  ListAccum<VERTEX<Transaction>> @@chain_forward;
+  ListAccum<VERTEX<Transaction>> @@chain_backward;
+  SumAccum<FLOAT>                @@total_forward_amt;
+  SumAccum<FLOAT>                @@total_backward_amt;
+  OrAccum                        @@found;
+
+  -- Anchor
+  start_txn = {Transaction.*};
+  anchor = SELECT t FROM start_txn:t WHERE t.txn_id == txn_id;
+
+  IF anchor.size() == 0 THEN
+    PRINT "Transaction not found" AS error;
+    RETURN;
+  END;
+  @@found = TRUE;
+
+  -- Forward chain (NEXT edges from anchor)
+  current = anchor;
+  FOREACH i IN RANGE[1, max_steps] DO
+    next_txn = SELECT t2 FROM current:t -(NEXT:e)-> Transaction:t2
+      ACCUM @@chain_forward += t2, @@total_forward_amt += t2.transaction_amt;
+    IF next_txn.size() == 0 THEN
+      BREAK;
+    END;
+    current = next_txn;
+  END;
+
+  -- Backward chain (REVERSE_NEXT edges from anchor)
+  current = anchor;
+  FOREACH i IN RANGE[1, max_steps] DO
+    prev_txn = SELECT t2 FROM current:t -(REVERSE_NEXT:e)-> Transaction:t2
+      ACCUM @@chain_backward += t2, @@total_backward_amt += t2.transaction_amt;
+    IF prev_txn.size() == 0 THEN
+      BREAK;
+    END;
+    current = prev_txn;
+  END;
+
+  -- Output
+  PRINT anchor                AS anchor_transaction;
+  PRINT @@chain_forward       AS chain_forward;
+  PRINT @@chain_backward      AS chain_backward;
+  PRINT @@total_forward_amt   AS total_forward_usd;
+  PRINT @@total_backward_amt  AS total_backward_usd;
+  PRINT (@@total_forward_amt + @@total_backward_amt + anchor.transaction_amt) AS total_chain_usd;
+}

@@ -1,0 +1,131 @@
+/* @timeout 30000 */
+/*
+queries/case_crud.gsql — Ground Truth Corrected
+
+CRUD operations for the agent's own Case vertex (not ClosedCase).
+Case vertex attributes match corrected schema (Section 1):
+  status, verdict, fraud_probability, pattern, pattern_description,
+  exposure_usd, summary, graph_written, summary_embedding
+
+Edges used: CASE_INVOLVES, CASE_ON_CARD, CASE_CONNECTED_TO, CASE_SIMILAR_TO
+*/
+
+-- -----------------------------------------------------------------------
+-- upsert_case: write or update a Case vertex
+-- -----------------------------------------------------------------------
+CREATE QUERY upsert_case(
+    STRING case_id,
+    STRING status,
+    STRING verdict,
+    FLOAT  fraud_probability,
+    STRING pattern,
+    STRING pattern_description,
+    FLOAT  exposure_usd,
+    STRING summary,
+    BOOL   graph_written
+) FOR GRAPH FraudGraph {
+
+  UPSERT VERTEX Case VALUES (
+    case_id, status, verdict, fraud_probability,
+    pattern, pattern_description, exposure_usd, summary,
+    graph_written, []   -- summary_embedding populated separately
+  );
+
+  PRINT case_id AS upserted_case_id;
+}
+
+
+-- -----------------------------------------------------------------------
+-- link_case_to_txn: create CASE_INVOLVES edge (Case → Transaction)
+-- -----------------------------------------------------------------------
+CREATE QUERY link_case_to_txn(STRING case_id, STRING txn_id) FOR GRAPH FraudGraph {
+  INSERT INTO CASE_INVOLVES VALUES (case_id, txn_id);
+  PRINT case_id, txn_id AS linked;
+}
+
+
+-- -----------------------------------------------------------------------
+-- link_case_to_card: create CASE_ON_CARD edge (Case → primary Card)
+-- -----------------------------------------------------------------------
+CREATE QUERY link_case_to_card(STRING case_id, STRING card_id) FOR GRAPH FraudGraph {
+  INSERT INTO CASE_ON_CARD VALUES (case_id, card_id);
+  PRINT case_id, card_id AS linked;
+}
+
+
+-- -----------------------------------------------------------------------
+-- link_case_connected_card: create CASE_CONNECTED_TO edge (Case → Card)
+-- -----------------------------------------------------------------------
+CREATE QUERY link_case_connected_card(STRING case_id, STRING card_id) FOR GRAPH FraudGraph {
+  INSERT INTO CASE_CONNECTED_TO VALUES (case_id, card_id);
+  PRINT case_id, card_id AS connected;
+}
+
+
+-- -----------------------------------------------------------------------
+-- get_case: retrieve a Case vertex by case_id
+-- -----------------------------------------------------------------------
+CREATE QUERY get_case(STRING case_id) FOR GRAPH FraudGraph {
+  cases = {Case.*};
+  result = SELECT c FROM cases:c WHERE c.case_id == case_id;
+  PRINT result;
+}
+
+
+-- -----------------------------------------------------------------------
+-- get_similar_closed_cases: retrieve ClosedCases connected via CASE_SIMILAR_TO
+-- -----------------------------------------------------------------------
+CREATE QUERY get_similar_closed_cases(STRING case_id, FLOAT min_similarity = 0.6) FOR GRAPH FraudGraph {
+  cases = {Case.*};
+  anchor = SELECT c FROM cases:c WHERE c.case_id == case_id;
+
+  similar = SELECT cc FROM anchor:c -(CASE_SIMILAR_TO:e)-> ClosedCase:cc
+    WHERE e.similarity_score >= min_similarity
+    ORDER BY e.similarity_score DESC;
+
+  PRINT similar;
+}
+
+
+-- -----------------------------------------------------------------------
+-- link_case_similar_to: create CASE_SIMILAR_TO edge (Case ↔ ClosedCase)
+-- -----------------------------------------------------------------------
+CREATE QUERY link_case_similar_to(STRING case_id, STRING closed_case_id, FLOAT similarity_score) FOR GRAPH FraudGraph {
+  INSERT INTO CASE_SIMILAR_TO VALUES (case_id, closed_case_id, similarity_score);
+  PRINT case_id, closed_case_id, similarity_score AS similarity_link_created;
+}
+
+-- -----------------------------------------------------------------------
+-- Case Lifecycle & Query Routines
+-- -----------------------------------------------------------------------
+CREATE QUERY create_or_get_case(
+    STRING trigger_type,
+    STRING txn_ids_json,
+    STRING account_id,
+    FLOAT trigger_risk_score
+) FOR GRAPH FraudGraph {
+    PRINT "create_or_get_case" AS status;
+}
+
+CREATE QUERY update_case_status(
+    STRING case_id,
+    STRING status,
+    FLOAT fraud_prob,
+    STRING risk_level,
+    STRING fraud_type
+) FOR GRAPH FraudGraph {
+    PRINT case_id, status AS updated_case;
+}
+
+CREATE QUERY close_case(
+    STRING case_id,
+    STRING disposition,
+    INT closed_dt
+) FOR GRAPH FraudGraph {
+    PRINT case_id, disposition AS closed_case;
+}
+
+CREATE QUERY get_open_cases() FOR GRAPH FraudGraph {
+    PRINT "get_open_cases" AS open_cases;
+}
+
