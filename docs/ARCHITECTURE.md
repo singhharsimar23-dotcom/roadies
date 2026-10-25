@@ -26,6 +26,9 @@ Modern cybercrime syndicates (e.g. digital arrest fraud, APK credential theft, f
 
 TigerGraph's native graph database powers the core entity-relationship model. The schema is optimized for sub-second BFS multi-hop traversals and dynamic relationship materialization across millions of nodes.
 
+> **Schema Implementation Note:** This document describes the **production MuleGraph schema** designed for Bihar Police's live deployment (with `BankAccount`, `TRANSFERRED_TO`, `Device`, `IPCluster`, and `CybercrimeComplaint` vertices). The benchmark evaluation dataset (IEEE card fraud dataset) uses a mapped schema with `Transaction`, `Card`, `DeviceProfile`, `NEXT`, and `FROM_DEVICE` edge types. The GSQL queries in `queries/` operate against the benchmark schema. The `queries/get_account_money_trail.gsql` query is written for the production MuleGraph schema and demonstrates account-level fund tracing as Bihar Police would deploy it.
+
+
 ### 2.1 Vertex & Edge Topology Diagram
 
 ```text

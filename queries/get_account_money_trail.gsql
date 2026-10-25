@@ -1,0 +1,95 @@
+/* @timeout 45000 */
+/*
+queries/get_account_money_trail.gsql — Bihar Police Mule Account Investigation
+Multi-Hop Account-Level BFS Fund Flow Tracer
+
+This query answers the core investigative question:
+  "Starting from account X (victim or flagged mule), where did the money go?"
+
+It follows TRANSFERRED_TO edges across BankAccount vertices up to max_hops deep,
+revealing the full mule chain: Victim → Layer1 Mule → Layer2 Mule → Cashout Node.
+
+Each hop in the chain corresponds to one "layering" step used by fraud syndicates
+to distance illicit funds from the original crime.
+
+Input:
+  - account_id  STRING  : Starting account (victim account or flagged mule account)
+  - max_hops    INT     : Maximum layering depth to trace (default 4)
+
+Output:
+  - mule_chain      : All accounts reachable from the seed via money transfers
+  - fund_trail_edges: All TRANSFERRED_TO edges traversed (amount, timestamp)
+  - hop_summary     : Per-hop count of accounts and cumulative transferred amount
+*/
+
+CREATE QUERY get_account_money_trail(STRING account_id, INT max_hops = 4) FOR GRAPH MuleGraph {
+
+  /* Accumulate the full set of visited accounts (to prevent looping) */
+  SetAccum<VERTEX<BankAccount>>  @@visited;
+  SetAccum<VERTEX<BankAccount>>  @@all_mule_accounts;
+
+  /* Track each transfer edge traversed */
+  ListAccum<EDGE>                @@trail_edges;
+
+  /* Per-hop stats: how many accounts at each layer, total amount moved */
+  MapAccum<INT, INT>             @@hop_account_count;
+  MapAccum<INT, FLOAT>           @@hop_total_amount;
+
+  /* Risk classification at each node */
+  MapAccum<STRING, FLOAT>        @@account_risk_scores;
+
+  /* Aggregated totals */
+  SumAccum<FLOAT>                @@total_amount_moved;
+  SumAccum<INT>                  @@total_hops_traced;
+
+  OrAccum                        @@found;
+
+  /* Anchor: Locate the seed account */
+  all_accts = {BankAccount.*};
+  seed = SELECT a FROM all_accts:a WHERE a.account_id == account_id;
+
+  IF seed.size() == 0 THEN
+    PRINT "Account not found. Verify account_id is registered in MuleGraph." AS error;
+    RETURN;
+  END;
+  @@found = TRUE;
+  @@visited += seed;
+  @@account_risk_scores += (account_id -> seed.risk_score);
+
+  /* BFS: follow TRANSFERRED_TO edges layer by layer */
+  current_layer = seed;
+
+  FOREACH hop IN RANGE[1, max_hops] DO
+
+    /* Traverse one hop: find all accounts that current layer transferred funds to */
+    next_layer = SELECT dest
+      FROM current_layer:src -(TRANSFERRED_TO:e)-> BankAccount:dest
+      WHERE dest NOT IN @@visited
+      ACCUM
+        @@all_mule_accounts += dest,
+        @@trail_edges        += e,
+        @@hop_account_count  += (hop -> 1),
+        @@hop_total_amount   += (hop -> e.amount_inr),
+        @@total_amount_moved += e.amount_inr,
+        @@account_risk_scores += (dest.account_id -> dest.risk_score)
+      POST-ACCUM (dest)
+        @@visited += dest;
+
+    IF next_layer.size() == 0 THEN
+      BREAK;   /* No more reachable accounts — chain ends here */
+    END;
+
+    @@total_hops_traced += 1;
+    current_layer = next_layer;
+  END;
+
+  /* Output */
+  PRINT seed                   AS seed_account;
+  PRINT @@all_mule_accounts    AS mule_chain;
+  PRINT @@trail_edges          AS fund_trail_edges;
+  PRINT @@hop_account_count    AS accounts_per_layer;
+  PRINT @@hop_total_amount     AS amount_per_layer_inr;
+  PRINT @@total_amount_moved   AS total_amount_traced_inr;
+  PRINT @@total_hops_traced    AS total_layering_hops;
+  PRINT @@account_risk_scores  AS account_risk_scores;
+}

@@ -51,8 +51,9 @@ class GraphRAGRetriever:
             return self._local_corpus
         corpus = []
         possible_paths = [
-            Path("D:/closed_cases_history.csv"),
+            Path(__file__).resolve().parent.parent / "data" / "closed_cases_history.csv",
             Path("data/closed_cases_history.csv"),
+            Path("D:/closed_cases_history.csv"),  # legacy dev fallback
         ]
         for p in possible_paths:
             if p.exists():
