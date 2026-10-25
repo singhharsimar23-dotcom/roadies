@@ -8,9 +8,9 @@
 
 When financial fraud occurs, it rarely happens in isolation. Fraud rings operate across dozens of synthetic accounts, rotating burner devices, and coordinated timing windows. Standard relational tables and isolated machine learning scoring models are blind to these relational topologies. 
 
-To tackle this, I built **CHAKRAVYUH**—an autonomous, graph-augmented fraud investigation agent powered by TigerGraph, LangGraph, and Google Gemini 2.5 Flash. Given an initial high-risk alert, CHAKRAVYUH autonomously investigates transaction networks, dynamically materializes collusion connections, gathers multi-hop graph evidence, and evaluates institutional policies.
+To tackle this, I built **FraudSight**—an autonomous, graph-augmented fraud investigation agent powered by TigerGraph, LangGraph, and Google Gemini 2.5 Flash. Given an initial high-risk alert, FraudSight autonomously investigates transaction networks, dynamically materializes collusion connections, gathers multi-hop graph evidence, and evaluates institutional policies.
 
-Rather than producing a black-box probability score, the agent compiles four regulatory-grade compliance dossiers per case—including I4C / FIU-IND-compliant Suspicious Activity Reports (SARs) and audit trails. Across 20 benchmark test cases covering 860,000+ transactions from the IEEE-CIS dataset, CHAKRAVYUH demonstrated sub-second graph traversal, 100% case validation pass rates, and actionable risk escalation from Tier-1 analyst triage to supervisor-level account freezes.
+Rather than producing a black-box probability score, the agent compiles four regulatory-grade compliance dossiers per case—including I4C / FIU-IND-compliant Suspicious Activity Reports (SARs) and audit trails. Across 20 benchmark test cases covering 860,000+ transactions from the IEEE-CIS dataset, FraudSight demonstrated sub-second graph traversal, 100% case validation pass rates, and actionable risk escalation from Tier-1 analyst triage to supervisor-level account freezes.
 
 ---
 
@@ -40,7 +40,7 @@ If more context is mathematically required, `gather_more_evidence_node` executes
 
 ## 3. How TigerGraph is Used 
 
-TigerGraph serves as the foundational source of truth and analytical engine for CHAKRAVYUH. Our `FraudGraph` schema hosts 10 vertex types (including `Account`, `Transaction`, `Device`, `IPCluster`, `Case`, and `PolicyRule`) and 15 edge types.
+TigerGraph serves as the foundational source of truth and analytical engine for FraudSight. Our `FraudGraph` schema hosts 10 vertex types (including `Account`, `Transaction`, `Device`, `IPCluster`, `Case`, and `PolicyRule`) and 15 edge types.
 
 To expose syndicated collusion, we developed a GSQL query pipeline that materializes derived undirected relationship edges: `SHARES_DEVICE`, `SHARES_EMAIL_DOMAIN`, and `SHARES_ADDRESS`. In our IEEE-CIS benchmark dataset, materializing these links uncovered 1,248 shared-device collusion edges connecting accounts that appeared completely independent on flat tabular CSVs.
 
@@ -57,10 +57,10 @@ Through pyTigerGraph and an MCP-compliant adapter, the agent invokes these queri
 
 ## 4. Agentic Capabilities 
 
-CHAKRAVYUH operates as a truly autonomous agent rather than a hardcoded script. Its reasoning capabilities include:
+FraudSight operates as a truly autonomous agent rather than a hardcoded script. Its reasoning capabilities include:
 - **Tool Use with Circuit Breakers:** The agent dynamically decides which graph queries to execute based on active evidence gaps, backed by connection-pooling and graceful fallback handlers.
 - **Hierarchical Approval Tiers:** Policies are tied to risk thresholds and monetary amounts, escalating decisions across `ANALYST_TIER_1`, `SENIOR_ANALYST`, and `SUPERVISOR` tiers.
-- **Unsupervised Pattern Discovery:** Using DBSCAN clustering across 21 behavioral dimensions alongside Louvain community subgraphs, CHAKRAVYUH autonomously detected two undocumented fraud typologies—including high-velocity micro-structuring loops—and registered them as formal `PatternTemplate` vertices.
+- **Unsupervised Pattern Discovery:** Using DBSCAN clustering across 21 behavioral dimensions alongside Louvain community subgraphs, FraudSight autonomously detected two undocumented fraud typologies—including high-velocity micro-structuring loops—and registered them as formal `PatternTemplate` vertices.
 - **Persistent Memory & GraphRAG:** Resolved cases are embedded with 384-dimensional dense vectors (`all-MiniLM-L6-v2`) and combined with graph proximity ($0.4 \times \text{topological} + 0.6 \times \text{semantic}$) so future investigations recall historical precedents.
 
 ---
@@ -75,10 +75,10 @@ On the agentic side, I learned that LLMs need strict mathematical boundaries. Wi
 
 ## 6. What You'd Improve With More Time
 
-Given more time and transition to enterprise banking infrastructure, I would expand CHAKRAVYUH in three key operational dimensions:
+Given more time and transition to enterprise banking infrastructure, I would expand FraudSight in three key operational dimensions:
 
 1. **Enterprise Multi-Node Cluster Scaling**: Moving beyond the free-tier cloud instance lifecycle (which enters standby sleep when idle) to an autoscaling TigerGraph Enterprise cluster with dedicated read replicas, persistent VPC peering, and zero-sleep sub-second SLAs.
-2. **Two-Tier Latency Decoupling**: Architecting a two-tier pipeline where a lightweight GSQL graph rule evaluates inline (<25ms) to hold suspicious transactions, immediately handing off the alert to CHAKRAVYUH's 8-node LangGraph agent for deep asynchronous forensic BFS and SAR drafting.
+2. **Two-Tier Latency Decoupling**: Architecting a two-tier pipeline where a lightweight GSQL graph rule evaluates inline (<25ms) to hold suspicious transactions, immediately handing off the alert to FraudSight's 8-node LangGraph agent for deep asynchronous forensic BFS and SAR drafting.
 3. **Dynamic GSQL Generation via Sandboxed MCP**: Enabling the agent to dynamically synthesize and validate novel GSQL graph patterns on the fly using TigerGraph's schema introspection MCP tools.
 
 ---

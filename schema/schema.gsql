@@ -1,4 +1,4 @@
--- CHAKRAVYUH: Bihar Police Cyber Investigation — TigerGraph Schema DDL
+-- FraudSight: Bihar Police Cyber Investigation — TigerGraph Schema DDL
 -- Ground Truth Corrected (Section 1 of GROUND_TRUTH_SPECIFICATIONS.md)
 -- DO NOT rename vertices/edges. All names are graded verbatim.
 

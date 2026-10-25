@@ -1,5 +1,5 @@
-# CHAKRAVYUH — GROUND TRUTH CORRECTIONS
-> Read this FIRST, before CHAKRAVYUH_MASTER_BUILD.md. Anywhere the two conflict, THIS FILE WINS.
+# FraudSight — GROUND TRUTH CORRECTIONS
+> Read this FIRST, before FraudSight_MASTER_BUILD.md. Anywhere the two conflict, THIS FILE WINS.
 > The master doc's LangGraph flow, MCP wiring, GraphRAG retrieval, and entropy-based
 > stopping logic are still valid architecture. Everything below replaces guessed
 > vocabulary with the real dataset's exact contract.
@@ -355,8 +355,8 @@ Trigger dict for `run_investigation()`:
 ## 6. CODING AGENT STOP NOTICE
 
 ```
-STOP. Before continuing any CHAKRAVYUH session work, read
-GROUND_TRUTH_SPECIFICATIONS.md in full. It overrides CHAKRAVYUH_MASTER_BUILD.md
+STOP. Before continuing any FraudSight session work, read
+GROUND_TRUTH_SPECIFICATIONS.md in full. It overrides FraudSight_MASTER_BUILD.md
 wherever the two conflict — schema (Section 5), action/approval vocabulary
 (Sections 2.4-2.5), output file format (Section 10), and case IDs throughout.
 
@@ -370,5 +370,5 @@ Do not invent any ID, action name, or approval tier not listed in this document.
 Every action string, route string, and pattern string is graded verbatim.
 ```
 
-*This file is the source of truth. CHAKRAVYUH_MASTER_BUILD.md is architecture reference
+*This file is the source of truth. FraudSight_MASTER_BUILD.md is architecture reference
 only — never pull vocabulary, schema, or output shape from it once this file exists.*

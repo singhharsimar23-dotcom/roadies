@@ -38,7 +38,7 @@ def get_tg_conn():
 
 def verify_derived():
     conn = get_tg_conn()
-    print("=== CHAKRAVYUH: Derived Graph Edges Verification ===")
+    print("=== FraudSight: Derived Graph Edges Verification ===")
 
     if not conn:
         print("\n--- 1. Verified Derived Edge Counts ---")

@@ -1,5 +1,5 @@
 """
-CHAKRAVYUH Agent Nodes — Bihar Police Cyber Crime Investigation Platform
+FraudSight Agent Nodes — Bihar Police Cyber Crime Investigation Platform
 Autonomous investigation workflow operating against InvestigationState and validated forensic vocabulary.
 All 14 actions, 7 patterns, 3 verdicts, 4 statuses, and approval routing are enforced verbatim.
 """

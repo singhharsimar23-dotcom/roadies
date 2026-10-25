@@ -10,7 +10,7 @@ def test_dashboard():
 
     res = client.get('/')
     assert res.status_code == 200, f"GET / failed: {res.status_code}"
-    assert "CHAKRAVYUH" in res.text
+    assert "FraudSight" in res.text
     print("GET / OK")
 
     res = client.get('/case/case_01')

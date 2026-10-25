@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🛡️ CHAKRAVYUH
+# 🛡️ FraudSight
 ### Autonomous AI/ML & Graph Analytics Platform for Mule Account Detection & Cybercrime Network Dismantling
 **Bihar Police Cyber Hackathon Submission**  
 *Organized by Bihar Police Cyber Crime Division / Economic Offences Unit (EOU)*
@@ -23,13 +23,13 @@
 
 Mule bank accounts are used to receive, transfer, layer, and withdraw proceeds of cybercrime, concealing the origin of illicit funds. Existing detection methods rely on static predefined thresholds and manual tabular analysis, delaying the identification of suspicious accounts and organized fraud syndicates.
 
-**CHAKRAVYUH** is an end-to-end autonomous investigation platform that combines **TigerGraph's native GSQL graph engine** with an **8-node LangGraph multi-agent cognitive architecture**, **dynamic machine learning risk scoring**, and **Explainable AI (XAI)**. It bridges the critical operational gap between financial institutions and law-enforcement agencies (such as Bihar Police Cyber Crime Division and I4C / 1930 Helpline), enabling rapid freeze directives before illicit funds are evacuated.
+**FraudSight** is an end-to-end autonomous investigation platform that combines **TigerGraph's native GSQL graph engine** with an **8-node LangGraph multi-agent cognitive architecture**, **dynamic machine learning risk scoring**, and **Explainable AI (XAI)**. It bridges the critical operational gap between financial institutions and law-enforcement agencies (such as Bihar Police Cyber Crime Division and I4C / 1930 Helpline), enabling rapid freeze directives before illicit funds are evacuated.
 
 ---
 
 ## 🎯 Direct Alignment with Hackathon Requirements
 
-| # | Problem Statement Requirement | CHAKRAVYUH Technical Solution | Key Metric / Output |
+| # | Problem Statement Requirement | FraudSight Technical Solution | Key Metric / Output |
 |---|---|---|---|
 | **1** | **Transaction Analysis** | Velocity burst detection, micro-structuring smurf analysis, and 90-day baseline entropy deviation. | $< 180\text{s}$ pass-through flag, micro-structuring variance |
 | **2** | **Mule Account Detection** | Multi-hop dynamic risk scoring ($0.0 \to 1.0$), rank-ordered lead prioritization, and XAI feature attribution. | Ranked risk tiers: `CRITICAL_FREEZE`, `HIGH_REVIEW`, `NORMAL` |
@@ -48,7 +48,7 @@ Mule bank accounts are used to receive, transfer, layer, and withdraw proceeds o
                   └───────────────────────┬───────────────────────┘
                                           ▼
                       ┌───────────────────────────────────────┐
-                      │    CHAKRAVYUH INGESTION GATEWAY       │
+                      │    FraudSight INGESTION GATEWAY       │
                       │  - Entity Normalization & Hashing     │
                       │  - 90-Day Account Baseline Profiling  │
                       └───────────────────┬───────────────────┘
@@ -132,7 +132,7 @@ Connects independent citizen complaints filed across different Bihar districts (
 - Uncovers common telephone numbers, device IMEIs, and beneficiary IFSC codes across seemingly unrelated victim reports.
 
 ### 4. Information-Theoretic Minimum Description Length (MDL) Stopping Gate
-Autonomous LLM agents commonly suffer from the **"over-investigation trap"**—looping infinitely to seek impossible certainty. CHAKRAVYUH formulates an optimal stopping gate using Shannon entropy:
+Autonomous LLM agents commonly suffer from the **"over-investigation trap"**—looping infinitely to seek impossible certainty. FraudSight formulates an optimal stopping gate using Shannon entropy:
 
 $$H(p) = -p \log_2(p) - (1-p) \log_2(1-p)$$
 
@@ -141,7 +141,7 @@ $$S(p, C, k) = \left( \frac{H(p)}{\log_2(2)} \right) \cdot \left( 1 + \frac{C}{1
 When the marginal information gain drops below $S < 0.35$, the agent halts graph queries and executes freezing actions, preserving investigative bandwidth and computational latency.
 
 ### 5. Anti-Overblocking Customer Protection Filter
-Indiscriminate account freezing harms legitimate citizens (e.g. students, daily wage earners, small merchants). CHAKRAVYUH checks innocence archetypes—such as multi-year tenure, recurring utility payments, and verified employer payroll—before executing an account freeze, downgrading ambiguous cases to enhanced KYC review.
+Indiscriminate account freezing harms legitimate citizens (e.g. students, daily wage earners, small merchants). FraudSight checks innocence archetypes—such as multi-year tenure, recurring utility payments, and verified employer payroll—before executing an account freeze, downgrading ambiguous cases to enhanced KYC review.
 
 ---
 
@@ -256,7 +256,7 @@ python benchmark/run_benchmark.py
 
 ## ⚖️ Statutory & Regulatory Compliance
 
-CHAKRAVYUH compiles court-ready digital evidence dossiers that adhere to Indian legal standards:
+FraudSight compiles court-ready digital evidence dossiers that adhere to Indian legal standards:
 - **Section 66D Information Technology Act, 2000:** Evidentiary proof of cheating by personation using computer resources.
 - **Section 65B Indian Evidence Act (IEA):** Automated cryptographic SHA-256 hash chaining guaranteeing electronic record integrity.
 - **Section 91 Code of Criminal Procedure (CrPC):** Instant requisition notices for bank nodal officers.

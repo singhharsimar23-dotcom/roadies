@@ -1,4 +1,4 @@
-# CHAKRAVYUH: Technical Architecture & System Blueprint
+# FraudSight: Technical Architecture & System Blueprint
 ### Autonomous AI/ML & Graph Analytics Engine for Mule Account Detection & Cybercrime Network Dismantling
 **Submission for Bihar Police Cyber Hackathon**  
 *Organized by Bihar Police Cyber Crime Division / Economic Offences Unit (EOU)*
@@ -9,9 +9,9 @@
 
 Modern cybercrime syndicates (e.g. digital arrest fraud, APK credential theft, fake investment platforms, sextortion, and illegal betting rings) rely on **mule bank accounts** to receive, layer, and cash out illicit proceeds. Traditional rules-based threshold filters fail because they evaluate transactions in isolated tables, leading to delayed freeze actions and rampant fund dissipation before victims can be made whole.
 
-**CHAKRAVYUH** is an enterprise-grade AI/ML and Graph Analytics investigation platform custom-engineered to solve the six core requirements of the **Bihar Police Cyber Hackathon**:
+**FraudSight** is an enterprise-grade AI/ML and Graph Analytics investigation platform custom-engineered to solve the six core requirements of the **Bihar Police Cyber Hackathon**:
 
-| Problem Requirement | CHAKRAVYUH Solution Pillar | Underlying Technology |
+| Problem Requirement | FraudSight Solution Pillar | Underlying Technology |
 | :--- | :--- | :--- |
 | **1. Transaction Analysis** | Velocity spike detection, micro-structuring smurf analysis, and 90-day entropy deviation scoring. | TigerGraph GSQL + Statistical Baseline Vectorizer |
 | **2. Mule Account Detection** | Multi-hop dynamic risk scoring (0.0 to 1.0), rank ordering, and Explainable AI (XAI) feature attribution. | Graph Centrality + Random Forest / Gradient Boosting + XAI |
@@ -98,7 +98,7 @@ Organized syndicates split high-value cyber fraud proceeds into smaller micro-st
 - **Baseline Behavioral Deviation:** Evaluates current transaction frequency against the 90-day moving average. Dormant accounts suddenly receiving high-velocity incoming transfers are ranked in the top 99th percentile of fraud risk.
 
 ### 3.2 Requirement 2: Dynamic Mule Risk Scoring & Explainable AI (XAI)
-Rather than a non-interpretable black-box score, CHAKRAVYUH computes a multi-factor **Dynamic Mule Risk Score ($R \in [0.0, 1.0]$)** combining:
+Rather than a non-interpretable black-box score, FraudSight computes a multi-factor **Dynamic Mule Risk Score ($R \in [0.0, 1.0]$)** combining:
 
 $$R = w_1 \cdot C_{\text{topo}} + w_2 \cdot V_{\text{velocity}} + w_3 \cdot D_{\text{hardware}} + w_4 \cdot K_{\text{complaints}}$$
 
@@ -116,7 +116,7 @@ Every scored mule account displays an itemized evidence card:
 - `[-0.15]` Legitimacy Attenuation: Verified salary credit from registered PSU entity (Anti-Overblocking).
 
 ### 3.3 Requirement 3: Multi-Hop Money Trail Analysis
-CHAKRAVYUH implements parameterized GSQL queries (`get_money_flow.gsql`) executing directed breadth-first search (BFS) up to 4 hops:
+FraudSight implements parameterized GSQL queries (`get_money_flow.gsql`) executing directed breadth-first search (BFS) up to 4 hops:
 - **Layer 1 (Direct Beneficiary):** The initial account receiving funds directly from the cybercrime victim.
 - **Layer 2 (Intermediate Layering Mules):** Split accounts used to divide funds into multiple parallel streams.
 - **Layer 3 (Cashout & Aggregator Nodes):** Final collection nodes terminating at ATM cash withdrawals, P2P crypto merchants, or POS terminal cashouts.
@@ -212,7 +212,7 @@ A single mule ring frequently victimizes citizens across multiple districts (e.g
 
 In graph-augmented agentic systems, LLMs exhibit a propensity to enter indefinite search loops—repeatedly querying adjacent hops to achieve zero uncertainty. In high-stakes law enforcement operations, every graph traversal introduces latency while adding diminishing marginal diagnostic value.
 
-CHAKRAVYUH formulates optimal stopping using **Minimum Description Length (MDL)** principles:
+FraudSight formulates optimal stopping using **Minimum Description Length (MDL)** principles:
 
 $$H(p) = -p \log_2(p) - (1-p) \log_2(1-p)$$
 
@@ -232,7 +232,7 @@ Where:
 
 ## 6. Anti-Overblocking Customer Protection Filter
 
-A critical flaw in standard mule detection algorithms is wrongful freezing of innocent citizens (e.g. students, gig workers, small traders). CHAKRAVYUH implements an automated **Customer Protection Filter**:
+A critical flaw in standard mule detection algorithms is wrongful freezing of innocent citizens (e.g. students, gig workers, small traders). FraudSight implements an automated **Customer Protection Filter**:
 - Tests for legitimate behavioral archetypes before debit freeze execution.
 - Checks: recurring utility bill payments, verified payroll credits, longstanding tenure (>3 years), trusted personal hardware history.
 - If legitimate indicators outweigh fraud signals, downgrades action from `IMMEDIATE_DEBIT_FREEZE` to `ENHANCED_KYC_VERIFICATION`, preventing harassment of innocent account holders.

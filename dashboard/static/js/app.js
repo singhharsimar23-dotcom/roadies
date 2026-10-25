@@ -1,5 +1,5 @@
 /**
- * CHAKRAVYUH — Bihar Police Cyber Crime Investigation & Mule Account Detection
+ * FraudSight — Bihar Police Cyber Crime Investigation & Mule Account Detection
  * Real-time client connecting all UI components to live backend endpoints:
  * - TigerGraph Cytoscape Multi-Hop Graph Traversal
  * - 20-Case HHG Benchmark Suite (cases/HHG-001.json..HHG-020.json)

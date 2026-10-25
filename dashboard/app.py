@@ -46,7 +46,7 @@ def get_discovered_patterns_report() -> dict:
 from output.formatter import OutputFormatter
 
 app = FastAPI(
-    title="CHAKRAVYUH — Bihar Police Cyber Crime Investigation Platform",
+    title="FraudSight — Bihar Police Cyber Crime Investigation Platform",
     description="Autonomous Multi-Agent Graph AI & Cybercrime Complaint Correlation Engine for Mule Account Detection & Money Trail Dismantling (Bihar Police Cyber Hackathon)",
     version="2.0.0"
 )

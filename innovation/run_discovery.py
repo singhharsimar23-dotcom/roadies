@@ -36,7 +36,7 @@ def check_existing_discovered_patterns() -> bool:
 async def main() -> dict:
     """Main discovery runner."""
     print("=================================================================")
-    print("        CHAKRAVYUH — CYBERCRIME PATTERN DISCOVERY ENGINE             ")
+    print("        FraudSight — CYBERCRIME PATTERN DISCOVERY ENGINE             ")
     print("=================================================================")
 
     if check_existing_discovered_patterns():

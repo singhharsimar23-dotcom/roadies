@@ -4,7 +4,7 @@ from retrieval.embedder import Embedder
 from retrieval.vector_indexer import index_closed_cases, index_patterns
 
 async def main():
-    print("=== CHAKRAVYUH: Vector Indexing Pipeline ===")
+    print("=== FraudSight: Vector Indexing Pipeline ===")
     embedder = Embedder()
     conn = tg_tools._get_tg_conn()
 

@@ -1,5 +1,5 @@
 """
-CHAKRAVYUH Agent State — Bihar Police Cyber Crime Investigation Platform
+FraudSight Agent State — Bihar Police Cyber Crime Investigation Platform
 Typed state representations for autonomous mule account investigation and 1930 complaint correlation.
 """
 

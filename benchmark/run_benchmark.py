@@ -1,5 +1,5 @@
 """
-Benchmark Runner for CHAKRAVYUH: Bihar Police Cyber Crime Investigation Platform — Ground Truth S12.
+Benchmark Runner for FraudSight: Bihar Police Cyber Crime Investigation Platform — Ground Truth S12.
 Orchestrates autonomous investigations against the 20 benchmark cases from case_pack.csv.
 Produces exactly one validated JSON file per case: cases/{case_id}.json.
 Runs the pre-submission validator at the end to guarantee 100% compliance.
@@ -93,7 +93,7 @@ async def run_benchmark(limit: int = 20):
     CASES_DIR.mkdir(parents=True, exist_ok=True)
 
     print("=================================================================")
-    print("      CHAKRAVYUH CYBER AGENT — BENCHMARK EVALUATION (BPC-20)         ")
+    print("      FraudSight CYBER AGENT — BENCHMARK EVALUATION (BPC-20)         ")
     print("=================================================================")
 
     # Step 0: Check TigerGraph

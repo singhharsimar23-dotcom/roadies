@@ -1,5 +1,5 @@
 """
-CHAKRAVYUH — Cyber Fraud Data Loading Pipeline
+FraudSight — Cyber Fraud Data Loading Pipeline
 Reads directly from D:\\ (CSV files confirmed at D:\\transactions.csv etc.)
 Writes to TigerGraph FraudGraph using corrected schema vertex/edge names.
 
@@ -495,7 +495,7 @@ def load_policy(conn):
 # ---------------------------------------------------------------------------
 
 def main():
-    print("=== CHAKRAVYUH: Cyber Fraud Data Loading Pipeline ===")
+    print("=== FraudSight: Cyber Fraud Data Loading Pipeline ===")
     print(f"  transactions.csv : {TXN_FILE} ({'EXISTS' if TXN_FILE.exists() else 'MISSING'})")
     print(f"  identity.csv     : {IDENT_FILE} ({'EXISTS' if IDENT_FILE.exists() else 'MISSING'})")
     print(f"  closed_cases     : {CC_FILE} ({'EXISTS' if CC_FILE.exists() else 'MISSING'})")

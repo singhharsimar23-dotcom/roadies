@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 tools/introspect_mcp.py
-CHAKRAVYUH: Bihar Police Cyber Crime Investigation Platform — S06-PATCH: MCP Tool Contract Verification
+FraudSight: Bihar Police Cyber Crime Investigation Platform — S06-PATCH: MCP Tool Contract Verification
 
 Opens an MCP session against TigerGraph MCP server (or introspects the official
 pyTigerGraph-mcp tool registry if running offline), prints the full schema of
@@ -808,7 +808,7 @@ def generate_contract_markdown(tools: List[Dict[str, Any]]) -> str:
 
 async def main():
     print("=" * 70)
-    print("CHAKRAVYUH CYBER AGENT — MCP TOOL CONTRACT VERIFICATION")
+    print("FraudSight CYBER AGENT — MCP TOOL CONTRACT VERIFICATION")
     print("=" * 70)
 
     # 1. Attempt live session introspection, fallback to canonical registry

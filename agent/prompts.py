@@ -1,5 +1,5 @@
 """
-LLM Prompt Templates for CHAKRAVYUH: Bihar Police Cyber Crime Investigation Platform.
+LLM Prompt Templates for FraudSight: Bihar Police Cyber Crime Investigation Platform.
 Ground Truth Specifications for autonomous forensic evidence analysis.
 
 ALL action strings, verdict strings, pattern strings, route strings are

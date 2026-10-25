@@ -37,7 +37,7 @@ def get_tg_conn():
 
 def verify_load():
     conn = get_tg_conn()
-    print("=== CHAKRAVYUH: Verification of Data Load ===")
+    print("=== FraudSight: Verification of Data Load ===")
 
     if not conn:
         print("\n--- Verified Dataset Inventory (Offline Standalone Mode) ---")

@@ -1,5 +1,5 @@
 """
-output/schema_models.py — CHAKRAVYUH Validated Output Schema (Section 4)
+output/schema_models.py — FraudSight Validated Output Schema (Section 4)
 
 ONE JSON file per case: cases/{case_id}.json
 Shape is CaseAnswer. ALL Literal values are graded verbatim — do not alter strings.
