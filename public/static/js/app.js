@@ -4,7 +4,7 @@
  * - TigerGraph Cytoscape Multi-Hop Graph Traversal
  * - 20-Case HHG Benchmark Suite (cases/HHG-001.json..HHG-020.json)
  * - Institutional Chain of Command Policy Escalation
- * - Customer Protection Filter (Anti-Overblocking)
+ * - Citizen Protection Filter (Anti-Overblocking / Anti-Wrongful-Freeze)
  * - Value of Information (VOI) & Evidence Sufficiency Gate
  * - Forensic Evidence Dossier Viewer & ZIP Bundle Exporter
  * - Real-Time Server-Sent Events (SSE) Stream
@@ -396,13 +396,30 @@ async function loadBenchmarkCase(caseInput) {
         // Update Metadata Micro-Strip (Bug fix: separate account and typology)
         const metaAcc = document.getElementById('meta-acc');
         const acct = data.target_account || data.trigger_account_id || data.customer_id || (data.case && (data.case.customer_id || data.case.card_id)) || 'C13487';
-        const amt = data.amount !== undefined ? data.amount : (data.case && data.case.exposure_usd !== undefined ? data.case.exposure_usd * 83.5 : 0);
+        const rawAmt2 = data.amount !== undefined ? data.amount : (data.case && data.case.exposure_usd !== undefined ? data.case.exposure_usd : 0); const amt = rawAmt2 > 1000 ? rawAmt2 : rawAmt2 * 83.5;
         if (metaAcc) {
-            const amtInr = Math.round(Number(amt) * 83.5); metaAcc.textContent = `${acct} (Rs.${amtInr.toLocaleString("en-IN")})`;
+            metaAcc.textContent = `${acct} (Rs.${Math.round(Number(amt)).toLocaleString('en-IN')})`;
         }
         const metaNode = document.getElementById('meta-node');
         if (metaNode) {
             metaNode.textContent = data.alert_typology || (data.case && (data.case.pattern_description || data.case.pattern)) || 'Suspicious Transaction Alert';
+        }
+        // Update XAI panel header to match loaded case
+        const xaiAccEl = document.getElementById('xai-account-id');
+        const xaiScoreEl = document.getElementById('xai-final-score');
+        const fraudProb = data.fraud_probability !== undefined ? data.fraud_probability : (data.case ? data.case.fraud_probability : 0.05);
+        const isLegitCase = fraudProb < 0.70;
+        if (xaiAccEl) xaiAccEl.textContent = data.target_account || data.trigger_account_id || data.customer_id || (data.case && data.case.customer_id) || 'N/A';
+        if (xaiScoreEl) {
+            const scoreVal = Number(fraudProb).toFixed(2);
+            if (isLegitCase) {
+                xaiScoreEl.textContent = `${scoreVal} — CLEARED (Low Risk)`;
+                xaiScoreEl.className = 'text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-surface-container text-primary-container border border-primary-container/25';
+            } else {
+                const label = fraudProb >= 0.90 ? 'CRITICAL_FREEZE' : 'HIGH_REVIEW';
+                xaiScoreEl.textContent = `${scoreVal} — ${label}`;
+                xaiScoreEl.className = 'text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-error-container/30 text-error border border-error/25';
+            }
         }
 
         // Update Chain of Command
@@ -441,10 +458,18 @@ async function loadBenchmarkCase(caseInput) {
         updateFilterRow('det-recurring', shield.recurring);
         updateFilterRow('det-travel', shield.travel);
         updateFilterRow('det-device', shield.device);
+        // For fraud cases with no shield data, explicitly set all to NOT APPLICABLE
+        const isFraudCase = (data.verdict === 'fraud' || (data.case && data.case.verdict === 'fraud'));
+        if (isFraudCase && !shield.recurring && !shield.travel && !shield.device) {
+            ['det-recurring-status','det-travel-status','det-device-status'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) { el.textContent = 'NOT APPLICABLE'; el.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-surface-container-lowest text-outline font-semibold'; }
+            });
+        }
 
         const shieldVerdict = document.getElementById('shield-verdict-flip');
         if (shieldVerdict) {
-            shieldVerdict.textContent = shield.verdict_flip || (data.verdict === 'legitimate' || (data.case && data.case.verdict === 'legitimate') ? 'PASS: Innocent Citizen Verified (Account Cleared)' : 'FAIL: Mule Account Evidence Confirmed');
+            shieldVerdict.textContent = shield.verdict_flip || (data.verdict === 'legitimate' || (data.case && data.case.verdict === 'legitimate') ? 'PASS — Innocent Citizen Verified. Account remains active.' : 'FAIL — Mule Account Evidence Confirmed. Debit freeze recommended.');
             if (shield.final_offset && shield.final_offset < 0 || (data.case && data.case.verdict === 'legitimate')) {
                 shieldVerdict.className = 'text-[11px] font-mono font-semibold text-primary-container';
             } else {
@@ -541,7 +566,7 @@ function populateStreamLogs(data, completed = false) {
     const logsEl = document.getElementById('stream-terminal-logs');
     if (!logsEl) return;
 
-    const amtVal = data.amount !== undefined ? data.amount : (data.case && data.case.exposure_usd !== undefined ? data.case.exposure_usd * 83.5 : 0);
+    const rawAmtVal = data.amount !== undefined ? data.amount : (data.case && data.case.exposure_usd !== undefined ? data.case.exposure_usd : 0); const amtVal = rawAmtVal > 1000 ? rawAmtVal : rawAmtVal * 83.5;
     const t = Math.round(Number(amtVal)).toLocaleString('en-IN');
     const fProb = data.fraud_probability !== undefined ? data.fraud_probability : (data.case ? data.case.fraud_probability : 0.05);
     const isFraud = fProb >= 0.70;
@@ -672,7 +697,7 @@ async function runLiveAutonomousInvestigationTrace() {
     
     // Step 1: Ingest
     await new Promise(r => setTimeout(r, 350));
-    const amtInrLive = Math.round(Number(amt)*83.5); appendLog('00:00.08', 'INGEST', `Received 1930 complaint — Account ${acct} — Victim Loss: Rs.${amtInrLive.toLocaleString("en-IN")} — Mule Risk: ${(risk * 100).toFixed(1)}%`, 'text-primary-container');
+    const rawAmt = Number(amt); const amtInrLive = rawAmt > 1000 ? Math.round(rawAmt) : Math.round(rawAmt * 83.5); appendLog('00:00.08', 'INGEST', `Received 1930 complaint — Account ${acct} — Victim Loss: Rs.${amtInrLive.toLocaleString("en-IN")} — Mule Risk: ${(risk * 100).toFixed(1)}%`, 'text-primary-container');
 
     // Step 2: Topological Traversal
     await new Promise(r => setTimeout(r, 450));
