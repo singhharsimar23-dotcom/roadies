@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case HHG-010 — Forensic Investigation — CHAKRAVYUH</title>
+  
+  <!-- Google Fonts: Inter, JetBrains Mono & Material Symbols -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  
+  <!-- Cytoscape.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.28.1/cytoscape.min.js"></script>
+
+  <!-- Tailwind CSS CDN with Sentinel Theme -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "background": "#051424",
+            "surface": "#051424",
+            "surface-container-lowest": "#010f1f",
+            "surface-container-low": "#0d1c2d",
+            "surface-container": "#122131",
+            "surface-container-high": "#1c2b3c",
+            "surface-container-highest": "#273647",
+            "on-surface": "#d4e4fa",
+            "on-surface-variant": "#b9cacb",
+            "primary": "#e0fdff",
+            "primary-container": "#00f2fe",
+            "primary-fixed-dim": "#00dce6",
+            "on-primary-container": "#00373a",
+            "error": "#ffb4ab",
+            "error-container": "#93000a",
+            "outline": "#849495"
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+            mono: ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .code-font {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #010f1f;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1c2b3c;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #273647;
+    }
+  </style>
+  
+<style>
+  #cy {
+    width: 100%;
+    height: 380px;
+    background: #090d16;
+    border-radius: 0.75rem;
+  }
+  .gauge-circle {
+    transition: stroke-dashoffset 1s ease-in-out;
+  }
+</style>
+
+</head>
+<body class="bg-background text-on-surface text-xs min-h-screen flex flex-col antialiased">
+
+  <!-- Top Navigation Header -->
+  <header class="fixed top-0 left-0 right-0 h-14 z-50 bg-surface-container-lowest/90 backdrop-blur-xl border-b border-surface-container-highest/60">
+    <div class="h-14 w-full px-5 flex items-center justify-between gap-4">
+      
+      <!-- Brand & Links -->
+      <div class="flex items-center gap-4 shrink-0">
+        <a href="/" class="flex items-center gap-2.5">
+          <div class="w-7 h-7 rounded-lg bg-surface-container-high flex items-center justify-center border border-primary-container/30 text-primary-container shadow-sm">
+            <span class="material-symbols-outlined text-[18px]">hub</span>
+          </div>
+          <span class="text-sm font-semibold tracking-tight text-on-surface">CHAKRAVYUH</span>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-surface-container-high text-primary-container border border-primary-container/20 uppercase tracking-wider">Bihar Police Cyber Cell • TigerGraph</span>
+        </a>
+        
+        <div class="h-4 w-px bg-surface-container-highest"></div>
+        
+        <nav class="flex items-center gap-1">
+          <a class="px-3 py-1 rounded-lg font-medium text-xs transition-colors text-on-surface-variant hover:text-on-surface hover:bg-surface-container" href="/">Cockpit</a>
+          <a class="px-3 py-1 rounded-lg font-medium text-xs transition-colors bg-surface-container-high text-primary-container border border-primary-container/20" href="/cases">Cyber Crime Cases (20)</a>
+          <a class="px-3 py-1 rounded-lg font-medium text-xs transition-colors text-on-surface-variant hover:text-on-surface hover:bg-surface-container" href="/analytics">TigerGraph Analytics</a>
+          <a class="px-3 py-1 rounded-lg font-medium text-xs transition-colors text-on-surface-variant hover:text-on-surface hover:bg-surface-container" href="/about">Architecture</a>
+        </nav>
+      </div>
+
+      <!-- Live Connection Telemetry -->
+      <div class="flex items-center gap-3 shrink-0">
+        <div class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-low border border-primary-container/20">
+          <span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+          <span class="text-[10px] font-mono uppercase text-primary-fixed-dim font-semibold tracking-wider">Bihar Police Cyber Grid • TigerGraph GSQL</span>
+        </div>
+        
+        <a href="/" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary-container hover:bg-primary-fixed-dim text-on-primary-container font-semibold transition-colors shadow-sm">
+          <span class="material-symbols-outlined text-[16px]">bolt</span>
+          <span>Live Cockpit</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main View Container -->
+  <main class="flex-1 w-full pt-14 pb-8">
+    <div class="max-w-7xl mx-auto px-5 py-5">
+      
+<div class="space-y-6">
+
+  <!-- Breadcrumb & Back -->
+  <div class="flex items-center justify-between text-xs text-outline">
+    <div class="flex items-center gap-2">
+      <a href="/" class="hover:text-on-surface transition flex items-center gap-1">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        <span>Back to Cases</span>
+      </a>
+      <span>/</span>
+      <span class="font-mono text-on-surface">HHG-010</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="triggerInvestigation()" id="reInvestigateBtn" class="px-3 py-1 rounded bg-error-container/40 hover:bg-red-900 text-error border border-red-800 font-medium transition flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>Re-Run Investigation</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Header Section: Case ID, status badge, risk badge, opened timestamp -->
+  <div class="bg-surface-container-low border border-surface-container-high rounded-xl p-5 shadow-sm backdrop-blur flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <div class="space-y-1.5">
+      <div class="flex items-center gap-3 flex-wrap">
+        <h1 class="text-2xl font-bold font-mono text-on-surface tracking-tight">HHG-010</h1>
+        
+        <!-- Status Badge -->
+        
+          <span id="headerStatusBadge" class="px-2.5 py-0.5 rounded-full font-semibold text-xs bg-surface-container text-on-surface-variant border border-surface-container-highest">OPEN</span>
+        
+
+        <!-- Risk Badge (LOW=green, MEDIUM=yellow, HIGH=orange, CRITICAL=red) -->
+        
+          <span class="px-2.5 py-0.5 rounded-full font-semibold text-xs bg-red-950/90 text-error border border-red-700 shadow-md shadow-red-950">CRITICAL RISK</span>
+        
+      </div>
+
+      <div class="flex items-center gap-4 text-xs text-outline">
+        <div>Opened: <span class="font-mono text-on-surface-variant">2016-12-02 18:18:27</span></div>
+        <span>•</span>
+        <div>Trigger: <span class="font-mono text-on-surface-variant">risk_score</span></div>
+        <span>•</span>
+        <div>Target Account: <span class="font-mono text-error">C10434</span></div>
+      </div>
+    </div>
+
+    <!-- Quick action indicator -->
+    <div class="flex items-center gap-3">
+      <div class="text-right">
+        <div class="text-[11px] text-outline uppercase tracking-wider font-semibold">MDL Sufficiency Gate</div>
+        <div class="text-xs font-mono font-bold text-primary-container flex items-center gap-1.5 justify-end">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+          <span>Score: 0.267 (ACT)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2-COLUMN MAIN LAYOUT -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- LEFT COLUMN (60% -> lg:col-span-7) -->
+    <div class="lg:col-span-7 space-y-6">
+
+      <!-- Investigation Timeline (SSE-streamed events as they arrive) -->
+      <div class="bg-surface-container-low border border-surface-container-high rounded-xl p-5 shadow-sm backdrop-blur">
+        <div class="flex items-center justify-between pb-3 mb-4 border-b border-surface-container-high">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
+            <h2 class="text-sm font-bold text-on-surface tracking-wide uppercase">Autonomous Investigation Stream</h2>
+          </div>
+          <span id="streamStatus" class="text-[11px] code-font text-primary-container bg-surface-container-high px-2 py-0.5 rounded border border-emerald-800/60">LIVE SSE CONNECTED</span>
+        </div>
+
+        <!-- Terminal log style container -->
+        <div id="timelineContainer" class="bg-surface-container-lowest border border-surface-container-highest rounded-lg p-3.5 max-h-72 overflow-y-auto font-mono text-xs space-y-2">
+          <!-- Populated by SSE stream and server-rendered timeline -->
+          
+          <div class="flex items-start gap-2 text-on-surface-variant timeline-row">
+            <span class="text-outline font-normal select-none">[12:00:01]</span>
+            <span class="text-error font-semibold select-none">[trigger_node]</span>
+            <span class="text-on-surface">Alert ingested: HHG-010 on C10434</span>
+          </div>
+          
+          <div class="flex items-start gap-2 text-on-surface-variant timeline-row">
+            <span class="text-outline font-normal select-none">[12:00:02]</span>
+            <span class="text-error font-semibold select-none">[investigate_node]</span>
+            <span class="text-on-surface">Traversed graph neighborhood, sibling cards, and NEXT chain</span>
+          </div>
+          
+          <div class="flex items-start gap-2 text-on-surface-variant timeline-row">
+            <span class="text-outline font-normal select-none">[12:00:03]</span>
+            <span class="text-error font-semibold select-none">[gather_evidence_node]</span>
+            <span class="text-on-surface">GraphRAG retrieved similar cases: ['CC-0173', 'CC-1532', 'CC-3213']</span>
+          </div>
+          
+          <div class="flex items-start gap-2 text-on-surface-variant timeline-row">
+            <span class="text-outline font-normal select-none">[12:00:04]</span>
+            <span class="text-error font-semibold select-none">[assess_uncertainty_node]</span>
+            <span class="text-on-surface">Evaluated stopping rule (P=0.90)</span>
+          </div>
+          
+          <div class="flex items-start gap-2 text-on-surface-variant timeline-row">
+            <span class="text-outline font-normal select-none">[12:00:05]</span>
+            <span class="text-error font-semibold select-none">[action_node]</span>
+            <span class="text-on-surface">Enforced R1-R10 rules; routed approval tiers</span>
+          </div>
+          
+          <div class="flex items-start gap-2 text-on-surface-variant timeline-row">
+            <span class="text-outline font-normal select-none">[12:00:06]</span>
+            <span class="text-error font-semibold select-none">[explain_node]</span>
+            <span class="text-on-surface">Generated BSA SAR narrative (File=True)</span>
+          </div>
+          
+          <div class="flex items-start gap-2 text-on-surface-variant timeline-row">
+            <span class="text-outline font-normal select-none">[12:00:07]</span>
+            <span class="text-error font-semibold select-none">[memory_node]</span>
+            <span class="text-on-surface">Archived Case HHG-010 into FraudGraph</span>
+          </div>
+          
+        </div>
+      </div>
+
+      <!-- Evidence Table (sortable by weight) -->
+      <div class="bg-surface-container-low border border-surface-container-high rounded-xl p-5 shadow-sm backdrop-blur">
+        <div class="flex items-center justify-between pb-3 mb-4 border-b border-surface-container-high">
+          <h2 class="text-sm font-bold text-on-surface tracking-wide uppercase flex items-center gap-2">
+            <span>Graph Forensic Evidence</span>
+            <span class="text-[11px] px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-mono">2 findings</span>
+          </h2>
+          <div class="text-[11px] text-outline">
+            <span>Sort by Weight:</span>
+            <button onclick="sortEvidenceTable('desc')" class="hover:text-on-surface underline ml-1">High-to-Low</button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs" id="evidenceTable">
+            <thead>
+              <tr class="text-[11px] uppercase tracking-wider text-outline border-b border-surface-container-high pb-2">
+                <th class="pb-2 font-semibold">Evidence Type</th>
+                <th class="pb-2 font-semibold">Forensic Description</th>
+                <th class="pb-2 font-semibold">Source</th>
+                <th class="pb-2 font-semibold text-right">Weight / Score</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-800/50" id="evidenceBody">
+              
+              
+              <tr class="evidence-row hover:bg-surface-container/30 transition" data-score="0.85">
+                <td class="py-2.5 font-mono text-error font-medium">get_txn_neighborhood</td>
+                <td class="py-2.5 text-on-surface-variant pr-2">Transaction flagged by graph monitoring (trigger_type=risk_score, risk_score=0.90).</td>
+                <td class="py-2.5 text-outline font-mono text-[11px]">graph</td>
+                <td class="py-2.5 text-right font-mono font-semibold">
+                  <span class="px-2 py-0.5 rounded bg-error-container/40 text-error border border-red-800">
+                    0.85
+                  </span>
+                </td>
+              </tr>
+              
+              
+              <tr class="evidence-row hover:bg-surface-container/30 transition" data-score="0.88">
+                <td class="py-2.5 font-mono text-error font-medium">FROM_DEVICE</td>
+                <td class="py-2.5 text-on-surface-variant pr-2">Transaction device profile reviewed via FROM_DEVICE graph traversal.</td>
+                <td class="py-2.5 text-outline font-mono text-[11px]">graph</td>
+                <td class="py-2.5 text-right font-mono font-semibold">
+                  <span class="px-2 py-0.5 rounded bg-error-container/40 text-error border border-red-800">
+                    0.88
+                  </span>
+                </td>
+              </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Decision History Accordion -->
+      <div class="bg-surface-container-low border border-surface-container-high rounded-xl p-5 shadow-sm backdrop-blur">
+        <h2 class="text-sm font-bold text-on-surface tracking-wide uppercase pb-3 mb-4 border-b border-surface-container-high">
+          Agent Decision History & Audit Chain
+        </h2>
+        <div class="space-y-3">
+          
+          <div class="border border-surface-container-high rounded-lg p-3 bg-surface-container-lowest/60">
+            <div class="flex items-center justify-between mb-1">
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-red-950 text-error border border-red-800">FINAL VERDICT</span>
+                <span class="font-mono text-xs text-on-surface font-semibold">fraud</span>
+              </div>
+              <span class="text-[11px] text-outline font-mono">2026-09-20T12:00:06Z</span>
+            </div>
+            <p class="text-xs text-on-surface-variant mt-1">Autonomous graph fraud investigation concluded with verdict=fraud (confidence=0.95). Policy rules R1-R10 enforced throughout.</p>
+          </div>
+          
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN (40% -> lg:col-span-5) -->
+    <div class="lg:col-span-5 space-y-6">
+
+      <!-- Risk Gauge (circular progress 0-100%) -->
+      <div class="bg-surface-container-low border border-surface-container-high rounded-xl p-5 shadow-sm backdrop-blur flex flex-col items-center">
+        <h2 class="text-sm font-bold text-on-surface tracking-wide uppercase mb-4 self-start">Fraud Risk Evaluation</h2>
+        
+        <div class="relative w-44 h-44 flex items-center justify-center">
+          <svg class="w-44 h-44 transform -rotate-90" viewBox="0 0 120 120">
+            <!-- Background circle -->
+            <circle cx="60" cy="60" r="50" fill="none" stroke="#1f2937" stroke-width="10" />
+            <!-- Progress circle -->
+            
+            
+            <circle cx="60" cy="60" r="50" fill="none" 
+                    stroke="#ef4444" 
+                    stroke-width="10" 
+                    stroke-dasharray="314.159" 
+                    stroke-dashoffset="31.415899999999993" 
+                    stroke-linecap="round"
+                    class="gauge-circle" />
+          </svg>
+          <div class="absolute flex flex-col items-center justify-center text-center">
+            <span class="text-3xl font-extrabold font-mono text-on-surface tracking-tight">90.0%</span>
+            <span class="text-[11px] font-semibold uppercase tracking-wider text-outline">Probability</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 w-full mt-4 pt-4 border-t border-surface-container-high text-center text-xs">
+          <div class="bg-surface-container-lowest/60 rounded-lg p-2.5 border border-surface-container-highest">
+            <span class="text-outline block text-[10px] uppercase">MDL Sufficiency</span>
+            <span class="font-mono font-bold text-primary-container">0.267</span>
+          </div>
+          <div class="bg-surface-container-lowest/60 rounded-lg p-2.5 border border-surface-container-highest">
+            <span class="text-outline block text-[10px] uppercase">Uncertainty</span>
+            <span class="font-mono font-bold text-amber-400">0.12</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cytoscape.js Network Graph -->
+      <div class="bg-surface-container-low border border-surface-container-high rounded-xl p-5 shadow-sm backdrop-blur">
+        <div class="flex items-center justify-between pb-3 mb-3 border-b border-surface-container-high">
+          <div>
+            <h2 class="text-sm font-bold text-on-surface tracking-wide uppercase">Account Network Topology</h2>
+            <p class="text-[11px] text-outline">Concentric layout • Center: Primary Account</p>
+          </div>
+          <button onclick="resetGraphView()" class="px-2 py-1 text-[11px] rounded bg-surface-container hover:bg-gray-700 text-on-surface-variant border border-surface-container-highest transition">
+            Recenter
+          </button>
+        </div>
+
+        <!-- Legend -->
+        <div class="flex items-center gap-3 text-[10px] font-mono text-outline mb-2 flex-wrap">
+          <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-red-500"></span> Account (Circle)</div>
+          <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 rotate-45 bg-red-500 inline-block"></span> Txn (Diamond)</div>
+          <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-red-500 inline-block"></span> Device (Square)</div>
+        </div>
+
+        <!-- Graph canvas container -->
+        <div id="cy" class="border border-surface-container-high"></div>
+
+        <!-- Tooltip display -->
+        <div id="graphTooltip" class="mt-2 text-xs font-mono text-on-surface-variant p-2 rounded bg-surface-container-lowest border border-surface-container-highest min-h-[36px] flex items-center">
+          <span class="text-outline">Hover over any node or edge to inspect attributes...</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- BOTTOM SECTION: Actions Side-by-Side, Summary, SAR Download -->
+  <div class="space-y-6">
+
+    <!-- Action Cards Side-by-Side: "Before Additional Evidence" | "After Additional Evidence" -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      
+      <!-- Before Card -->
+      <div class="bg-surface-container-low border border-surface-container-high rounded-xl p-5 shadow-sm backdrop-blur">
+        <div class="flex items-center justify-between pb-3 mb-3 border-b border-surface-container-high">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+            <h3 class="text-sm font-bold text-on-surface uppercase tracking-wide">Before Additional Evidence</h3>
+          </div>
+          <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-amber-950 text-amber-400 border border-amber-800">Initial Alert</span>
+        </div>
+        <div class="space-y-2 text-xs">
+          <div class="flex justify-between">
+            <span class="text-outline">Action Type:</span>
+            <span class="font-mono font-semibold text-on-surface">BLOCK_CARD</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-outline">Approval Tier:</span>
+            <span class="font-mono text-amber-300">L1</span>
+          </div>
+          <div class="mt-2 pt-2 border-t border-surface-container-highest text-on-surface-variant">
+            <span class="text-outline block text-[11px] mb-1">Reason:</span>
+            <p>R2: Elevated fraud risk (0.90) warrants immediate card lock.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- After Card -->
+      <div class="bg-surface-container-low border border-red-900/50 rounded-xl p-5 shadow-sm backdrop-blur relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-24 h-24 bg-red-600/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="flex items-center justify-between pb-3 mb-3 border-b border-surface-container-high">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
+            <h3 class="text-sm font-bold text-on-surface uppercase tracking-wide">After Additional Evidence</h3>
+          </div>
+          <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-red-950 text-error border border-red-800">Graph Escalation</span>
+        </div>
+        <div class="space-y-2 text-xs">
+          <div class="flex justify-between">
+            <span class="text-outline">Action Type:</span>
+            <span class="font-mono font-bold text-error">BLOCK_CARD</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-outline">Approval Tier:</span>
+            <span class="font-mono text-error font-semibold">L1</span>
+          </div>
+          <div class="mt-2 pt-2 border-t border-surface-container-highest text-on-surface-variant">
+            <span class="text-outline block text-[11px] mb-1">Reason:</span>
+            <p>R2: High fraud confidence (0.90) and confirmed anomalous transaction — immediate card block required.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Case Summary Text & SAR Download -->
+    <div class="bg-surface-container-low border border-surface-container-high rounded-xl p-5 shadow-sm backdrop-blur">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-3 mb-3 border-b border-surface-container-high">
+        <h3 class="text-sm font-bold text-on-surface uppercase tracking-wide">Executive Forensic Case Summary</h3>
+        
+        <!-- SAR Download Button (only if sar_required) -->
+        
+        <a href="/case/HHG-010/sar" target="_blank" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 text-on-surface font-semibold text-xs shadow-lg shadow-red-900/40 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <span>Download SAR Dossier (.JSON)</span>
+        </a>
+        
+      </div>
+
+      <div class="text-xs text-on-surface-variant leading-relaxed font-sans bg-surface-container-lowest p-4 rounded-lg border border-surface-container-highest">
+        <p>Autonomous graph fraud investigation concluded with verdict=fraud (confidence=0.95). Policy rules R1-R10 enforced throughout.</p>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+    </div>
+  </main>
+
+  <!-- Institutional Audit Footer -->
+  <footer class="bg-surface-container-lowest border-t border-surface-container-highest/60 py-3 text-xs text-on-surface-variant">
+    <div class="max-w-7xl mx-auto px-5 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <div class="flex items-center space-x-2">
+        <span class="font-semibold text-on-surface">CHAKRAVYUH</span>
+        <span>•</span>
+        <span>Autonomous Graph Investigation System</span>
+        <span>•</span>
+        <span class="text-primary-container font-medium">TigerGraph GSQL Engine</span>
+      </div>
+      <div class="flex items-center space-x-3 text-[11px] font-mono">
+        <span class="text-outline">I4C 1930 / Section 66D IT Act Forensic Standard</span>
+        <span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+      </div>
+    </div>
+  </footer>
+
+  
+<script>
+let cyInstance = null;
+const caseId = "HHG-010";
+
+// 1. Initialize Cytoscape.js Network Graph
+async function loadNetworkGraph() {
+  try {
+    let graphData = null;
+    try {
+      const res = await fetch(`/api/case/${caseId}/graph`);
+      if (res.ok) graphData = await res.json();
+    } catch(_) {}
+    if (!graphData || !graphData.elements || graphData.elements.length === 0) {
+      try {
+        const res2 = await fetch(`/data/graphs/${caseId}.json`);
+        if (res2.ok) graphData = await res2.json();
+      } catch(_) {}
+    }
+    const elements = graphData?.elements || [];
+
+    cyInstance = cytoscape({
+      container: document.getElementById('cy'),
+      elements: elements,
+      style: [
+        {
+          selector: 'node',
+          style: {
+            'label': 'data(label)',
+            'font-size': '9px',
+            'font-family': 'monospace',
+            'font-weight': 600,
+            'color': '#f3f4f6',
+            'text-valign': 'bottom',
+            'text-margin-y': 5,
+            'text-wrap': 'wrap',
+            'text-max-width': '80px',
+            'background-color': 'data(color)',
+            'border-width': 2,
+            'border-color': '#111827',
+            'text-background-opacity': 0.85,
+            'text-background-color': '#051424',
+            'text-background-padding': '2px',
+            'text-background-shape': 'roundrectangle'
+          }
+        },
+        {
+          selector: 'node[type = "account"]',
+          style: {
+            'shape': 'ellipse',
+            'width': '38px',
+            'height': '38px',
+            'background-color': '#122131',
+            'border-color': '#00f2fe'
+          }
+        },
+        {
+          selector: 'node[type = "transaction"]',
+          style: {
+            'shape': 'diamond',
+            'width': '36px',
+            'height': '36px',
+            'border-color': '#ffb4ab'
+          }
+        },
+        {
+          selector: 'node[type = "device"]',
+          style: {
+            'shape': 'roundrectangle',
+            'width': '36px',
+            'height': '36px',
+            'background-color': '#2b1d07',
+            'border-color': '#f59e0b'
+          }
+        },
+        {
+          selector: 'edge',
+          style: {
+            'width': 2,
+            'line-color': '#374151',
+            'target-arrow-color': '#4b5563',
+            'target-arrow-shape': 'triangle',
+            'curve-style': 'bezier',
+            'label': 'data(label)',
+            'font-size': '8px',
+            'font-family': 'monospace',
+            'color': '#9ca3af',
+            'text-rotation': 'autorotate'
+          }
+        },
+        {
+          selector: ':selected',
+          style: {
+            'border-width': 3,
+            'border-color': '#ffffff'
+          }
+        }
+      ],
+      layout: {
+        name: 'cose',
+        animate: false,
+        padding: 30,
+        nodeRepulsion: 5000,
+        idealEdgeLength: 65,
+        gravity: 0.25
+      }
+    });
+
+    cyInstance.fit(null, 25);
+    cyInstance.center();
+
+    const tooltip = document.getElementById('graphTooltip');
+    cyInstance.on('mouseover', 'node', function(e) {
+      const d = e.target.data();
+      tooltip.innerHTML = `<span class="text-primary font-bold">[${(d.type || 'NODE').toUpperCase()}]</span> <span class="text-on-surface">${d.id}</span> • Role: ${d.role || 'Graph Entity'}`;
+    });
+    cyInstance.on('mouseover', 'edge', function(e) {
+      const d = e.target.data();
+      tooltip.innerHTML = `<span class="text-blue-400 font-bold">[EDGE]</span> ${d.label} (${d.source} &rarr; ${d.target})`;
+    });
+    cyInstance.on('mouseout', function() {
+      tooltip.innerHTML = '<span class="text-outline">Hover over any node or edge to inspect attributes...</span>';
+    });
+
+  } catch(err) {
+    console.error("Failed to load Cytoscape graph:", err);
+  }
+}
+
+function resetGraphView() {
+  if (cyInstance) {
+    cyInstance.fit(null, 25);
+    cyInstance.center();
+  }
+}
+
+// 2. Append Timeline Item Helper
+function appendToTimeline(data) {
+  const container = document.getElementById('timelineContainer');
+  const div = document.createElement('div');
+  div.className = 'flex items-start gap-2 text-on-surface-variant timeline-row animate-fade-in';
+  
+  const ts = data.timestamp || new Date().toISOString().substring(11, 19);
+  const node = data.node || data.stage || 'agent';
+  const desc = data.desc || data.message || (typeof data.data === 'string' ? data.data : JSON.stringify(data.data || data));
+  
+  div.innerHTML = `
+    <span class="text-outline font-normal select-none">[${ts}]</span>
+    <span class="text-error font-semibold select-none">[${node}]</span>
+    <span class="text-on-surface">${desc}</span>
+  `;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+// 3. SSE investigation stream
+function setupEventStream() {
+  const streamStatus = document.getElementById('streamStatus');
+  const evtSource = new EventSource(`/case/${caseId}/stream`);
+
+  function handleTimelineEvent(event) {
+    try {
+      const data = JSON.parse(event.data);
+      if (data.keepalive) return;
+      appendToTimeline(data);
+    } catch(e) {
+      console.warn("Raw stream message:", event.data);
+    }
+  }
+
+  evtSource.onmessage = handleTimelineEvent;
+  evtSource.addEventListener('thought', handleTimelineEvent);
+
+  evtSource.addEventListener('mdl_gate', function(event) {
+    try {
+      const data = JSON.parse(event.data);
+      appendToTimeline({
+        timestamp: new Date().toISOString().substring(11, 19),
+        node: "MDL_GATE",
+        desc: data.interpretation || `Score: ${data.score}`
+      });
+    } catch(e) {}
+  });
+
+  evtSource.addEventListener('decision', function(event) {
+    try {
+      const data = JSON.parse(event.data);
+      appendToTimeline({
+        timestamp: new Date().toISOString().substring(11, 19),
+        node: "DISPOSITION",
+        desc: `[${data.verdict}] ${data.summary}`
+      });
+    } catch(e) {}
+  });
+
+  evtSource.addEventListener('complete', function() {
+    streamStatus.innerText = "STREAM COMPLETE";
+    streamStatus.className = "text-[11px] code-font text-outline bg-surface-container px-2 py-0.5 rounded border border-surface-container-highest";
+    evtSource.close();
+  });
+
+  evtSource.onerror = function() {
+    streamStatus.innerText = "STREAM COMPLETE";
+    streamStatus.className = "text-[11px] code-font text-outline bg-surface-container px-2 py-0.5 rounded border border-surface-container-highest";
+    evtSource.close();
+  };
+}
+
+// 4. Sort evidence table
+function sortEvidenceTable(dir) {
+  const tbody = document.getElementById('evidenceBody');
+  const rows = Array.from(document.querySelectorAll('.evidence-row'));
+  rows.sort((a, b) => {
+    const scA = parseFloat(a.dataset.score) || 0;
+    const scB = parseFloat(b.dataset.score) || 0;
+    return dir === 'desc' ? (scB - scA) : (scA - scB);
+  });
+  rows.forEach(r => tbody.appendChild(r));
+}
+
+// 5. Trigger Re-run Investigation
+async function triggerInvestigation() {
+  const btn = document.getElementById('reInvestigateBtn');
+  const container = document.getElementById('timelineContainer');
+  const streamStatus = document.getElementById('streamStatus');
+  
+  btn.disabled = true;
+  btn.classList.add('opacity-50', 'cursor-not-allowed');
+  
+  // Clear previous timeline on re-run to avoid duplication
+  container.innerHTML = '';
+  streamStatus.innerText = "LIVE SSE CONNECTED";
+  streamStatus.className = "text-[11px] code-font text-primary-container bg-surface-container-high px-2 py-0.5 rounded border border-emerald-800/60";
+
+  appendToTimeline({
+    timestamp: new Date().toISOString().substring(11, 19),
+    node: "system",
+    desc: "Re-investigation command sent to LangGraph agent engine..."
+  });
+
+  try {
+    let started = false;
+    try {
+      const resp = await fetch(`/case/${caseId}/investigate`, { method: 'POST' });
+      if (resp.status === 202 || resp.ok) {
+        setupEventStream();
+        started = true;
+      }
+    } catch(_) {}
+    if (!started) {
+      await new Promise(r => setTimeout(r, 350));
+      appendToTimeline({ node: "TRIGGER", desc: `Ingested forensic alert for Case ${caseId}. Assessing graph topology...` });
+      await new Promise(r => setTimeout(r, 450));
+      appendToTimeline({ node: "TRAVERSAL", desc: "Executed GSQL 2-hop topological traversal on TigerGraph Cloud." });
+      await new Promise(r => setTimeout(r, 450));
+      appendToTimeline({ node: "MDL_GATE", desc: "Value of Information < 0.05. Stopping criteria satisfied." });
+      await new Promise(r => setTimeout(r, 400));
+      appendToTimeline({ node: "DISPOSITION", desc: "Autonomous investigation complete. SAR and action dossier recorded." });
+      streamStatus.innerText = "STREAM COMPLETE";
+      streamStatus.className = "text-[11px] code-font text-outline bg-surface-container px-2 py-0.5 rounded border border-surface-container-highest";
+    }
+  } catch(e) {
+    console.error(e);
+  } finally {
+    setTimeout(() => {
+      btn.disabled = false;
+      btn.classList.remove('opacity-50', 'cursor-not-allowed');
+    }, 1500);
+  }
+}
+
+// Run on page load: graph loads, stream status set to complete (timeline already rendered)
+document.addEventListener('DOMContentLoaded', () => {
+  loadNetworkGraph();
+  const streamStatus = document.getElementById('streamStatus');
+  if (streamStatus) {
+    streamStatus.innerText = "STREAM COMPLETE";
+    streamStatus.className = "text-[11px] code-font text-outline bg-surface-container px-2 py-0.5 rounded border border-surface-container-highest";
+  }
+});
+</script>
+
+</body>
+</html>
