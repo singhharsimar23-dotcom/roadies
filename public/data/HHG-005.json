@@ -1,99 +1,105 @@
 {
   "case_id": "HHG-005",
+  "target_account": "6543210005_BOB",
+  "trigger_account_id": "6543210005_BOB",
+  "district": "Nalanda",
+  "police_station": "Nalanda Cyber PS",
+  "alert_typology": "Legitimate Citizen Account",
+  "amount": 0,
+  "fraud_probability": 0.06,
+  "verdict": "legitimate",
+  "trigger_txn_ids": [
+    "TXN-HHG-005-001"
+  ],
+  "chain_of_command": {
+    "approval_tier": "AUTO_CLEAR",
+    "approval_route": "CITIZEN_PROTECTION_FILTER \u2192 CLOSE_NO_FRAUD",
+    "action_type": "CLOSE_NO_FRAUD",
+    "policy_reference": "Citizen Protection Filter - Anti-Overblocking Protocol"
+  },
+  "customer_shield": {
+    "recurring": {
+      "active": true,
+      "desc": "Bihar State Govt pension credit - 96 months verified"
+    },
+    "travel": {
+      "active": true,
+      "desc": "Electricity and water bill payments regular"
+    },
+    "device": {
+      "active": true,
+      "desc": "8-year established account"
+    },
+    "verdict_flip": "PASS \u2014 Innocent Citizen Verified. Account remains active.",
+    "final_offset": -0.4
+  },
+  "optimal_stopping_gate": {
+    "voi_score": 0.009,
+    "mdl_sufficiency": 0.06,
+    "stop_reason": "Evidence sufficient - MDL gate < 0.05 threshold"
+  },
   "case": {
     "status": "closed_legitimate",
     "verdict": "legitimate",
-    "fraud_probability": 0.04,
-    "pattern": "none",
-    "pattern_description": "",
-    "affected_txn_ids": [],
-    "first_suspicious_txn_id": "T3523199",
-    "connected_card_ids": [],
-    "connected_device_profiles": [
-      "dp_3523199"
-    ],
-    "exposure_usd": 0.0,
+    "fraud_probability": 0.06,
+    "pattern": "legitimate_citizen",
+    "pattern_description": "Legitimate Citizen Account",
+    "customer_id": "6543210005_BOB",
+    "district": "Nalanda",
+    "victim_name": "Ram Babu Sharma",
+    "amount_inr": 0,
+    "ncrp_complaints": [],
     "evidence": [
       {
-        "claim": "Transaction flagged by graph monitoring (trigger_type=risk_score, risk_score=0.54).",
+        "claim": "Account 6543210005_BOB is retirement pension account for Ram Babu Sharma. Regular pension credits from Bihar State Government for 8 years.",
         "source": "graph",
-        "ref": "get_txn_neighborhood",
-        "entity_ids": [
-          "t3523199"
-        ]
+        "ref": "get_account_tenure_check"
       },
       {
-        "claim": "Transaction device profile reviewed via FROM_DEVICE graph traversal.",
+        "claim": "No complaints in NCRP/1930 system linked to this account or IMEI.",
         "source": "graph",
-        "ref": "FROM_DEVICE",
-        "entity_ids": [
-          "t3523199",
-          "dp_3523199"
-        ]
-      },
-      {
-        "claim": "Customer verified transaction as legitimate cardholder activity.",
-        "source": "customer",
-        "ref": "customer_inquiry_channel",
-        "entity_ids": [
-          "T3523199",
-          "C02923"
-        ]
+        "ref": "ncrp_complaint_correlation"
       }
     ],
-    "similar_prior_cases": [
-      "CC-0656",
-      "CC-0248",
-      "CC-0315"
-    ],
-    "summary": "Autonomous graph fraud investigation concluded with verdict=legitimate (confidence=0.05). Policy rules R1-R10 enforced throughout.",
+    "similar_prior_cases": [],
+    "summary": "Legitimate pensioner account cleared. Citizen Protection Filter PASS. No freeze action taken.",
     "written_to_graph": true,
     "graph_case_id": "HHG-005"
   },
-  "evidence_requests": [
-    {
-      "type": "customer_validation",
-      "asked_after_step": 1,
-      "assumed_response": "Customer confirms making the transaction (authorized cardholder activity)."
-    }
-  ],
   "next_best_actions": {
     "initial": [
       {
-        "action": "VERIFY_WITH_CUSTOMER",
-        "route": "auto",
-        "reason": "R1: Weak single signal with fraud probability < 0.70 requires customer verification before blocking."
+        "action": "RUN_CITIZEN_PROTECTION_FILTER",
+        "route": "AUTO",
+        "reason": "Velocity alert triggered but innocence indicators strong - apply dampener"
       },
       {
-        "action": "STEP_UP_AUTH",
-        "route": "auto",
-        "reason": "R1: Step-up authentication requested prior to any card block."
+        "action": "CLOSE_NO_FRAUD",
+        "route": "AUTO",
+        "reason": "Citizen Protection Filter PASS: pensioner account, regular pension credits"
       }
     ],
     "final": [
       {
-        "action": "VERIFY_WITH_CUSTOMER",
-        "route": "auto",
-        "reason": "R1: Single weak signal (risk_score < 0.70) requires customer verification before any block."
-      },
-      {
-        "action": "STEP_UP_AUTH",
-        "route": "auto",
-        "reason": "R1: Step-up authentication requested prior to any card action."
+        "action": "CLOSE_NO_FRAUD",
+        "route": "AUTO",
+        "reason": "Legitimate pensioner account: Bank of Bihar pension credits, 8-year tenure, no NCRP complaints. Risk score 0.06 after dampener."
       }
     ],
-    "what_changed": "Initial action recommendations confirmed after completing evidence gathering."
+    "what_changed": "Autonomous investigation completed. All graph signals aggregated. Final disposition executed."
   },
   "sar": {
     "file": false,
     "reason": "",
     "narrative": "",
     "subjects": [],
-    "total_amount_usd": 0.0,
-    "activity_dates": []
+    "amount_inr": 0,
+    "activity_dates": [
+      "2024-10-25"
+    ]
   },
-  "stop_reason": "A verification response settled the question.",
-  "tool_calls": 9,
+  "stop_reason": "MDL evidence sufficiency gate satisfied.",
+  "tool_calls": 5,
   "tokens": 0,
-  "latency_s": 8.633
+  "latency_s": 4.2
 }

@@ -2,209 +2,135 @@
   "elements": [
     {
       "data": {
-        "id": "C09933",
-        "label": "Customer\nC09933",
+        "id": "6192830192_SBI",
+        "label": "Mule Account\n6192830192_SBI",
+        "type": "account",
+        "role": "Flagged Mule Account (Gaya)",
+        "color": "#ef4444",
+        "shape": "ellipse"
+      }
+    },
+    {
+      "data": {
+        "id": "Victim_HHG-007",
+        "label": "Victim\nKavita Devi (Gaya)",
         "type": "customer",
-        "role": "Account Holder",
+        "role": "Victim (Coerced Transfer)",
         "color": "#10b981",
         "shape": "hexagon"
       }
     },
     {
       "data": {
-        "id": "C09933-K2",
-        "label": "Card\nC09933-K2",
-        "type": "card",
-        "role": "Primary Payment Instrument",
-        "color": "#3b82f6",
-        "shape": "ellipse"
-      }
-    },
-    {
-      "data": {
-        "id": "e_owns_C09933_C09933-K2",
-        "source": "C09933",
-        "target": "C09933-K2",
-        "label": "OWNS",
-        "color": "#10b981",
-        "style": "solid"
-      }
-    },
-    {
-      "data": {
-        "id": "T3514948",
-        "label": "Txn\nT3514948\n$111.92",
+        "id": "TXN-HHG-007-001",
+        "label": "Txn: Rs.9,332\nUPI OTP Phishing (El...",
         "type": "transaction",
-        "role": "Flagged Transaction",
-        "amount": 111.92,
-        "risk": 0.87,
+        "role": "Cybercrime Proceeds (Rs.9,332)",
+        "amount": 9332,
+        "risk": 0.94,
         "color": "#ef4444",
         "shape": "diamond"
       }
     },
     {
       "data": {
-        "id": "e_made_C09933-K2_T3514948",
-        "source": "C09933-K2",
-        "target": "T3514948",
-        "label": "MADE",
-        "color": "#3b82f6",
+        "id": "5192837401_UNION (Patna)",
+        "label": "Mule L2\n5192837401_UNION (Patna)",
+        "type": "account",
+        "role": "Layer-2 Siphon Conduit",
+        "color": "#f97316",
+        "shape": "ellipse"
+      }
+    },
+    {
+      "data": {
+        "id": "IMEI: 862910384756102",
+        "label": "Shared Hardware\nIMEI: 862910384756102",
+        "type": "device",
+        "role": "Hardware Profile (Linked to 4+ Syndicate Accounts)",
+        "color": "#fbbf24",
+        "shape": "round-rectangle"
+      }
+    },
+    {
+      "data": {
+        "id": "NCRP/BH/2024/007382",
+        "label": "1930 Portal\nNCRP/BH/2024/007382",
+        "type": "prior_case",
+        "role": "National Cybercrime Portal Complaint",
+        "color": "#ec4899",
+        "shape": "round-diamond"
+      }
+    },
+    {
+      "data": {
+        "id": "IP_HHG-007",
+        "label": "VPN/Proxy Node\n103.211.x.x (Gaya)",
+        "type": "ip",
+        "role": "Syndicate Infrastructure",
+        "color": "#c084fc",
+        "shape": "hexagon"
+      }
+    },
+    {
+      "data": {
+        "id": "e_made_Victim_HHG-007_TXN-HHG-007-001",
+        "source": "Victim_HHG-007",
+        "target": "TXN-HHG-007-001",
+        "label": "COERCED_PAYMENT",
+        "color": "#10b981",
         "style": "solid"
       }
     },
     {
       "data": {
-        "id": "CC-1769",
-        "label": "Prior Case\nCC-1769",
-        "type": "prior_case",
-        "role": "Precedent Case (GraphRAG)",
-        "color": "#ec4899",
-        "shape": "round-diamond"
+        "id": "e_to_TXN-HHG-007-001_6192830192_SBI",
+        "source": "TXN-HHG-007-001",
+        "target": "6192830192_SBI",
+        "label": "CREDITED_TO",
+        "color": "#ef4444",
+        "style": "solid"
       }
     },
     {
       "data": {
-        "id": "e_sim_T3514948_CC-1769",
-        "source": "T3514948",
-        "target": "CC-1769",
-        "label": "SIMILAR_TO",
+        "id": "e_layer_6192830192_SBI_5192837401_UNION (Patna)",
+        "source": "6192830192_SBI",
+        "target": "5192837401_UNION (Patna)",
+        "label": "LAYERED_TO",
+        "color": "#f97316",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_dev_6192830192_SBI_IMEI: 862910384756102",
+        "source": "6192830192_SBI",
+        "target": "IMEI: 862910384756102",
+        "label": "OPERATED_FROM",
+        "color": "#fbbf24",
+        "style": "dashed"
+      }
+    },
+    {
+      "data": {
+        "id": "e_ncrp_6192830192_SBI_NCRP/BH/2024/007382",
+        "source": "6192830192_SBI",
+        "target": "NCRP/BH/2024/007382",
+        "label": "LINKED_NCRP_1930",
         "color": "#ec4899",
         "style": "dotted"
       }
     },
     {
       "data": {
-        "id": "CC-3955",
-        "label": "Prior Case\nCC-3955",
-        "type": "prior_case",
-        "role": "Precedent Case (GraphRAG)",
-        "color": "#ec4899",
-        "shape": "round-diamond"
-      }
-    },
-    {
-      "data": {
-        "id": "e_sim_T3514948_CC-3955",
-        "source": "T3514948",
-        "target": "CC-3955",
-        "label": "SIMILAR_TO",
-        "color": "#ec4899",
+        "id": "e_ip_6192830192_SBI_IP_HHG-007",
+        "source": "6192830192_SBI",
+        "target": "IP_HHG-007",
+        "label": "CO_LOCATED_IP",
+        "color": "#c084fc",
         "style": "dotted"
       }
-    },
-    {
-      "data": {
-        "id": "CC-2573",
-        "label": "Prior Case\nCC-2573",
-        "type": "prior_case",
-        "role": "Precedent Case (GraphRAG)",
-        "color": "#ec4899",
-        "shape": "round-diamond"
-      }
-    },
-    {
-      "data": {
-        "id": "e_sim_T3514948_CC-2573",
-        "source": "T3514948",
-        "target": "CC-2573",
-        "label": "SIMILAR_TO",
-        "color": "#ec4899",
-        "style": "dotted"
-      }
-    }
-  ],
-  "nodes": [
-    {
-      "id": "C09933",
-      "label": "Customer\nC09933",
-      "type": "customer",
-      "role": "Account Holder",
-      "color": "#10b981",
-      "shape": "hexagon"
-    },
-    {
-      "id": "C09933-K2",
-      "label": "Card\nC09933-K2",
-      "type": "card",
-      "role": "Primary Payment Instrument",
-      "color": "#3b82f6",
-      "shape": "ellipse"
-    },
-    {
-      "id": "T3514948",
-      "label": "Txn\nT3514948\n$111.92",
-      "type": "transaction",
-      "role": "Flagged Transaction",
-      "amount": 111.92,
-      "risk": 0.87,
-      "color": "#ef4444",
-      "shape": "diamond"
-    },
-    {
-      "id": "CC-1769",
-      "label": "Prior Case\nCC-1769",
-      "type": "prior_case",
-      "role": "Precedent Case (GraphRAG)",
-      "color": "#ec4899",
-      "shape": "round-diamond"
-    },
-    {
-      "id": "CC-3955",
-      "label": "Prior Case\nCC-3955",
-      "type": "prior_case",
-      "role": "Precedent Case (GraphRAG)",
-      "color": "#ec4899",
-      "shape": "round-diamond"
-    },
-    {
-      "id": "CC-2573",
-      "label": "Prior Case\nCC-2573",
-      "type": "prior_case",
-      "role": "Precedent Case (GraphRAG)",
-      "color": "#ec4899",
-      "shape": "round-diamond"
-    }
-  ],
-  "edges": [
-    {
-      "id": "e_owns_C09933_C09933-K2",
-      "source": "C09933",
-      "target": "C09933-K2",
-      "label": "OWNS",
-      "color": "#10b981",
-      "style": "solid"
-    },
-    {
-      "id": "e_made_C09933-K2_T3514948",
-      "source": "C09933-K2",
-      "target": "T3514948",
-      "label": "MADE",
-      "color": "#3b82f6",
-      "style": "solid"
-    },
-    {
-      "id": "e_sim_T3514948_CC-1769",
-      "source": "T3514948",
-      "target": "CC-1769",
-      "label": "SIMILAR_TO",
-      "color": "#ec4899",
-      "style": "dotted"
-    },
-    {
-      "id": "e_sim_T3514948_CC-3955",
-      "source": "T3514948",
-      "target": "CC-3955",
-      "label": "SIMILAR_TO",
-      "color": "#ec4899",
-      "style": "dotted"
-    },
-    {
-      "id": "e_sim_T3514948_CC-2573",
-      "source": "T3514948",
-      "target": "CC-2573",
-      "label": "SIMILAR_TO",
-      "color": "#ec4899",
-      "style": "dotted"
     }
   ]
 }

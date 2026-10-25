@@ -1,95 +1,124 @@
 {
   "case_id": "HHG-010",
+  "target_account": "6789012310_HDFC",
+  "trigger_account_id": "6789012310_HDFC",
+  "district": "Bhagalpur",
+  "police_station": "Bhagalpur Cyber PS",
+  "alert_typology": "Digital Arrest Fraud",
+  "amount": 83336,
+  "fraud_probability": 0.93,
+  "verdict": "fraud",
+  "trigger_txn_ids": [
+    "TXN-HHG-010-001"
+  ],
+  "chain_of_command": {
+    "approval_tier": "AUTONOMOUS",
+    "approval_route": "AUTONOMOUS_PIPELINE",
+    "action_type": "INITIATE_DEBIT_FREEZE_1930",
+    "policy_reference": "Sec 66D IT Act - 1930 CFCFRMS - Section 65B IEA"
+  },
+  "customer_shield": {
+    "recurring": {
+      "active": false,
+      "desc": "No payroll credits"
+    },
+    "travel": {
+      "active": false,
+      "desc": "No utility bills"
+    },
+    "device": {
+      "active": false,
+      "desc": "33-day account tenure"
+    },
+    "verdict_flip": "FAIL — Mule Account Evidence Confirmed. Debit freeze recommended.",
+    "final_offset": 0
+  },
+  "optimal_stopping_gate": {
+    "voi_score": 0.031,
+    "mdl_sufficiency": 0.18,
+    "stop_reason": "Evidence sufficient - MDL gate < 0.05 threshold"
+  },
   "case": {
     "status": "closed_fraud",
     "verdict": "fraud",
-    "fraud_probability": 0.9,
-    "pattern": "card_not_present_fraud",
-    "pattern_description": "",
-    "affected_txn_ids": [
-      "T3506725"
+    "fraud_probability": 0.93,
+    "pattern": "digital_arrest_fraud",
+    "pattern_description": "Digital Arrest Fraud",
+    "customer_id": "6789012310_HDFC",
+    "district": "Bhagalpur",
+    "victim_name": "Vijay Kumar Mishra",
+    "amount_inr": 83336,
+    "ncrp_complaints": [
+      "NCRP/BH/2024/004521"
     ],
-    "first_suspicious_txn_id": "T3506725",
-    "connected_card_ids": [],
-    "connected_device_profiles": [
-      "dp_3506725"
-    ],
-    "exposure_usd": 1000.03,
     "evidence": [
       {
-        "claim": "Transaction flagged by graph monitoring (trigger_type=risk_score, risk_score=0.90).",
+        "claim": "Victim Vijay Kumar Mishra received Skype call from person posing as CBI Joint Director. 7-hour \"digital detention\". Transferred Rs.83,336 in 4 installments.",
         "source": "graph",
-        "ref": "get_txn_neighborhood",
-        "entity_ids": [
-          "t3506725"
-        ]
+        "ref": "ncrp_complaint_correlation"
       },
       {
-        "claim": "Transaction device profile reviewed via FROM_DEVICE graph traversal.",
+        "claim": "Account 6789012310_HDFC forwarded 97.2% of funds to 3 accounts within 8 minutes. Highest-velocity case in current batch.",
         "source": "graph",
-        "ref": "FROM_DEVICE",
-        "entity_ids": [
-          "t3506725",
-          "dp_3506725"
-        ]
+        "ref": "get_account_money_trail"
+      },
+      {
+        "claim": "IMEI 869234058199211 linked to 5 additional fraud accounts in Bhagalpur and Munger districts.",
+        "source": "graph",
+        "ref": "get_device_sharing_check"
       }
     ],
-    "similar_prior_cases": [
-      "CC-0173",
-      "CC-1532",
-      "CC-3213"
-    ],
-    "summary": "Autonomous graph fraud investigation concluded with verdict=fraud (confidence=0.95). Policy rules R1-R10 enforced throughout.",
+    "similar_prior_cases": [],
+    "summary": "Digital Arrest Fraud - HIGHEST VALUE Rs.83,336. CBI impersonation, 7-hour detention. Debit freeze. STR filed. FIR Sec 66D. Escalated to Cyber Crime Cell.",
     "written_to_graph": true,
     "graph_case_id": "HHG-010"
   },
-  "evidence_requests": [],
   "next_best_actions": {
     "initial": [
       {
-        "action": "BLOCK_CARD",
-        "route": "L1",
-        "reason": "R2: Elevated fraud risk (0.90) warrants immediate card lock."
-      },
-      {
-        "action": "CREATE_CASE",
-        "route": "auto",
-        "reason": "R2: Formal fraud case created for confirmed risk exposure."
+        "action": "INITIATE_DEBIT_FREEZE_1930",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "HIGH-VALUE digital arrest fraud Rs.83,336. Immediate 1930 freeze - golden hour."
       }
     ],
     "final": [
       {
-        "action": "BLOCK_CARD",
-        "route": "L1",
-        "reason": "R2: High fraud confidence (0.90) and confirmed anomalous transaction \u2014 immediate card block required."
+        "action": "INITIATE_DEBIT_FREEZE_1930",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "Digital Arrest Fraud - highest value case. Rs.83,336. CBI impersonation. Debit freeze executed."
       },
       {
-        "action": "CREATE_CASE",
-        "route": "auto",
-        "reason": "R2: Create formal fraud investigation case record."
+        "action": "ISSUE_BANK_NODAL_NOTICE",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "HDFC nodal officer notice. High-value case requires escalated coordination."
       },
       {
-        "action": "FILE_REPORT",
-        "route": "L2",
-        "reason": "R2: Mandatory SAR filing \u2014 cumulative exposure of ,000.03 exceeds statutory ,000.00 threshold."
+        "action": "FLAG_STR_FIU_IND",
+        "route": "AUTO",
+        "reason": "STR filed - transaction above Rs.50,000 threshold, organized syndicate."
+      },
+      {
+        "action": "REGISTER_FIR_SEC_66D",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "FIR Sec 66D registered. Rs.83,336 loss. Escalated to Cyber Crime Cell Patna."
       }
     ],
-    "what_changed": "Initial action recommendations confirmed after completing evidence gathering."
+    "what_changed": "Autonomous investigation completed. All graph signals aggregated. Final disposition executed."
   },
   "sar": {
     "file": true,
-    "reason": "R2: Exposure of ,000.03 exceeds the ,000.00 statutory SAR threshold under institutional BSA/I4C / FIU-IND policy.",
-    "narrative": "SUSPICIOUS ACTIVITY REPORT (SAR) \u2014 AUTONOMOUS FRAUD INVESTIGATION DOSSIER\n\n1. SUBJECT IDENTIFICATION: Primary subject is cardholder C10434 associated with payment instrument C10434-K1. The flagged transaction originated from device profile dp_3506725 with zero previous transaction history.\n\n2. TRANSACTION SUMMARY: On 2016-12-05, transaction T3506725 was authorized in the amount of ,000.03 USD. Real-time machine learning model scored the transaction at 0.90 fraud probability (CRITICAL risk tier), prompting automated case generation HHG-010.\n\n3. GRAPH TRAVERSAL & ANOMALY ANALYSIS: TigerGraph multi-hop neighborhood traversal (get_txn_neighborhood) revealed anomalous card-not-present (CNP) e-commerce purchasing velocity. The originating device profile dp_3506725 exhibited inconsistent telemetry with historical cardholder profile records.\n\n4. INVESTIGATIVE FINDINGS & ACTIONS: Customer outreach and telemetry verification confirmed uncharacteristic remote merchant targeting without prior authorization. Immediate protective card block (BLOCK_CARD) was initiated under rule R2 (approval route L1). Formal case record created (CREATE_CASE).\n\n5. REGULATORY FILING JUSTIFICATION: Because aggregate cumulative exposure (,000.03 USD) strictly exceeds the mandatory ,000.00 policy threshold defined in AML/BSA policy Rule R2, this Suspicious Activity Report is referred for Level 2 compliance officer approval (route L2) and regulatory archival.",
+    "reason": "Mule account confirmed - STR filed under PMLA 2002",
+    "narrative": "Digital Arrest Fraud - HIGHEST VALUE Rs.83,336. CBI impersonation, 7-hour detention. Debit freeze. STR filed. FIR Sec 66D. Escalated to Cyber Crime Cell.",
     "subjects": [
-      "C10434"
+      "6789012310_HDFC"
     ],
-    "total_amount_usd": 1000.03,
+    "amount_inr": 83336,
     "activity_dates": [
-      "2016-12-05"
+      "2024-10-25"
     ]
   },
-  "stop_reason": "Fraud probability 0.90 with 2 independent evidence pieces meets the confidence threshold.",
-  "tool_calls": 7,
+  "stop_reason": "MDL evidence sufficiency gate satisfied.",
+  "tool_calls": 8,
   "tokens": 0,
-  "latency_s": 12.682
+  "latency_s": 8.9
 }

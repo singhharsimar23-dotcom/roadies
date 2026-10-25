@@ -2,245 +2,135 @@
   "elements": [
     {
       "data": {
-        "id": "C03042",
-        "label": "Customer\nC03042",
+        "id": "7192038475_BOB",
+        "label": "Mule Account\n7192038475_BOB",
+        "type": "account",
+        "role": "Flagged Mule Account (Gaya)",
+        "color": "#ef4444",
+        "shape": "ellipse"
+      }
+    },
+    {
+      "data": {
+        "id": "Victim_HHG-015",
+        "label": "Victim\nAnita Singh (Gaya)",
         "type": "customer",
-        "role": "Account Holder",
+        "role": "Victim (Coerced Transfer)",
         "color": "#10b981",
         "shape": "hexagon"
       }
     },
     {
       "data": {
-        "id": "C03042-K1",
-        "label": "Card\nC03042-K1",
-        "type": "card",
-        "role": "Primary Payment Instrument",
-        "color": "#3b82f6",
-        "shape": "ellipse"
-      }
-    },
-    {
-      "data": {
-        "id": "e_owns_C03042_C03042-K1",
-        "source": "C03042",
-        "target": "C03042-K1",
-        "label": "OWNS",
-        "color": "#10b981",
-        "style": "solid"
-      }
-    },
-    {
-      "data": {
-        "id": "T3464869",
-        "label": "Txn\nT3464869\n$599.94",
+        "id": "TXN-HHG-015-001",
+        "label": "Txn: Rs.49,995\nFake Crypto Trading ...",
         "type": "transaction",
-        "role": "Flagged Transaction",
-        "amount": 599.94,
-        "risk": 0.88,
+        "role": "Cybercrime Proceeds (Rs.49,995)",
+        "amount": 49995,
+        "risk": 0.94,
         "color": "#ef4444",
         "shape": "diamond"
       }
     },
     {
       "data": {
-        "id": "e_made_C03042-K1_T3464869",
-        "source": "C03042-K1",
-        "target": "T3464869",
-        "label": "MADE",
-        "color": "#3b82f6",
-        "style": "solid"
+        "id": "6192038475_CENTRAL_BANK (Patna)",
+        "label": "Mule L2\n6192038475_CENTRAL_BANK (Patna)",
+        "type": "account",
+        "role": "Layer-2 Siphon Conduit",
+        "color": "#f97316",
+        "shape": "ellipse"
       }
     },
     {
       "data": {
-        "id": "dp_3464869",
-        "label": "Device\ndp_3464869",
-        "type": "device_profile",
-        "role": "Hardware Profile",
-        "color": "#8b5cf6",
+        "id": "IMEI: 867910283746565",
+        "label": "Shared Hardware\nIMEI: 867910283746565",
+        "type": "device",
+        "role": "Hardware Profile (Linked to 4+ Syndicate Accounts)",
+        "color": "#fbbf24",
         "shape": "round-rectangle"
       }
     },
     {
       "data": {
-        "id": "e_dev_T3464869_dp_3464869",
-        "source": "T3464869",
-        "target": "dp_3464869",
-        "label": "FROM_DEVICE",
-        "color": "#8b5cf6",
+        "id": "NCRP/BH/2024/015293",
+        "label": "1930 Portal\nNCRP/BH/2024/015293",
+        "type": "prior_case",
+        "role": "National Cybercrime Portal Complaint",
+        "color": "#ec4899",
+        "shape": "round-diamond"
+      }
+    },
+    {
+      "data": {
+        "id": "IP_HHG-015",
+        "label": "VPN/Proxy Node\n103.211.x.x (Gaya)",
+        "type": "ip",
+        "role": "Syndicate Infrastructure",
+        "color": "#c084fc",
+        "shape": "hexagon"
+      }
+    },
+    {
+      "data": {
+        "id": "e_made_Victim_HHG-015_TXN-HHG-015-001",
+        "source": "Victim_HHG-015",
+        "target": "TXN-HHG-015-001",
+        "label": "COERCED_PAYMENT",
+        "color": "#10b981",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_to_TXN-HHG-015-001_7192038475_BOB",
+        "source": "TXN-HHG-015-001",
+        "target": "7192038475_BOB",
+        "label": "CREDITED_TO",
+        "color": "#ef4444",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_layer_7192038475_BOB_6192038475_CENTRAL_BANK (Patna)",
+        "source": "7192038475_BOB",
+        "target": "6192038475_CENTRAL_BANK (Patna)",
+        "label": "LAYERED_TO",
+        "color": "#f97316",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_dev_7192038475_BOB_IMEI: 867910283746565",
+        "source": "7192038475_BOB",
+        "target": "IMEI: 867910283746565",
+        "label": "OPERATED_FROM",
+        "color": "#fbbf24",
         "style": "dashed"
       }
     },
     {
       "data": {
-        "id": "CC-3125",
-        "label": "Prior Case\nCC-3125",
-        "type": "prior_case",
-        "role": "Precedent Case (GraphRAG)",
-        "color": "#ec4899",
-        "shape": "round-diamond"
-      }
-    },
-    {
-      "data": {
-        "id": "e_sim_T3464869_CC-3125",
-        "source": "T3464869",
-        "target": "CC-3125",
-        "label": "SIMILAR_TO",
+        "id": "e_ncrp_7192038475_BOB_NCRP/BH/2024/015293",
+        "source": "7192038475_BOB",
+        "target": "NCRP/BH/2024/015293",
+        "label": "LINKED_NCRP_1930",
         "color": "#ec4899",
         "style": "dotted"
       }
     },
     {
       "data": {
-        "id": "CC-2506",
-        "label": "Prior Case\nCC-2506",
-        "type": "prior_case",
-        "role": "Precedent Case (GraphRAG)",
-        "color": "#ec4899",
-        "shape": "round-diamond"
-      }
-    },
-    {
-      "data": {
-        "id": "e_sim_T3464869_CC-2506",
-        "source": "T3464869",
-        "target": "CC-2506",
-        "label": "SIMILAR_TO",
-        "color": "#ec4899",
+        "id": "e_ip_7192038475_BOB_IP_HHG-015",
+        "source": "7192038475_BOB",
+        "target": "IP_HHG-015",
+        "label": "CO_LOCATED_IP",
+        "color": "#c084fc",
         "style": "dotted"
       }
-    },
-    {
-      "data": {
-        "id": "CC-2480",
-        "label": "Prior Case\nCC-2480",
-        "type": "prior_case",
-        "role": "Precedent Case (GraphRAG)",
-        "color": "#ec4899",
-        "shape": "round-diamond"
-      }
-    },
-    {
-      "data": {
-        "id": "e_sim_T3464869_CC-2480",
-        "source": "T3464869",
-        "target": "CC-2480",
-        "label": "SIMILAR_TO",
-        "color": "#ec4899",
-        "style": "dotted"
-      }
-    }
-  ],
-  "nodes": [
-    {
-      "id": "C03042",
-      "label": "Customer\nC03042",
-      "type": "customer",
-      "role": "Account Holder",
-      "color": "#10b981",
-      "shape": "hexagon"
-    },
-    {
-      "id": "C03042-K1",
-      "label": "Card\nC03042-K1",
-      "type": "card",
-      "role": "Primary Payment Instrument",
-      "color": "#3b82f6",
-      "shape": "ellipse"
-    },
-    {
-      "id": "T3464869",
-      "label": "Txn\nT3464869\n$599.94",
-      "type": "transaction",
-      "role": "Flagged Transaction",
-      "amount": 599.94,
-      "risk": 0.88,
-      "color": "#ef4444",
-      "shape": "diamond"
-    },
-    {
-      "id": "dp_3464869",
-      "label": "Device\ndp_3464869",
-      "type": "device_profile",
-      "role": "Hardware Profile",
-      "color": "#8b5cf6",
-      "shape": "round-rectangle"
-    },
-    {
-      "id": "CC-3125",
-      "label": "Prior Case\nCC-3125",
-      "type": "prior_case",
-      "role": "Precedent Case (GraphRAG)",
-      "color": "#ec4899",
-      "shape": "round-diamond"
-    },
-    {
-      "id": "CC-2506",
-      "label": "Prior Case\nCC-2506",
-      "type": "prior_case",
-      "role": "Precedent Case (GraphRAG)",
-      "color": "#ec4899",
-      "shape": "round-diamond"
-    },
-    {
-      "id": "CC-2480",
-      "label": "Prior Case\nCC-2480",
-      "type": "prior_case",
-      "role": "Precedent Case (GraphRAG)",
-      "color": "#ec4899",
-      "shape": "round-diamond"
-    }
-  ],
-  "edges": [
-    {
-      "id": "e_owns_C03042_C03042-K1",
-      "source": "C03042",
-      "target": "C03042-K1",
-      "label": "OWNS",
-      "color": "#10b981",
-      "style": "solid"
-    },
-    {
-      "id": "e_made_C03042-K1_T3464869",
-      "source": "C03042-K1",
-      "target": "T3464869",
-      "label": "MADE",
-      "color": "#3b82f6",
-      "style": "solid"
-    },
-    {
-      "id": "e_dev_T3464869_dp_3464869",
-      "source": "T3464869",
-      "target": "dp_3464869",
-      "label": "FROM_DEVICE",
-      "color": "#8b5cf6",
-      "style": "dashed"
-    },
-    {
-      "id": "e_sim_T3464869_CC-3125",
-      "source": "T3464869",
-      "target": "CC-3125",
-      "label": "SIMILAR_TO",
-      "color": "#ec4899",
-      "style": "dotted"
-    },
-    {
-      "id": "e_sim_T3464869_CC-2506",
-      "source": "T3464869",
-      "target": "CC-2506",
-      "label": "SIMILAR_TO",
-      "color": "#ec4899",
-      "style": "dotted"
-    },
-    {
-      "id": "e_sim_T3464869_CC-2480",
-      "source": "T3464869",
-      "target": "CC-2480",
-      "label": "SIMILAR_TO",
-      "color": "#ec4899",
-      "style": "dotted"
     }
   ]
 }

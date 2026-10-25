@@ -2,29 +2,61 @@
   "elements": [
     {
       "data": {
-        "id": "C12382",
-        "label": "Customer\nC12382",
+        "id": "Amit Kumar (Patna)",
+        "label": "Citizen\nAmit Kumar (Patna)",
         "type": "customer",
-        "role": "Account Holder",
+        "role": "Verified Legitimate Citizen",
         "color": "#10b981",
         "shape": "hexagon"
       }
     },
     {
       "data": {
-        "id": "C12382-K1",
-        "label": "Card\nC12382-K1",
-        "type": "card",
-        "role": "Primary Payment Instrument",
+        "id": "3012456789_SBI",
+        "label": "Bank Account\n3012456789_SBI",
+        "type": "account",
+        "role": "Primary Bank Account (3+ Yr Clean)",
         "color": "#3b82f6",
         "shape": "ellipse"
       }
     },
     {
       "data": {
-        "id": "e_owns_C12382_C12382-K1",
-        "source": "C12382",
-        "target": "C12382-K1",
+        "id": "Emp_HHG-001",
+        "label": "Salary / Source\nBihar Govt Payroll (Finance Dept)",
+        "type": "device",
+        "role": "Verified Institutional Source",
+        "color": "#10b981",
+        "shape": "round-rectangle"
+      }
+    },
+    {
+      "data": {
+        "id": "Util_HHG-001",
+        "label": "Utility Billing\nSBPDCL Electricity Board",
+        "type": "device",
+        "role": "Regular Utility Verification",
+        "color": "#00f2fe",
+        "shape": "round-rectangle"
+      }
+    },
+    {
+      "data": {
+        "id": "TXN-HHG-001-001",
+        "label": "Routine UPI: Rs.450\nClean Merchant Txn",
+        "type": "transaction",
+        "role": "Routine Everyday UPI Payment",
+        "amount": 450,
+        "risk": 0.04,
+        "color": "#10b981",
+        "shape": "diamond"
+      }
+    },
+    {
+      "data": {
+        "id": "e_owns_Amit Kumar (Patna)_3012456789_SBI",
+        "source": "Amit Kumar (Patna)",
+        "target": "3012456789_SBI",
         "label": "OWNS",
         "color": "#10b981",
         "style": "solid"
@@ -32,179 +64,33 @@
     },
     {
       "data": {
-        "id": "T3514030",
-        "label": "Txn\nT3514030\n$0.00",
-        "type": "transaction",
-        "role": "Flagged Transaction",
-        "amount": 0.0,
-        "risk": 0.05,
+        "id": "e_sal_Emp_HHG-001_3012456789_SBI",
+        "source": "Emp_HHG-001",
+        "target": "3012456789_SBI",
+        "label": "SALARY_CREDIT",
         "color": "#10b981",
-        "shape": "diamond"
-      }
-    },
-    {
-      "data": {
-        "id": "e_made_C12382-K1_T3514030",
-        "source": "C12382-K1",
-        "target": "T3514030",
-        "label": "MADE",
-        "color": "#3b82f6",
         "style": "solid"
       }
     },
     {
       "data": {
-        "id": "CC-3435",
-        "label": "Prior Case\nCC-3435",
-        "type": "prior_case",
-        "role": "Precedent Case (GraphRAG)",
-        "color": "#ec4899",
-        "shape": "round-diamond"
+        "id": "e_util_3012456789_SBI_Util_HHG-001",
+        "source": "3012456789_SBI",
+        "target": "Util_HHG-001",
+        "label": "PAID_UTILITY",
+        "color": "#00f2fe",
+        "style": "solid"
       }
     },
     {
       "data": {
-        "id": "e_sim_T3514030_CC-3435",
-        "source": "T3514030",
-        "target": "CC-3435",
-        "label": "SIMILAR_TO",
-        "color": "#ec4899",
-        "style": "dotted"
+        "id": "e_txn_3012456789_SBI_TXN-HHG-001-001",
+        "source": "3012456789_SBI",
+        "target": "TXN-HHG-001-001",
+        "label": "ROUTINE_UPI",
+        "color": "#3b82f6",
+        "style": "solid"
       }
-    },
-    {
-      "data": {
-        "id": "CC-3751",
-        "label": "Prior Case\nCC-3751",
-        "type": "prior_case",
-        "role": "Precedent Case (GraphRAG)",
-        "color": "#ec4899",
-        "shape": "round-diamond"
-      }
-    },
-    {
-      "data": {
-        "id": "e_sim_T3514030_CC-3751",
-        "source": "T3514030",
-        "target": "CC-3751",
-        "label": "SIMILAR_TO",
-        "color": "#ec4899",
-        "style": "dotted"
-      }
-    },
-    {
-      "data": {
-        "id": "CC-2866",
-        "label": "Prior Case\nCC-2866",
-        "type": "prior_case",
-        "role": "Precedent Case (GraphRAG)",
-        "color": "#ec4899",
-        "shape": "round-diamond"
-      }
-    },
-    {
-      "data": {
-        "id": "e_sim_T3514030_CC-2866",
-        "source": "T3514030",
-        "target": "CC-2866",
-        "label": "SIMILAR_TO",
-        "color": "#ec4899",
-        "style": "dotted"
-      }
-    }
-  ],
-  "nodes": [
-    {
-      "id": "C12382",
-      "label": "Customer\nC12382",
-      "type": "customer",
-      "role": "Account Holder",
-      "color": "#10b981",
-      "shape": "hexagon"
-    },
-    {
-      "id": "C12382-K1",
-      "label": "Card\nC12382-K1",
-      "type": "card",
-      "role": "Primary Payment Instrument",
-      "color": "#3b82f6",
-      "shape": "ellipse"
-    },
-    {
-      "id": "T3514030",
-      "label": "Txn\nT3514030\n$0.00",
-      "type": "transaction",
-      "role": "Flagged Transaction",
-      "amount": 0.0,
-      "risk": 0.05,
-      "color": "#10b981",
-      "shape": "diamond"
-    },
-    {
-      "id": "CC-3435",
-      "label": "Prior Case\nCC-3435",
-      "type": "prior_case",
-      "role": "Precedent Case (GraphRAG)",
-      "color": "#ec4899",
-      "shape": "round-diamond"
-    },
-    {
-      "id": "CC-3751",
-      "label": "Prior Case\nCC-3751",
-      "type": "prior_case",
-      "role": "Precedent Case (GraphRAG)",
-      "color": "#ec4899",
-      "shape": "round-diamond"
-    },
-    {
-      "id": "CC-2866",
-      "label": "Prior Case\nCC-2866",
-      "type": "prior_case",
-      "role": "Precedent Case (GraphRAG)",
-      "color": "#ec4899",
-      "shape": "round-diamond"
-    }
-  ],
-  "edges": [
-    {
-      "id": "e_owns_C12382_C12382-K1",
-      "source": "C12382",
-      "target": "C12382-K1",
-      "label": "OWNS",
-      "color": "#10b981",
-      "style": "solid"
-    },
-    {
-      "id": "e_made_C12382-K1_T3514030",
-      "source": "C12382-K1",
-      "target": "T3514030",
-      "label": "MADE",
-      "color": "#3b82f6",
-      "style": "solid"
-    },
-    {
-      "id": "e_sim_T3514030_CC-3435",
-      "source": "T3514030",
-      "target": "CC-3435",
-      "label": "SIMILAR_TO",
-      "color": "#ec4899",
-      "style": "dotted"
-    },
-    {
-      "id": "e_sim_T3514030_CC-3751",
-      "source": "T3514030",
-      "target": "CC-3751",
-      "label": "SIMILAR_TO",
-      "color": "#ec4899",
-      "style": "dotted"
-    },
-    {
-      "id": "e_sim_T3514030_CC-2866",
-      "source": "T3514030",
-      "target": "CC-2866",
-      "label": "SIMILAR_TO",
-      "color": "#ec4899",
-      "style": "dotted"
     }
   ]
 }

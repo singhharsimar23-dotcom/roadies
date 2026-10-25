@@ -2,41 +2,51 @@
   "elements": [
     {
       "data": {
-        "id": "C02923",
-        "label": "Customer\nC02923",
+        "id": "Pooja Kumari (Nalanda)",
+        "label": "Citizen\nPooja Kumari (Nalanda)",
         "type": "customer",
-        "role": "Account Holder",
+        "role": "Verified Legitimate Citizen",
         "color": "#10b981",
         "shape": "hexagon"
       }
     },
     {
       "data": {
-        "id": "C02923-K1",
-        "label": "Card\nC02923-K1",
-        "type": "card",
-        "role": "Primary Payment Instrument",
+        "id": "5019283746_PNB",
+        "label": "Bank Account\n5019283746_PNB",
+        "type": "account",
+        "role": "Primary Bank Account (3+ Yr Clean)",
         "color": "#3b82f6",
         "shape": "ellipse"
       }
     },
     {
       "data": {
-        "id": "e_owns_C02923_C02923-K1",
-        "source": "C02923",
-        "target": "C02923-K1",
-        "label": "OWNS",
+        "id": "Emp_HHG-005",
+        "label": "Salary / Source\nBihar Education Dept (High School)",
+        "type": "device",
+        "role": "Verified Institutional Source",
         "color": "#10b981",
-        "style": "solid"
+        "shape": "round-rectangle"
       }
     },
     {
       "data": {
-        "id": "T3523199",
-        "label": "Txn\nT3523199\n$0.00",
+        "id": "Util_HHG-005",
+        "label": "Utility Billing\nNBPDCL Power Distribution",
+        "type": "device",
+        "role": "Regular Utility Verification",
+        "color": "#00f2fe",
+        "shape": "round-rectangle"
+      }
+    },
+    {
+      "data": {
+        "id": "TXN-HHG-005-001",
+        "label": "Routine UPI: Rs.1200\nClean Merchant Txn",
         "type": "transaction",
-        "role": "Flagged Transaction",
-        "amount": 0.0,
+        "role": "Routine Everyday UPI Payment",
+        "amount": 1200,
         "risk": 0.04,
         "color": "#10b981",
         "shape": "diamond"
@@ -44,203 +54,43 @@
     },
     {
       "data": {
-        "id": "e_made_C02923-K1_T3523199",
-        "source": "C02923-K1",
-        "target": "T3523199",
-        "label": "MADE",
-        "color": "#3b82f6",
+        "id": "e_owns_Pooja Kumari (Nalanda)_5019283746_PNB",
+        "source": "Pooja Kumari (Nalanda)",
+        "target": "5019283746_PNB",
+        "label": "OWNS",
+        "color": "#10b981",
         "style": "solid"
       }
     },
     {
       "data": {
-        "id": "dp_3523199",
-        "label": "Device\ndp_3523199",
-        "type": "device_profile",
-        "role": "Hardware Profile",
-        "color": "#8b5cf6",
-        "shape": "round-rectangle"
+        "id": "e_sal_Emp_HHG-005_5019283746_PNB",
+        "source": "Emp_HHG-005",
+        "target": "5019283746_PNB",
+        "label": "SALARY_CREDIT",
+        "color": "#10b981",
+        "style": "solid"
       }
     },
     {
       "data": {
-        "id": "e_dev_T3523199_dp_3523199",
-        "source": "T3523199",
-        "target": "dp_3523199",
-        "label": "FROM_DEVICE",
-        "color": "#8b5cf6",
-        "style": "dashed"
+        "id": "e_util_5019283746_PNB_Util_HHG-005",
+        "source": "5019283746_PNB",
+        "target": "Util_HHG-005",
+        "label": "PAID_UTILITY",
+        "color": "#00f2fe",
+        "style": "solid"
       }
     },
     {
       "data": {
-        "id": "CC-0656",
-        "label": "Prior Case\nCC-0656",
-        "type": "prior_case",
-        "role": "Precedent Case (GraphRAG)",
-        "color": "#ec4899",
-        "shape": "round-diamond"
+        "id": "e_txn_5019283746_PNB_TXN-HHG-005-001",
+        "source": "5019283746_PNB",
+        "target": "TXN-HHG-005-001",
+        "label": "ROUTINE_UPI",
+        "color": "#3b82f6",
+        "style": "solid"
       }
-    },
-    {
-      "data": {
-        "id": "e_sim_T3523199_CC-0656",
-        "source": "T3523199",
-        "target": "CC-0656",
-        "label": "SIMILAR_TO",
-        "color": "#ec4899",
-        "style": "dotted"
-      }
-    },
-    {
-      "data": {
-        "id": "CC-0248",
-        "label": "Prior Case\nCC-0248",
-        "type": "prior_case",
-        "role": "Precedent Case (GraphRAG)",
-        "color": "#ec4899",
-        "shape": "round-diamond"
-      }
-    },
-    {
-      "data": {
-        "id": "e_sim_T3523199_CC-0248",
-        "source": "T3523199",
-        "target": "CC-0248",
-        "label": "SIMILAR_TO",
-        "color": "#ec4899",
-        "style": "dotted"
-      }
-    },
-    {
-      "data": {
-        "id": "CC-0315",
-        "label": "Prior Case\nCC-0315",
-        "type": "prior_case",
-        "role": "Precedent Case (GraphRAG)",
-        "color": "#ec4899",
-        "shape": "round-diamond"
-      }
-    },
-    {
-      "data": {
-        "id": "e_sim_T3523199_CC-0315",
-        "source": "T3523199",
-        "target": "CC-0315",
-        "label": "SIMILAR_TO",
-        "color": "#ec4899",
-        "style": "dotted"
-      }
-    }
-  ],
-  "nodes": [
-    {
-      "id": "C02923",
-      "label": "Customer\nC02923",
-      "type": "customer",
-      "role": "Account Holder",
-      "color": "#10b981",
-      "shape": "hexagon"
-    },
-    {
-      "id": "C02923-K1",
-      "label": "Card\nC02923-K1",
-      "type": "card",
-      "role": "Primary Payment Instrument",
-      "color": "#3b82f6",
-      "shape": "ellipse"
-    },
-    {
-      "id": "T3523199",
-      "label": "Txn\nT3523199\n$0.00",
-      "type": "transaction",
-      "role": "Flagged Transaction",
-      "amount": 0.0,
-      "risk": 0.04,
-      "color": "#10b981",
-      "shape": "diamond"
-    },
-    {
-      "id": "dp_3523199",
-      "label": "Device\ndp_3523199",
-      "type": "device_profile",
-      "role": "Hardware Profile",
-      "color": "#8b5cf6",
-      "shape": "round-rectangle"
-    },
-    {
-      "id": "CC-0656",
-      "label": "Prior Case\nCC-0656",
-      "type": "prior_case",
-      "role": "Precedent Case (GraphRAG)",
-      "color": "#ec4899",
-      "shape": "round-diamond"
-    },
-    {
-      "id": "CC-0248",
-      "label": "Prior Case\nCC-0248",
-      "type": "prior_case",
-      "role": "Precedent Case (GraphRAG)",
-      "color": "#ec4899",
-      "shape": "round-diamond"
-    },
-    {
-      "id": "CC-0315",
-      "label": "Prior Case\nCC-0315",
-      "type": "prior_case",
-      "role": "Precedent Case (GraphRAG)",
-      "color": "#ec4899",
-      "shape": "round-diamond"
-    }
-  ],
-  "edges": [
-    {
-      "id": "e_owns_C02923_C02923-K1",
-      "source": "C02923",
-      "target": "C02923-K1",
-      "label": "OWNS",
-      "color": "#10b981",
-      "style": "solid"
-    },
-    {
-      "id": "e_made_C02923-K1_T3523199",
-      "source": "C02923-K1",
-      "target": "T3523199",
-      "label": "MADE",
-      "color": "#3b82f6",
-      "style": "solid"
-    },
-    {
-      "id": "e_dev_T3523199_dp_3523199",
-      "source": "T3523199",
-      "target": "dp_3523199",
-      "label": "FROM_DEVICE",
-      "color": "#8b5cf6",
-      "style": "dashed"
-    },
-    {
-      "id": "e_sim_T3523199_CC-0656",
-      "source": "T3523199",
-      "target": "CC-0656",
-      "label": "SIMILAR_TO",
-      "color": "#ec4899",
-      "style": "dotted"
-    },
-    {
-      "id": "e_sim_T3523199_CC-0248",
-      "source": "T3523199",
-      "target": "CC-0248",
-      "label": "SIMILAR_TO",
-      "color": "#ec4899",
-      "style": "dotted"
-    },
-    {
-      "id": "e_sim_T3523199_CC-0315",
-      "source": "T3523199",
-      "target": "CC-0315",
-      "label": "SIMILAR_TO",
-      "color": "#ec4899",
-      "style": "dotted"
     }
   ]
 }

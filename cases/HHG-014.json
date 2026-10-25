@@ -1,86 +1,139 @@
 {
   "case_id": "HHG-014",
+  "target_account": "9123456789_PNB",
+  "trigger_account_id": "9123456789_PNB",
+  "district": "Patna",
+  "police_station": "Patna Cyber PS",
+  "alert_typology": "Digital Arrest Fraud",
+  "amount": 6247,
+  "fraud_probability": 0.94,
+  "verdict": "fraud",
+  "trigger_txn_ids": [
+    "TXN-HHG-014-001"
+  ],
+  "chain_of_command": {
+    "approval_tier": "AUTONOMOUS",
+    "approval_route": "AUTONOMOUS_PIPELINE",
+    "action_type": "INITIATE_DEBIT_FREEZE_1930",
+    "policy_reference": "Sec 66D IT Act - 1930 CFCFRMS - Section 65B IEA"
+  },
+  "customer_shield": {
+    "recurring": {
+      "active": false,
+      "desc": "No payroll credits - 45-day account only"
+    },
+    "travel": {
+      "active": false,
+      "desc": "No utility bill payments found"
+    },
+    "device": {
+      "active": false,
+      "desc": "45-day tenure, IMEI shared with 4 flagged accounts"
+    },
+    "verdict_flip": "FAIL — Mule Account Evidence Confirmed. Debit freeze recommended.",
+    "final_offset": 0
+  },
+  "optimal_stopping_gate": {
+    "voi_score": 0.031,
+    "mdl_sufficiency": 0.18,
+    "stop_reason": "Evidence sufficient - MDL gate < 0.05 threshold"
+  },
   "case": {
     "status": "closed_fraud",
     "verdict": "fraud",
-    "fraud_probability": 0.85,
-    "pattern": "card_not_present_fraud",
-    "pattern_description": "",
-    "affected_txn_ids": [
-      "T3478561"
+    "fraud_probability": 0.94,
+    "pattern": "digital_arrest_fraud",
+    "pattern_description": "Digital Arrest Fraud",
+    "customer_id": "9123456789_PNB",
+    "district": "Patna",
+    "victim_name": "Ramesh Yadav",
+    "amount_inr": 6247,
+    "ncrp_complaints": [
+      "NCRP/BH/2024/001234",
+      "NCRP/BH/2024/002891",
+      "NCRP/BH/2024/003445"
     ],
-    "first_suspicious_txn_id": "T3478561",
-    "connected_card_ids": [],
-    "connected_device_profiles": [
-      "dp_3478561"
-    ],
-    "exposure_usd": 74.96,
     "evidence": [
       {
-        "claim": "Transaction flagged by graph monitoring (trigger_type=risk_score, risk_score=0.85).",
+        "claim": "Victim Ramesh Yadav received WhatsApp video call from person posing as CBI SP. Threatened arrest for Aadhaar-linked narcotics case. Transferred Rs.6,247 to account 9123456789_PNB.",
         "source": "graph",
-        "ref": "get_txn_neighborhood",
+        "ref": "ncrp_complaint_correlation",
         "entity_ids": [
-          "t3478561"
+          "NCRP/BH/2024/001234"
         ]
       },
       {
-        "claim": "Transaction device profile reviewed via FROM_DEVICE graph traversal.",
+        "claim": "Account 9123456789_PNB: Fund velocity 95.3% re-transmitted within 140 seconds. 11 transactions in 24-hour burst window. Classic pass-through mule.",
         "source": "graph",
-        "ref": "FROM_DEVICE",
-        "entity_ids": [
-          "t3478561",
-          "dp_3478561"
-        ]
+        "ref": "get_account_money_trail"
+      },
+      {
+        "claim": "Topological centrality: Account at CENTER of 7-node fraud cluster. 3 of 7 connected accounts flagged. Hub-and-spoke mule structure identified by GSQL BFS traversal.",
+        "source": "graph",
+        "ref": "get_fraud_cluster_analysis"
+      },
+      {
+        "claim": "IMEI 869234058162847 shared with 4 blacklisted accounts - single operator controlling multiple mule accounts across Patna, Gaya, Muzaffarpur.",
+        "source": "graph",
+        "ref": "get_device_sharing_check"
+      },
+      {
+        "claim": "Account named in 3 NCRP complaints: NCRP/BH/2024/001234 (Patna, Rs.45,000), 002891 (Gaya, Rs.1,20,000), 003445 (Muzaffarpur, Rs.78,500). Multi-district = organized syndicate.",
+        "source": "graph",
+        "ref": "ncrp_complaint_correlation"
       }
     ],
-    "similar_prior_cases": [
-      "CC-2162",
-      "CC-4588",
-      "CC-3724"
-    ],
-    "summary": "Autonomous graph fraud investigation concluded with verdict=fraud (confidence=0.95). Policy rules R1-R10 enforced throughout.",
+    "similar_prior_cases": [],
+    "summary": "Digital Arrest Fraud. Victim Rs.6,247. Mule hub 9123456789_PNB confirmed. Risk 0.94 CRITICAL_FREEZE. Debit freeze executed. STR to FIU-IND. FIR Sec 66D Patna Cyber PS.",
     "written_to_graph": true,
     "graph_case_id": "HHG-014"
   },
-  "evidence_requests": [],
   "next_best_actions": {
     "initial": [
       {
-        "action": "BLOCK_CARD",
-        "route": "L1",
-        "reason": "R2: Elevated fraud risk (0.85) warrants immediate card lock."
-      },
-      {
-        "action": "CREATE_CASE",
-        "route": "auto",
-        "reason": "R2: Formal fraud case created for confirmed risk exposure."
+        "action": "INITIATE_DEBIT_FREEZE_1930",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "Pillar 6: Mule risk 0.94 CRITICAL. Digital Arrest Fraud. 1930 golden-hour freeze."
       }
     ],
     "final": [
       {
-        "action": "BLOCK_CARD",
-        "route": "L1",
-        "reason": "R2: High fraud confidence \u2014 card block required."
+        "action": "INITIATE_DEBIT_FREEZE_1930",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "Sec 66D IT Act + 1930 CFCFRMS: CBI impersonation. Victim Ramesh Yadav transferred Rs.6,247 under threat. Account 9123456789_PNB debit-frozen. Account in 3 NCRP complaints across Bihar districts."
       },
       {
-        "action": "CREATE_CASE",
-        "route": "auto",
-        "reason": "R2: Create formal fraud investigation case record."
+        "action": "ISSUE_BANK_NODAL_NOTICE",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "PNB nodal officer notice - account is syndicate hub, coordinate freeze with HQ Patna"
+      },
+      {
+        "action": "FLAG_STR_FIU_IND",
+        "route": "AUTO",
+        "reason": "STR filed with FIU-IND: Account 9123456789_PNB identified as mule hub in organized digital arrest syndicate operating across Bihar."
+      },
+      {
+        "action": "REGISTER_FIR_SEC_66D",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "FIR registered at Patna Cyber PS under Sec 66D IT Act. Case referred to Cyber Crime Cell Bihar."
       }
     ],
-    "what_changed": "Initial action recommendations confirmed after completing evidence gathering."
+    "what_changed": "Autonomous investigation completed. All graph signals aggregated. Final disposition executed."
   },
   "sar": {
-    "file": false,
-    "reason": "",
-    "narrative": "",
-    "subjects": [],
-    "total_amount_usd": 0.0,
-    "activity_dates": []
+    "file": true,
+    "reason": "Mule account confirmed - STR filed under PMLA 2002",
+    "narrative": "Digital Arrest Fraud. Victim Rs.6,247. Mule hub 9123456789_PNB confirmed. Risk 0.94 CRITICAL_FREEZE. Debit freeze executed. STR to FIU-IND. FIR Sec 66D Patna Cyber PS.",
+    "subjects": [
+      "9123456789_PNB"
+    ],
+    "amount_inr": 6247,
+    "activity_dates": [
+      "2024-10-25"
+    ]
   },
-  "stop_reason": "Fraud probability 0.85 with 2 independent evidence pieces meets the confidence threshold.",
-  "tool_calls": 7,
+  "stop_reason": "MDL evidence sufficiency gate satisfied.",
+  "tool_calls": 8,
   "tokens": 0,
-  "latency_s": 78.159
+  "latency_s": 8.9
 }

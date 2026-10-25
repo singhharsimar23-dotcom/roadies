@@ -2,209 +2,135 @@
   "elements": [
     {
       "data": {
-        "id": "C08623",
-        "label": "Customer\nC08623",
+        "id": "9012384756_PNB",
+        "label": "Mule Account\n9012384756_PNB",
+        "type": "account",
+        "role": "Flagged Mule Account (Patna)",
+        "color": "#ef4444",
+        "shape": "ellipse"
+      }
+    },
+    {
+      "data": {
+        "id": "Victim_HHG-003",
+        "label": "Victim\nDr. Ananya Sen (Patna)",
         "type": "customer",
-        "role": "Account Holder",
+        "role": "Victim (Coerced Transfer)",
         "color": "#10b981",
         "shape": "hexagon"
       }
     },
     {
       "data": {
-        "id": "C08623-K2",
-        "label": "Card\nC08623-K2",
-        "type": "card",
-        "role": "Primary Payment Instrument",
-        "color": "#3b82f6",
-        "shape": "ellipse"
-      }
-    },
-    {
-      "data": {
-        "id": "e_owns_C08623_C08623-K2",
-        "source": "C08623",
-        "target": "C08623-K2",
-        "label": "OWNS",
-        "color": "#10b981",
-        "style": "solid"
-      }
-    },
-    {
-      "data": {
-        "id": "T3530164",
-        "label": "Txn\nT3530164\n$49.00",
+        "id": "TXN-HHG-003-001",
+        "label": "Txn: Rs.4,083\nDigital Arrest Fraud...",
         "type": "transaction",
-        "role": "Flagged Transaction",
-        "amount": 49.0,
-        "risk": 0.95,
+        "role": "Cybercrime Proceeds (Rs.4,083)",
+        "amount": 4083,
+        "risk": 0.94,
         "color": "#ef4444",
         "shape": "diamond"
       }
     },
     {
       "data": {
-        "id": "e_made_C08623-K2_T3530164",
-        "source": "C08623-K2",
-        "target": "T3530164",
-        "label": "MADE",
-        "color": "#3b82f6",
+        "id": "8172635409_ICICI (Nalanda)",
+        "label": "Mule L2\n8172635409_ICICI (Nalanda)",
+        "type": "account",
+        "role": "Layer-2 Siphon Conduit",
+        "color": "#f97316",
+        "shape": "ellipse"
+      }
+    },
+    {
+      "data": {
+        "id": "IMEI: 869102837465019",
+        "label": "Shared Hardware\nIMEI: 869102837465019",
+        "type": "device",
+        "role": "Hardware Profile (Linked to 4+ Syndicate Accounts)",
+        "color": "#fbbf24",
+        "shape": "round-rectangle"
+      }
+    },
+    {
+      "data": {
+        "id": "NCRP/BH/2024/003112",
+        "label": "1930 Portal\nNCRP/BH/2024/003112",
+        "type": "prior_case",
+        "role": "National Cybercrime Portal Complaint",
+        "color": "#ec4899",
+        "shape": "round-diamond"
+      }
+    },
+    {
+      "data": {
+        "id": "IP_HHG-003",
+        "label": "VPN/Proxy Node\n103.211.x.x (Patna)",
+        "type": "ip",
+        "role": "Syndicate Infrastructure",
+        "color": "#c084fc",
+        "shape": "hexagon"
+      }
+    },
+    {
+      "data": {
+        "id": "e_made_Victim_HHG-003_TXN-HHG-003-001",
+        "source": "Victim_HHG-003",
+        "target": "TXN-HHG-003-001",
+        "label": "COERCED_PAYMENT",
+        "color": "#10b981",
         "style": "solid"
       }
     },
     {
       "data": {
-        "id": "CC-4656",
-        "label": "Prior Case\nCC-4656",
-        "type": "prior_case",
-        "role": "Precedent Case (GraphRAG)",
-        "color": "#ec4899",
-        "shape": "round-diamond"
+        "id": "e_to_TXN-HHG-003-001_9012384756_PNB",
+        "source": "TXN-HHG-003-001",
+        "target": "9012384756_PNB",
+        "label": "CREDITED_TO",
+        "color": "#ef4444",
+        "style": "solid"
       }
     },
     {
       "data": {
-        "id": "e_sim_T3530164_CC-4656",
-        "source": "T3530164",
-        "target": "CC-4656",
-        "label": "SIMILAR_TO",
+        "id": "e_layer_9012384756_PNB_8172635409_ICICI (Nalanda)",
+        "source": "9012384756_PNB",
+        "target": "8172635409_ICICI (Nalanda)",
+        "label": "LAYERED_TO",
+        "color": "#f97316",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_dev_9012384756_PNB_IMEI: 869102837465019",
+        "source": "9012384756_PNB",
+        "target": "IMEI: 869102837465019",
+        "label": "OPERATED_FROM",
+        "color": "#fbbf24",
+        "style": "dashed"
+      }
+    },
+    {
+      "data": {
+        "id": "e_ncrp_9012384756_PNB_NCRP/BH/2024/003112",
+        "source": "9012384756_PNB",
+        "target": "NCRP/BH/2024/003112",
+        "label": "LINKED_NCRP_1930",
         "color": "#ec4899",
         "style": "dotted"
       }
     },
     {
       "data": {
-        "id": "CC-2480",
-        "label": "Prior Case\nCC-2480",
-        "type": "prior_case",
-        "role": "Precedent Case (GraphRAG)",
-        "color": "#ec4899",
-        "shape": "round-diamond"
-      }
-    },
-    {
-      "data": {
-        "id": "e_sim_T3530164_CC-2480",
-        "source": "T3530164",
-        "target": "CC-2480",
-        "label": "SIMILAR_TO",
-        "color": "#ec4899",
+        "id": "e_ip_9012384756_PNB_IP_HHG-003",
+        "source": "9012384756_PNB",
+        "target": "IP_HHG-003",
+        "label": "CO_LOCATED_IP",
+        "color": "#c084fc",
         "style": "dotted"
       }
-    },
-    {
-      "data": {
-        "id": "CC-4109",
-        "label": "Prior Case\nCC-4109",
-        "type": "prior_case",
-        "role": "Precedent Case (GraphRAG)",
-        "color": "#ec4899",
-        "shape": "round-diamond"
-      }
-    },
-    {
-      "data": {
-        "id": "e_sim_T3530164_CC-4109",
-        "source": "T3530164",
-        "target": "CC-4109",
-        "label": "SIMILAR_TO",
-        "color": "#ec4899",
-        "style": "dotted"
-      }
-    }
-  ],
-  "nodes": [
-    {
-      "id": "C08623",
-      "label": "Customer\nC08623",
-      "type": "customer",
-      "role": "Account Holder",
-      "color": "#10b981",
-      "shape": "hexagon"
-    },
-    {
-      "id": "C08623-K2",
-      "label": "Card\nC08623-K2",
-      "type": "card",
-      "role": "Primary Payment Instrument",
-      "color": "#3b82f6",
-      "shape": "ellipse"
-    },
-    {
-      "id": "T3530164",
-      "label": "Txn\nT3530164\n$49.00",
-      "type": "transaction",
-      "role": "Flagged Transaction",
-      "amount": 49.0,
-      "risk": 0.95,
-      "color": "#ef4444",
-      "shape": "diamond"
-    },
-    {
-      "id": "CC-4656",
-      "label": "Prior Case\nCC-4656",
-      "type": "prior_case",
-      "role": "Precedent Case (GraphRAG)",
-      "color": "#ec4899",
-      "shape": "round-diamond"
-    },
-    {
-      "id": "CC-2480",
-      "label": "Prior Case\nCC-2480",
-      "type": "prior_case",
-      "role": "Precedent Case (GraphRAG)",
-      "color": "#ec4899",
-      "shape": "round-diamond"
-    },
-    {
-      "id": "CC-4109",
-      "label": "Prior Case\nCC-4109",
-      "type": "prior_case",
-      "role": "Precedent Case (GraphRAG)",
-      "color": "#ec4899",
-      "shape": "round-diamond"
-    }
-  ],
-  "edges": [
-    {
-      "id": "e_owns_C08623_C08623-K2",
-      "source": "C08623",
-      "target": "C08623-K2",
-      "label": "OWNS",
-      "color": "#10b981",
-      "style": "solid"
-    },
-    {
-      "id": "e_made_C08623-K2_T3530164",
-      "source": "C08623-K2",
-      "target": "T3530164",
-      "label": "MADE",
-      "color": "#3b82f6",
-      "style": "solid"
-    },
-    {
-      "id": "e_sim_T3530164_CC-4656",
-      "source": "T3530164",
-      "target": "CC-4656",
-      "label": "SIMILAR_TO",
-      "color": "#ec4899",
-      "style": "dotted"
-    },
-    {
-      "id": "e_sim_T3530164_CC-2480",
-      "source": "T3530164",
-      "target": "CC-2480",
-      "label": "SIMILAR_TO",
-      "color": "#ec4899",
-      "style": "dotted"
-    },
-    {
-      "id": "e_sim_T3530164_CC-4109",
-      "source": "T3530164",
-      "target": "CC-4109",
-      "label": "SIMILAR_TO",
-      "color": "#ec4899",
-      "style": "dotted"
     }
   ]
 }

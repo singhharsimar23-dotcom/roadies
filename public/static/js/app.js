@@ -19,6 +19,19 @@ let activeEventSource = null;
 let isInvestigated = false;
 
 // Bihar Police Cyber Crime Investigation Cases — HHG-001 to HHG-020
+
+// Helper to get case amount in INR reliably
+function getCaseAmountINR(data) {
+    if (!data) return 0;
+    if (data.amount !== undefined) return Number(data.amount);
+    if (data.amount_inr !== undefined) return Number(data.amount_inr);
+    if (data.case && data.case.amount !== undefined) return Number(data.case.amount);
+    if (data.case && data.case.amount_inr !== undefined) return Number(data.case.amount_inr);
+    if (data.exposure_usd !== undefined) return Math.round(Number(data.exposure_usd) * 83.5);
+    if (data.case && data.case.exposure_usd !== undefined) return Math.round(Number(data.case.exposure_usd) * 83.5);
+    return 0;
+}
+
 const CASE_NAMES = {
     1:  "HHG-001 CLEARED — Legitimate Citizen (Rs.0)",
     2:  "HHG-002 — Fake Investment App Fraud (Rs.24,367) — Muzaffarpur",
@@ -241,7 +254,7 @@ function initCytoscape() {
                 html += `<div><span class="text-outline">Assessed Risk:</span> <span class="${d.risk > 0.5 ? 'text-error' : 'text-primary-container'} font-semibold">${(d.risk * 100).toFixed(1)}%</span></div>`;
             }
             if (d.amount !== undefined) {
-                html += `<div><span class="text-outline">Amount:</span> <span class="text-primary font-semibold">$${Number(d.amount).toLocaleString(undefined, {minimumFractionDigits: 2})}</span></div>`;
+                html += `<div><span class="text-outline">Amount:</span> <span class="text-primary font-semibold">Rs.${Math.round(Number(d.amount)).toLocaleString('en-IN')}</span></div>`;
             }
             html += `<div><span class="text-outline">Sub-Graph Degree:</span> <span class="text-on-surface">${node.degree()} connections</span></div>`;
             body.innerHTML = html;
@@ -284,15 +297,17 @@ async function populateCaseDropdown() {
     try {
         const res = await fetch('/api/cases');
         if (res.ok) {
-            const cases = await res.json();
+            const result = await res.json();
+            const cases = Array.isArray(result) ? result : (result.cases || []);
             if (Array.isArray(cases) && cases.length > 0) {
                 sel.innerHTML = '';
                 cases.forEach(c => {
                     const opt = document.createElement('option');
                     opt.value = c.case_id;
                     const isLegit = c.verdict === 'legitimate' || c.status === 'closed_legitimate';
-                    const tag = isLegit ? '✓ Legitimate' : 'Fraud';
-                    const expInr = c.exposure_usd !== undefined ? Math.round(Number(c.exposure_usd) * 83.5) : 0; const exp = `Rs.${expInr.toLocaleString('en-IN')}`;
+                    const tag = isLegit ? 'CLEARED' : (c.alert_typology || 'Fraud');
+                    const amtInr = c.amount_inr !== undefined ? c.amount_inr : (c.amount !== undefined ? c.amount : (c.exposure_usd ? Math.round(Number(c.exposure_usd) * 83.5) : 0));
+                    const exp = `Rs.${Number(amtInr).toLocaleString('en-IN')}`;
                     opt.textContent = `${c.case_id} — ${tag} (${exp})`;
                     sel.appendChild(opt);
                 });
@@ -395,8 +410,8 @@ async function loadBenchmarkCase(caseInput) {
 
         // Update Metadata Micro-Strip (Bug fix: separate account and typology)
         const metaAcc = document.getElementById('meta-acc');
-        const acct = data.target_account || data.trigger_account_id || data.customer_id || (data.case && (data.case.customer_id || data.case.card_id)) || 'C13487';
-        const rawAmt2 = data.amount !== undefined ? data.amount : (data.case && data.case.exposure_usd !== undefined ? data.case.exposure_usd : 0); const amt = rawAmt2 > 1000 ? rawAmt2 : rawAmt2 * 83.5;
+        const acct = data.target_account || data.trigger_account_id || data.customer_id || (data.case && (data.case.customer_id || data.case.card_id)) || '9123456789_PNB';
+        const amt = getCaseAmountINR(data);
         if (metaAcc) {
             metaAcc.textContent = `${acct} (Rs.${Math.round(Number(amt)).toLocaleString('en-IN')})`;
         }
@@ -566,18 +581,18 @@ function populateStreamLogs(data, completed = false) {
     const logsEl = document.getElementById('stream-terminal-logs');
     if (!logsEl) return;
 
-    const rawAmtVal = data.amount !== undefined ? data.amount : (data.case && data.case.exposure_usd !== undefined ? data.case.exposure_usd : 0); const amtVal = rawAmtVal > 1000 ? rawAmtVal : rawAmtVal * 83.5;
+    const amtVal = getCaseAmountINR(data);
     const t = Math.round(Number(amtVal)).toLocaleString('en-IN');
     const fProb = data.fraud_probability !== undefined ? data.fraud_probability : (data.case ? data.case.fraud_probability : 0.05);
     const isFraud = fProb >= 0.70;
     const isLegit = !isFraud;
-    const acct = data.target_account || data.trigger_account_id || data.customer_id || (data.case && (data.case.customer_id || data.case.card_id)) || 'C13487';
-    const txn = (data.trigger_txn_ids && data.trigger_txn_ids[0]) || (data.case && data.case.first_suspicious_txn_id) || 'T3478561';
+    const acct = data.target_account || data.trigger_account_id || data.customer_id || (data.case && (data.case.customer_id || data.case.card_id)) || '9123456789_PNB';
+    const txn = (data.trigger_txn_ids && data.trigger_txn_ids[0]) || (data.case && data.case.first_suspicious_txn_id) || 'TXN-HHG-014-001';
     const shield = data.customer_shield || data.s18_overblocking_shield || {};
     const voi = data.optimal_stopping_gate || data.s09_voi_gate || {};
 
     let html = `
-        <div><span class="text-outline">[00:00.02]</span> <span class="text-primary-container">[INGEST]</span>: Ingested alert on Account ${acct} (Rs.${Math.round(Number(amtVal)*83.5).toLocaleString("en-IN")})</div>
+        <div><span class="text-outline">[00:00.02]</span> <span class="text-primary-container">[INGEST]</span>: Ingested alert on Account ${acct} (Rs.${t})</div>
         <div><span class="text-outline">[00:00.14]</span> <span class="text-primary-fixed-dim">[TRAVERSAL]</span>: GSQL 2-hop traversal verified topological neighborhood around ${acct}</div>
         <div><span class="text-outline">[00:00.28]</span> <span class="${isLegit ? 'text-primary-container' : 'text-error'}">[CITIZEN_FILTER]</span>: Salary=${shield.recurring?.active ? 'Yes' : 'No'}, Utility=${shield.travel?.active ? 'Yes' : 'No'}, Tenure=${shield.device?.active ? '2+yr' : 'New'} (Citizen Check: ${isLegit ? 'PASS — Account Cleared' : 'FAIL — Mule Evidence Confirmed'})</div>
         <div><span class="text-outline">[00:00.35]</span> <span class="text-primary">[STOPPING_GATE]</span>: Value of Information ${Number(voi.voi_score || 0.012).toFixed(3)} &lt; 0.05 threshold &rarr; Evidence sufficient</div>
@@ -585,9 +600,9 @@ function populateStreamLogs(data, completed = false) {
 
     if (completed || isLegit) {
         if (isFraud) {
-            html += `<div><span class="text-outline">[00:00.41]</span> <span class="text-error font-bold">[DISPOSITION]</span>: TIER 4 BLOCK &amp; I4C 1930 / Sec 66D IT Act Evidentiary Dossier Generated</div>`;
+            html += `<div><span class="text-outline">[00:00.41]</span> <span class="text-error font-bold">[DISPOSITION]</span>: INITIATE_DEBIT_FREEZE_1930 &amp; I4C / Sec 66D IT Act Evidentiary Dossier Generated</div>`;
         } else {
-            html += `<div><span class="text-outline">[00:00.41]</span> <span class="text-primary-container font-bold">[DISPOSITION]</span>: CITIZEN ACCOUNT CLEARED &rarr; No fraud evidence — Account remains active</div>`;
+            html += `<div><span class="text-outline">[00:00.41]</span> <span class="text-primary-container font-bold">[DISPOSITION]</span>: CITIZEN ACCOUNT CLEARED &rarr; Verified legitimate citizen — Account remains active</div>`;
         }
     }
 
@@ -675,10 +690,10 @@ async function runLiveAutonomousInvestigationTrace() {
     const data = currentCaseData || {};
     const inner = data.case || {};
     const cid = currentCaseId || 'HHG-014';
-    const acct = data.target_account || data.trigger_account_id || data.customer_id || inner.customer_id || 'C13487';
-    const txn = (data.trigger_txn_ids && data.trigger_txn_ids[0]) || inner.first_suspicious_txn_id || 'T3478561';
-    const amt = data.amount !== undefined ? data.amount : (inner.exposure_usd !== undefined ? inner.exposure_usd : 0.0);
-    const amtStr = Math.round(Number(amt)*83.5).toLocaleString("en-IN");
+    const acct = data.target_account || data.trigger_account_id || data.customer_id || inner.customer_id || '9123456789_PNB';
+    const txn = (data.trigger_txn_ids && data.trigger_txn_ids[0]) || inner.first_suspicious_txn_id || 'TXN-HHG-014-001';
+    const amt = getCaseAmountINR(data);
+    const amtStr = Math.round(Number(amt)).toLocaleString("en-IN");
     const risk = (data.fraud_probability !== undefined) ? data.fraud_probability : (inner.fraud_probability !== undefined ? inner.fraud_probability : 0.85);
     const isFraud = (data.verdict === 'fraud' || inner.verdict === 'fraud' || risk >= 0.70);
     const shield = data.customer_shield || data.s18_overblocking_shield || {};
@@ -697,7 +712,7 @@ async function runLiveAutonomousInvestigationTrace() {
     
     // Step 1: Ingest
     await new Promise(r => setTimeout(r, 350));
-    const rawAmt = Number(amt); const amtInrLive = rawAmt > 1000 ? Math.round(rawAmt) : Math.round(rawAmt * 83.5); appendLog('00:00.08', 'INGEST', `Received 1930 complaint — Account ${acct} — Victim Loss: Rs.${amtInrLive.toLocaleString("en-IN")} — Mule Risk: ${(risk * 100).toFixed(1)}%`, 'text-primary-container');
+    appendLog('00:00.08', 'INGEST', `Received 1930 complaint — Account ${acct} — Victim Loss: Rs.${amtStr} — Mule Risk: ${(risk * 100).toFixed(1)}%`, 'text-primary-container');
 
     // Step 2: Topological Traversal
     await new Promise(r => setTimeout(r, 450));

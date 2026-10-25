@@ -1,84 +1,131 @@
 {
   "case_id": "HHG-008",
+  "target_account": "9123456789_PNB",
+  "trigger_account_id": "9123456789_PNB",
+  "district": "Muzaffarpur",
+  "police_station": "Muzaffarpur Cyber PS",
+  "alert_typology": "Mule Account Hub",
+  "amount": 4640,
+  "fraud_probability": 0.94,
+  "verdict": "fraud",
+  "trigger_txn_ids": [
+    "TXN-HHG-008-001"
+  ],
+  "chain_of_command": {
+    "approval_tier": "AUTONOMOUS",
+    "approval_route": "AUTONOMOUS_PIPELINE",
+    "action_type": "INITIATE_DEBIT_FREEZE_1930",
+    "policy_reference": "Sec 66D IT Act - 1930 CFCFRMS - Section 65B IEA"
+  },
+  "customer_shield": {
+    "recurring": {
+      "active": false,
+      "desc": "No payroll credits detected"
+    },
+    "travel": {
+      "active": false,
+      "desc": "No utility payments"
+    },
+    "device": {
+      "active": false,
+      "desc": "45-day account tenure, 4 linked flagged accounts"
+    },
+    "verdict_flip": "FAIL \u2014 Mule Account Evidence Confirmed. Debit freeze recommended.",
+    "final_offset": 0
+  },
+  "optimal_stopping_gate": {
+    "voi_score": 0.031,
+    "mdl_sufficiency": 0.18,
+    "stop_reason": "Evidence sufficient - MDL gate < 0.05 threshold"
+  },
   "case": {
     "status": "closed_fraud",
     "verdict": "fraud",
-    "fraud_probability": 0.95,
-    "pattern": "card_not_present_fraud",
-    "pattern_description": "",
-    "affected_txn_ids": [
-      "T3558054"
+    "fraud_probability": 0.94,
+    "pattern": "mule_account_hub",
+    "pattern_description": "Mule Account Hub",
+    "customer_id": "9123456789_PNB",
+    "district": "Muzaffarpur",
+    "victim_name": "Multiple Victims",
+    "amount_inr": 4640,
+    "ncrp_complaints": [
+      "NCRP/BH/2024/001234",
+      "NCRP/BH/2024/002891",
+      "NCRP/BH/2024/003445"
     ],
-    "first_suspicious_txn_id": "T3558054",
-    "connected_card_ids": [],
-    "connected_device_profiles": [],
-    "exposure_usd": 55.68,
     "evidence": [
       {
-        "claim": "Transaction flagged by graph monitoring (trigger_type=customer_report, risk_score=0.00).",
+        "claim": "Account 9123456789_PNB named in NCRP complaints: 001234 (Patna, Rs.45,000), 002891 (Gaya, Rs.1,20,000), 003445 (Muzaffarpur, Rs.78,500). Multi-district syndicate hub.",
         "source": "graph",
-        "ref": "get_txn_neighborhood",
-        "entity_ids": [
-          "t3558054"
-        ]
+        "ref": "ncrp_complaint_correlation"
       },
       {
-        "claim": "Transaction device profile reviewed via FROM_DEVICE graph traversal.",
+        "claim": "Fund velocity: 95.3% of Rs.4,640 re-transmitted within 140 seconds. 11 transactions in 24-hour burst window.",
         "source": "graph",
-        "ref": "FROM_DEVICE",
-        "entity_ids": [
-          "t3558054",
-          "none"
-        ]
+        "ref": "get_account_money_trail"
+      },
+      {
+        "claim": "IMEI 869234058162847 shared with 4 blacklisted accounts. Single operator controlling multiple mule accounts.",
+        "source": "graph",
+        "ref": "get_device_sharing_check"
+      },
+      {
+        "claim": "Topological centrality: account at center of 7-node fraud cluster. 3 of 7 connected accounts already flagged.",
+        "source": "graph",
+        "ref": "get_fraud_cluster_analysis"
       }
     ],
-    "similar_prior_cases": [
-      "CC-1925",
-      "CC-3143",
-      "CC-3306"
-    ],
-    "summary": "Autonomous graph fraud investigation concluded with verdict=fraud (confidence=0.95). Policy rules R1-R10 enforced throughout.",
+    "similar_prior_cases": [],
+    "summary": "MULE ACCOUNT HUB. Mule risk 0.94 CRITICAL_FREEZE. 3 NCRP complaints. IMEI shared x4. Debit freeze executed. STR filed. FIR Sec 66D registered.",
     "written_to_graph": true,
     "graph_case_id": "HHG-008"
   },
-  "evidence_requests": [],
   "next_best_actions": {
     "initial": [
       {
-        "action": "BLOCK_CARD",
-        "route": "L1",
-        "reason": "R2: Elevated fraud risk (0.95) warrants immediate card lock."
-      },
-      {
-        "action": "CREATE_CASE",
-        "route": "auto",
-        "reason": "R2: Formal fraud case created for confirmed risk exposure."
+        "action": "INITIATE_DEBIT_FREEZE_1930",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "SYNDICATE HUB: Mule risk 0.94. CRITICAL_FREEZE. Multiple NCRP complaints linked."
       }
     ],
     "final": [
       {
-        "action": "BLOCK_CARD",
-        "route": "L1",
-        "reason": "R2: High fraud confidence \u2014 card block required."
+        "action": "INITIATE_DEBIT_FREEZE_1930",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "Mule Account Hub. Named in 3 NCRP complaints across Patna+Gaya+Muzaffarpur. Sec 66D. Debit freeze executed."
       },
       {
-        "action": "CREATE_CASE",
-        "route": "auto",
-        "reason": "R2: Create formal fraud investigation case record."
+        "action": "ISSUE_BANK_NODAL_NOTICE",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "PNB nodal officer notice for account freeze + KYC retrieval for FIR"
+      },
+      {
+        "action": "FLAG_STR_FIU_IND",
+        "route": "AUTO",
+        "reason": "STR to FIU-IND: Multi-district mule hub. IMEI shared across 4 accounts. Organized syndicate."
+      },
+      {
+        "action": "REGISTER_FIR_SEC_66D",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "FIR registered Sec 66D IT Act - organized cybercrime syndicate operating mule network"
       }
     ],
-    "what_changed": "Initial action recommendations confirmed after completing evidence gathering."
+    "what_changed": "Autonomous investigation completed. All graph signals aggregated. Final disposition executed."
   },
   "sar": {
-    "file": false,
-    "reason": "",
-    "narrative": "",
-    "subjects": [],
-    "total_amount_usd": 0.0,
-    "activity_dates": []
+    "file": true,
+    "reason": "Mule account confirmed - STR filed under PMLA 2002",
+    "narrative": "MULE ACCOUNT HUB. Mule risk 0.94 CRITICAL_FREEZE. 3 NCRP complaints. IMEI shared x4. Debit freeze executed. STR filed. FIR Sec 66D registered.",
+    "subjects": [
+      "9123456789_PNB"
+    ],
+    "amount_inr": 4640,
+    "activity_dates": [
+      "2024-10-25"
+    ]
   },
-  "stop_reason": "Fraud probability 0.95 with 2 independent evidence pieces meets the confidence threshold.",
-  "tool_calls": 7,
+  "stop_reason": "MDL evidence sufficiency gate satisfied.",
+  "tool_calls": 8,
   "tokens": 0,
-  "latency_s": 8.02
+  "latency_s": 8.9
 }

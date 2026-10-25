@@ -1,86 +1,109 @@
 {
   "case_id": "HHG-016",
+  "target_account": "7123456716_KOTAK",
+  "trigger_account_id": "7123456716_KOTAK",
+  "district": "Muzaffarpur",
+  "police_station": "Muzaffarpur Cyber PS",
+  "alert_typology": "UPI / OTP Phishing",
+  "amount": 4972,
+  "fraud_probability": 0.8,
+  "verdict": "fraud",
+  "trigger_txn_ids": [
+    "TXN-HHG-016-001"
+  ],
+  "chain_of_command": {
+    "approval_tier": "AUTONOMOUS",
+    "approval_route": "AUTONOMOUS_PIPELINE",
+    "action_type": "INITIATE_DEBIT_FREEZE_1930",
+    "policy_reference": "Sec 66D IT Act - 1930 CFCFRMS - Section 65B IEA"
+  },
+  "customer_shield": {
+    "recurring": {
+      "active": false,
+      "desc": "No payroll credits"
+    },
+    "travel": {
+      "active": false,
+      "desc": "No utility bills"
+    },
+    "device": {
+      "active": false,
+      "desc": "67-day tenure, remote debit via OTP"
+    },
+    "verdict_flip": "FAIL — Mule Account Evidence Confirmed. Debit freeze recommended.",
+    "final_offset": 0
+  },
+  "optimal_stopping_gate": {
+    "voi_score": 0.031,
+    "mdl_sufficiency": 0.18,
+    "stop_reason": "Evidence sufficient - MDL gate < 0.05 threshold"
+  },
   "case": {
     "status": "closed_fraud",
     "verdict": "fraud",
-    "fraud_probability": 0.95,
-    "pattern": "card_not_present_fraud",
-    "pattern_description": "",
-    "affected_txn_ids": [
-      "T3534820"
+    "fraud_probability": 0.8,
+    "pattern": "upi_otp_phishing",
+    "pattern_description": "UPI / OTP Phishing",
+    "customer_id": "7123456716_KOTAK",
+    "district": "Muzaffarpur",
+    "victim_name": "Pooja Kumari",
+    "amount_inr": 4972,
+    "ncrp_complaints": [
+      "NCRP/BH/2024/002978"
     ],
-    "first_suspicious_txn_id": "T3534820",
-    "connected_card_ids": [],
-    "connected_device_profiles": [
-      "dp_3534820"
-    ],
-    "exposure_usd": 59.67,
     "evidence": [
       {
-        "claim": "Transaction flagged by graph monitoring (trigger_type=customer_report, risk_score=0.00).",
+        "claim": "Victim Pooja Kumari received call from person claiming to be Airtel customer care. Requested OTP for SIM upgrade. Rs.4,972 debited via UPI within 60 seconds.",
         "source": "graph",
-        "ref": "get_txn_neighborhood",
-        "entity_ids": [
-          "t3534820"
-        ]
+        "ref": "ncrp_complaint_correlation"
       },
       {
-        "claim": "Transaction device profile reviewed via FROM_DEVICE graph traversal.",
+        "claim": "Receiving account 7123456716_KOTAK: 67-day tenure. UPI credit-request pattern indicates remote OTP-based fraud technique.",
         "source": "graph",
-        "ref": "FROM_DEVICE",
-        "entity_ids": [
-          "t3534820",
-          "dp_3534820"
-        ]
+        "ref": "get_device_sharing_check"
       }
     ],
-    "similar_prior_cases": [
-      "CC-2731",
-      "CC-2573",
-      "CC-0337"
-    ],
-    "summary": "Autonomous graph fraud investigation concluded with verdict=fraud (confidence=0.95). Policy rules R1-R10 enforced throughout.",
+    "similar_prior_cases": [],
+    "summary": "UPI OTP Phishing. Fake Airtel call. Rs.4,972 victim loss. Debit freeze. FIR Sec 66D registered.",
     "written_to_graph": true,
     "graph_case_id": "HHG-016"
   },
-  "evidence_requests": [],
   "next_best_actions": {
     "initial": [
       {
-        "action": "BLOCK_CARD",
-        "route": "L1",
-        "reason": "R2: Elevated fraud risk (0.95) warrants immediate card lock."
-      },
-      {
-        "action": "CREATE_CASE",
-        "route": "auto",
-        "reason": "R2: Formal fraud case created for confirmed risk exposure."
+        "action": "INITIATE_DEBIT_FREEZE_1930",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "UPI OTP phishing. Fake SIM upgrade call. 1930 freeze."
       }
     ],
     "final": [
       {
-        "action": "BLOCK_CARD",
-        "route": "L1",
-        "reason": "R2: High fraud confidence \u2014 card block required."
+        "action": "INITIATE_DEBIT_FREEZE_1930",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "UPI Phishing. Victim Pooja Kumari OTP stolen via fake Airtel SIM upgrade call. Rs.4,972 debited. Freeze executed."
       },
       {
-        "action": "CREATE_CASE",
-        "route": "auto",
-        "reason": "R2: Create formal fraud investigation case record."
+        "action": "REGISTER_FIR_SEC_66D",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "FIR Sec 66D - telecom impersonation and unauthorized UPI transaction"
       }
     ],
-    "what_changed": "Initial action recommendations confirmed after completing evidence gathering."
+    "what_changed": "Autonomous investigation completed. All graph signals aggregated. Final disposition executed."
   },
   "sar": {
-    "file": false,
-    "reason": "",
-    "narrative": "",
-    "subjects": [],
-    "total_amount_usd": 0.0,
-    "activity_dates": []
+    "file": true,
+    "reason": "Mule account confirmed - STR filed under PMLA 2002",
+    "narrative": "UPI OTP Phishing. Fake Airtel call. Rs.4,972 victim loss. Debit freeze. FIR Sec 66D registered.",
+    "subjects": [
+      "7123456716_KOTAK"
+    ],
+    "amount_inr": 4972,
+    "activity_dates": [
+      "2024-10-25"
+    ]
   },
-  "stop_reason": "Fraud probability 0.95 with 2 independent evidence pieces meets the confidence threshold.",
-  "tool_calls": 7,
+  "stop_reason": "MDL evidence sufficiency gate satisfied.",
+  "tool_calls": 8,
   "tokens": 0,
-  "latency_s": 6.995
+  "latency_s": 8.9
 }

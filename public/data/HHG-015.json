@@ -1,101 +1,109 @@
 {
   "case_id": "HHG-015",
+  "target_account": "8012345615_AXIS",
+  "trigger_account_id": "8012345615_AXIS",
+  "district": "Gaya",
+  "police_station": "Gaya Cyber PS",
+  "alert_typology": "Fake Investment App Fraud",
+  "amount": 49995,
+  "fraud_probability": 0.89,
+  "verdict": "fraud",
+  "trigger_txn_ids": [
+    "TXN-HHG-015-001"
+  ],
+  "chain_of_command": {
+    "approval_tier": "AUTONOMOUS",
+    "approval_route": "AUTONOMOUS_PIPELINE",
+    "action_type": "INITIATE_DEBIT_FREEZE_1930",
+    "policy_reference": "Sec 66D IT Act - 1930 CFCFRMS - Section 65B IEA"
+  },
+  "customer_shield": {
+    "recurring": {
+      "active": false,
+      "desc": "No payroll credits"
+    },
+    "travel": {
+      "active": false,
+      "desc": "No utility payments"
+    },
+    "device": {
+      "active": false,
+      "desc": "41-day tenure"
+    },
+    "verdict_flip": "FAIL \u2014 Mule Account Evidence Confirmed. Debit freeze recommended.",
+    "final_offset": 0
+  },
+  "optimal_stopping_gate": {
+    "voi_score": 0.031,
+    "mdl_sufficiency": 0.18,
+    "stop_reason": "Evidence sufficient - MDL gate < 0.05 threshold"
+  },
   "case": {
     "status": "closed_fraud",
     "verdict": "fraud",
-    "fraud_probability": 0.88,
-    "pattern": "card_not_present_fraud",
-    "pattern_description": "",
-    "affected_txn_ids": [
-      "T3464869"
+    "fraud_probability": 0.89,
+    "pattern": "fake_investment_platform",
+    "pattern_description": "Fake Investment App Fraud",
+    "customer_id": "8012345615_AXIS",
+    "district": "Gaya",
+    "victim_name": "Santosh Kumar",
+    "amount_inr": 49995,
+    "ncrp_complaints": [
+      "NCRP/BH/2024/003890"
     ],
-    "first_suspicious_txn_id": "T3464869",
-    "connected_card_ids": [],
-    "connected_device_profiles": [
-      "dp_3464869"
-    ],
-    "exposure_usd": 599.94,
     "evidence": [
       {
-        "claim": "Transaction flagged by graph monitoring (trigger_type=risk_score, risk_score=0.77).",
+        "claim": "Victim Santosh Kumar invested Rs.49,995 in fake crypto platform showing 60% monthly returns. Platform disabled withdrawal after 2 months.",
         "source": "graph",
-        "ref": "get_txn_neighborhood",
-        "entity_ids": [
-          "t3464869"
-        ]
+        "ref": "ncrp_complaint_correlation"
       },
       {
-        "claim": "Transaction device profile reviewed via FROM_DEVICE graph traversal.",
+        "claim": "Account 8012345615_AXIS: 93.2% fund pass-through within 120 seconds. Layered through 2 intermediate accounts before ATM cashout in Gaya.",
         "source": "graph",
-        "ref": "FROM_DEVICE",
-        "entity_ids": [
-          "t3464869",
-          "dp_3464869"
-        ]
-      },
-      {
-        "claim": "Customer denied transaction authorization.",
-        "source": "customer",
-        "ref": "customer_inquiry_channel",
-        "entity_ids": [
-          "T3464869",
-          "C03042"
-        ]
+        "ref": "get_account_money_trail"
       }
     ],
-    "similar_prior_cases": [
-      "CC-3125",
-      "CC-2506",
-      "CC-2480"
-    ],
-    "summary": "Autonomous graph fraud investigation concluded with verdict=fraud (confidence=0.95). Policy rules R1-R10 enforced throughout.",
+    "similar_prior_cases": [],
+    "summary": "Fake Investment App Fraud. Rs.49,995 victim loss. Crypto platform. Debit freeze. STR filed.",
     "written_to_graph": true,
     "graph_case_id": "HHG-015"
   },
-  "evidence_requests": [
-    {
-      "type": "customer_validation",
-      "asked_after_step": 1,
-      "assumed_response": "Customer denies purchase; reports card details were compromised."
-    }
-  ],
   "next_best_actions": {
     "initial": [
       {
-        "action": "BLOCK_CARD",
-        "route": "L1",
-        "reason": "R2: Elevated fraud risk (0.77) warrants immediate card lock."
-      },
-      {
-        "action": "CREATE_CASE",
-        "route": "auto",
-        "reason": "R2: Formal fraud case created for confirmed risk exposure."
+        "action": "INITIATE_DEBIT_FREEZE_1930",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "High-value fake investment fraud Rs.49,995. 1930 freeze."
       }
     ],
     "final": [
       {
-        "action": "BLOCK_CARD",
-        "route": "L1",
-        "reason": "R2: High fraud confidence \u2014 card block required."
+        "action": "INITIATE_DEBIT_FREEZE_1930",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "Fake crypto investment platform. Rs.49,995. Debit freeze executed via CFCFRMS."
       },
       {
-        "action": "CREATE_CASE",
-        "route": "auto",
-        "reason": "R2: Create formal fraud investigation case record."
+        "action": "FLAG_STR_FIU_IND",
+        "route": "AUTO",
+        "reason": "STR filed - amount above Rs.10,000 threshold, fake investment platform fraud."
       }
     ],
-    "what_changed": "Initial action recommendations confirmed after completing evidence gathering."
+    "what_changed": "Autonomous investigation completed. All graph signals aggregated. Final disposition executed."
   },
   "sar": {
-    "file": false,
-    "reason": "",
-    "narrative": "",
-    "subjects": [],
-    "total_amount_usd": 0.0,
-    "activity_dates": []
+    "file": true,
+    "reason": "Mule account confirmed - STR filed under PMLA 2002",
+    "narrative": "Fake Investment App Fraud. Rs.49,995 victim loss. Crypto platform. Debit freeze. STR filed.",
+    "subjects": [
+      "8012345615_AXIS"
+    ],
+    "amount_inr": 49995,
+    "activity_dates": [
+      "2024-10-25"
+    ]
   },
-  "stop_reason": "A verification response settled the question.",
-  "tool_calls": 9,
+  "stop_reason": "MDL evidence sufficiency gate satisfied.",
+  "tool_calls": 8,
   "tokens": 0,
-  "latency_s": 8.551
+  "latency_s": 8.9
 }

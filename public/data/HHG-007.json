@@ -1,84 +1,109 @@
 {
   "case_id": "HHG-007",
+  "target_account": "8901234507_ICICI",
+  "trigger_account_id": "8901234507_ICICI",
+  "district": "Gaya",
+  "police_station": "Gaya Cyber PS",
+  "alert_typology": "UPI / OTP Phishing",
+  "amount": 9332,
+  "fraud_probability": 0.83,
+  "verdict": "fraud",
+  "trigger_txn_ids": [
+    "TXN-HHG-007-001"
+  ],
+  "chain_of_command": {
+    "approval_tier": "AUTONOMOUS",
+    "approval_route": "AUTONOMOUS_PIPELINE",
+    "action_type": "INITIATE_DEBIT_FREEZE_1930",
+    "policy_reference": "Sec 66D IT Act - 1930 CFCFRMS - Section 65B IEA"
+  },
+  "customer_shield": {
+    "recurring": {
+      "active": false,
+      "desc": "No payroll credits"
+    },
+    "travel": {
+      "active": false,
+      "desc": "No utility bills"
+    },
+    "device": {
+      "active": false,
+      "desc": "52-day tenure, new device profile"
+    },
+    "verdict_flip": "FAIL \u2014 Mule Account Evidence Confirmed. Debit freeze recommended.",
+    "final_offset": 0
+  },
+  "optimal_stopping_gate": {
+    "voi_score": 0.031,
+    "mdl_sufficiency": 0.18,
+    "stop_reason": "Evidence sufficient - MDL gate < 0.05 threshold"
+  },
   "case": {
     "status": "closed_fraud",
     "verdict": "fraud",
-    "fraud_probability": 0.87,
-    "pattern": "card_not_present_fraud",
-    "pattern_description": "",
-    "affected_txn_ids": [
-      "T3514948"
+    "fraud_probability": 0.83,
+    "pattern": "upi_otp_phishing",
+    "pattern_description": "UPI / OTP Phishing",
+    "customer_id": "8901234507_ICICI",
+    "district": "Gaya",
+    "victim_name": "Sunita Kumari",
+    "amount_inr": 9332,
+    "ncrp_complaints": [
+      "NCRP/BH/2024/002634"
     ],
-    "first_suspicious_txn_id": "T3514948",
-    "connected_card_ids": [],
-    "connected_device_profiles": [],
-    "exposure_usd": 111.92,
     "evidence": [
       {
-        "claim": "Transaction flagged by graph monitoring (trigger_type=risk_score, risk_score=0.87).",
+        "claim": "Victim Sunita Kumari received call claiming ICICI KYC expiry. Caller obtained OTP. Rs.9,332 debited via UPI within 40 seconds of OTP share.",
         "source": "graph",
-        "ref": "get_txn_neighborhood",
-        "entity_ids": [
-          "t3514948"
-        ]
+        "ref": "ncrp_complaint_correlation"
       },
       {
-        "claim": "Transaction device profile reviewed via FROM_DEVICE graph traversal.",
+        "claim": "Debit executed from new device profile (first login). Account 8901234507_ICICI created 52 days ago - no prior transaction history.",
         "source": "graph",
-        "ref": "FROM_DEVICE",
-        "entity_ids": [
-          "t3514948",
-          "none"
-        ]
+        "ref": "get_device_sharing_check"
       }
     ],
-    "similar_prior_cases": [
-      "CC-1769",
-      "CC-3955",
-      "CC-2573"
-    ],
-    "summary": "Autonomous graph fraud investigation concluded with verdict=fraud (confidence=0.95). Policy rules R1-R10 enforced throughout.",
+    "similar_prior_cases": [],
+    "summary": "UPI OTP Phishing. Rs.9,332 victim loss. Fake KYC call. OTP harvested. Debit freeze executed. FIR Sec 66D registered.",
     "written_to_graph": true,
     "graph_case_id": "HHG-007"
   },
-  "evidence_requests": [],
   "next_best_actions": {
     "initial": [
       {
-        "action": "BLOCK_CARD",
-        "route": "L1",
-        "reason": "R2: Elevated fraud risk (0.87) warrants immediate card lock."
-      },
-      {
-        "action": "CREATE_CASE",
-        "route": "auto",
-        "reason": "R2: Formal fraud case created for confirmed risk exposure."
+        "action": "INITIATE_DEBIT_FREEZE_1930",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "UPI OTP phishing confirmed. 1930 freeze protocol initiated."
       }
     ],
     "final": [
       {
-        "action": "BLOCK_CARD",
-        "route": "L1",
-        "reason": "R2: High fraud confidence \u2014 card block required."
+        "action": "INITIATE_DEBIT_FREEZE_1930",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "Sec 66D IT Act: OTP harvested via fake KYC call. Rs.9,332 debited without consent. Freeze executed."
       },
       {
-        "action": "CREATE_CASE",
-        "route": "auto",
-        "reason": "R2: Create formal fraud investigation case record."
+        "action": "REGISTER_FIR_SEC_66D",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "FIR under Sec 66D - electronic impersonation and fraudulent UPI debit"
       }
     ],
-    "what_changed": "Initial action recommendations confirmed after completing evidence gathering."
+    "what_changed": "Autonomous investigation completed. All graph signals aggregated. Final disposition executed."
   },
   "sar": {
-    "file": false,
-    "reason": "",
-    "narrative": "",
-    "subjects": [],
-    "total_amount_usd": 0.0,
-    "activity_dates": []
+    "file": true,
+    "reason": "Mule account confirmed - STR filed under PMLA 2002",
+    "narrative": "UPI OTP Phishing. Rs.9,332 victim loss. Fake KYC call. OTP harvested. Debit freeze executed. FIR Sec 66D registered.",
+    "subjects": [
+      "8901234507_ICICI"
+    ],
+    "amount_inr": 9332,
+    "activity_dates": [
+      "2024-10-25"
+    ]
   },
-  "stop_reason": "Fraud probability 0.87 with 2 independent evidence pieces meets the confidence threshold.",
-  "tool_calls": 7,
+  "stop_reason": "MDL evidence sufficiency gate satisfied.",
+  "tool_calls": 8,
   "tokens": 0,
-  "latency_s": 8.731
+  "latency_s": 8.9
 }
