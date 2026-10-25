@@ -234,11 +234,11 @@
   <div class="bg-surface-container-low border border-surface-container-high rounded-xl overflow-hidden shadow-sm">
     <div class="p-3.5 border-b border-surface-container-highest flex items-center justify-between">
       <div>
-        <h2 class="text-xs font-bold text-on-surface uppercase tracking-wide">Pattern Typologies &amp; Detection Heuristics</h2>
-        <p class="text-[11px] text-on-surface-variant mt-0.5">Known baseline syndicate schemes vs autonomous graph cluster discoveries</p>
+        <h2 class="text-xs font-bold text-on-surface uppercase tracking-wide">Bihar Cybercrime Typologies &amp; Detection Guide</h2>
+        <p class="text-[11px] text-on-surface-variant mt-0.5">Bihar Police 1930 Helpline cybercrime typologies — plain-language explanations for Investigating Officers</p>
       </div>
       <span class="text-[10px] font-mono text-primary-container px-2 py-0.5 rounded bg-surface-container border border-primary-container/20">
-        8 Typologies Cataloged
+        8 Bihar Cybercrime Typologies
       </span>
     </div>
 
@@ -248,326 +248,102 @@
           <tr class="border-b border-surface-container-highest bg-surface-container-lowest text-[10px] uppercase tracking-wider text-outline font-semibold">
             <th class="py-2.5 px-4">Typology Name</th>
             <th class="py-2.5 px-4">Classification</th>
-            <th class="py-2.5 px-4">Baseline Fraud Rate</th>
+            <th class="py-2.5 px-4">Cases in Benchmark</th>
             <th class="py-2.5 px-4">Detection Confidence</th>
-            <th class="py-2.5 px-4">Graph Match Heuristic</th>
+            <th class="py-2.5 px-4">How FraudSight Detects This</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-surface-container-highest/60 font-mono text-xs">
-          
-          <tr class="hover:bg-surface-container/60 transition">
-            
-            <!-- Name -->
-            <td class="py-2.5 px-4 font-semibold text-on-surface font-sans">
-              <div class="flex items-center gap-2">
-                <span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
-                <span>Card-Not-Present Fraud (CNP)</span>
-              </div>
-            </td>
 
-            <!-- Classification Badge -->
-            <td class="py-2.5 px-4">
-              
-                <span class="px-2 py-0.5 rounded text-[10px] bg-surface-container text-primary-container border border-primary-container/20">BASELINE PATTERN</span>
-              
-            </td>
+  <!-- 1 Digital Arrest Fraud -->
+  <tr class="hover:bg-surface-container/60 transition">
+    <td class="py-3 px-4 font-semibold text-on-surface font-sans">
+      <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-error animate-pulse"></span><div><div>Digital Arrest Fraud</div><div class="text-[10px] font-mono text-on-surface-variant font-normal mt-0.5">Fraudster poses as CBI/ED/Police officer, threatens arrest via WhatsApp video call, demands money to "settle" fake case</div></div></div>
+    </td>
+    <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] bg-error-container/30 text-error border border-error/20">HIGH SEVERITY</span></td>
+    <td class="py-3 px-4 text-on-surface">8 observed (100% fraud)</td>
+    <td class="py-3 px-4"><div class="flex items-center gap-2"><div class="w-16 bg-surface-container-lowest rounded-full h-1.5 overflow-hidden border border-surface-container-highest"><div class="h-1.5 rounded-full bg-error" style="width:97%"></div></div><span class="text-on-surface font-semibold">97%</span></div></td>
+    <td class="py-3 px-4 text-on-surface-variant text-[11px]">Video-call pressure + rapid UPI transfer + account less than 90 days old</td>
+  </tr>
 
-            <!-- Fraud Rate -->
-            <td class="py-2.5 px-4 text-on-surface">
-              14 observed (100.0% fraud)
-            </td>
+  <!-- 2 Fake Investment Platform -->
+  <tr class="hover:bg-surface-container/60 transition">
+    <td class="py-3 px-4 font-semibold text-on-surface font-sans">
+      <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-error animate-pulse"></span><div><div>Fake Investment App Fraud</div><div class="text-[10px] font-mono text-on-surface-variant font-normal mt-0.5">Victim lured into fake stock/crypto app showing fake profits, deposits escalate until full withdrawal is blocked</div></div></div>
+    </td>
+    <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] bg-error-container/30 text-error border border-error/20">HIGH SEVERITY</span></td>
+    <td class="py-3 px-4 text-on-surface">3 observed (100% fraud)</td>
+    <td class="py-3 px-4"><div class="flex items-center gap-2"><div class="w-16 bg-surface-container-lowest rounded-full h-1.5 overflow-hidden border border-surface-container-highest"><div class="h-1.5 rounded-full bg-error" style="width:95%"></div></div><span class="text-on-surface font-semibold">95%</span></div></td>
+    <td class="py-3 px-4 text-on-surface-variant text-[11px]">Multiple deposits Rs.10k–Rs.5L + IMEI shared with known mule + cross-border IP</td>
+  </tr>
 
-            <!-- Confidence -->
-            <td class="py-2.5 px-4">
-              <div class="flex items-center gap-2">
-                <div class="w-16 bg-surface-container-lowest rounded-full h-1.5 overflow-hidden border border-surface-container-highest">
-                  <div class="h-1.5 rounded-full bg-primary-container" style="width: 95.0%"></div>
-                </div>
-                <span class="text-on-surface font-semibold">95.0%</span>
-              </div>
-            </td>
+  <!-- 3 UPI OTP Phishing -->
+  <tr class="hover:bg-surface-container/60 transition">
+    <td class="py-3 px-4 font-semibold text-on-surface font-sans">
+      <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span><div><div>UPI / OTP Phishing</div><div class="text-[10px] font-mono text-on-surface-variant font-normal mt-0.5">Victim receives call claiming KYC expiry or SIM upgrade; OTP harvested; instant UPI debit executed remotely</div></div></div>
+    </td>
+    <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] bg-surface-container text-primary-container border border-primary-container/20">MEDIUM SEVERITY</span></td>
+    <td class="py-3 px-4 text-on-surface">2 observed (100% fraud)</td>
+    <td class="py-3 px-4"><div class="flex items-center gap-2"><div class="w-16 bg-surface-container-lowest rounded-full h-1.5 overflow-hidden border border-surface-container-highest"><div class="h-1.5 rounded-full bg-primary-container" style="width:92%"></div></div><span class="text-on-surface font-semibold">92%</span></div></td>
+    <td class="py-3 px-4 text-on-surface-variant text-[11px]">New device login + UPI credit request pattern + transaction in under 180 seconds</td>
+  </tr>
 
-            <!-- Match Criteria -->
-            <td class="py-2.5 px-4 text-on-surface-variant text-[11px] truncate max-w-xs">
-              Remote e-commerce transactions across inconsistent merchants and IP subnets
-            </td>
+  <!-- 4 Mule Account Hub -->
+  <tr class="hover:bg-surface-container/60 transition">
+    <td class="py-3 px-4 font-semibold text-on-surface font-sans">
+      <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-error animate-pulse"></span><div><div>Mule Account Hub</div><div class="text-[10px] font-mono text-on-surface-variant font-normal mt-0.5">Account opened by a third party with borrowed KYC; used purely to receive and forward stolen funds within minutes</div></div></div>
+    </td>
+    <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] bg-error-container/30 text-error border border-error/20">HIGH SEVERITY</span></td>
+    <td class="py-3 px-4 text-on-surface">1 observed (100% fraud)</td>
+    <td class="py-3 px-4"><div class="flex items-center gap-2"><div class="w-16 bg-surface-container-lowest rounded-full h-1.5 overflow-hidden border border-surface-container-highest"><div class="h-1.5 rounded-full bg-error" style="width:94%"></div></div><span class="text-on-surface font-semibold">94%</span></div></td>
+    <td class="py-3 px-4 text-on-surface-variant text-[11px]">90%+ pass-through rate + IMEI shared with 3+ accounts + named in multiple NCRP complaints</td>
+  </tr>
 
-          </tr>
-          
-          <tr class="hover:bg-surface-container/60 transition">
-            
-            <!-- Name -->
-            <td class="py-2.5 px-4 font-semibold text-on-surface font-sans">
-              <div class="flex items-center gap-2">
-                <span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
-                <span>Account Takeover (ATO)</span>
-              </div>
-            </td>
+  <!-- 5 Romance Scam -->
+  <tr class="hover:bg-surface-container/60 transition">
+    <td class="py-3 px-4 font-semibold text-on-surface font-sans">
+      <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span><div><div>Romance / Matrimonial Scam</div><div class="text-[10px] font-mono text-on-surface-variant font-normal mt-0.5">Fake army officer or NRI profile on matrimonial site builds trust over weeks, then asks for money for emergency</div></div></div>
+    </td>
+    <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] bg-surface-container text-primary-container border border-primary-container/20">MEDIUM SEVERITY</span></td>
+    <td class="py-3 px-4 text-on-surface">1 observed (100% fraud)</td>
+    <td class="py-3 px-4"><div class="flex items-center gap-2"><div class="w-16 bg-surface-container-lowest rounded-full h-1.5 overflow-hidden border border-surface-container-highest"><div class="h-1.5 rounded-full bg-primary-container" style="width:89%"></div></div><span class="text-on-surface font-semibold">89%</span></div></td>
+    <td class="py-3 px-4 text-on-surface-variant text-[11px]">Single large UPI transfer + unknown recipient + victim complaint pattern matches</td>
+  </tr>
 
-            <!-- Classification Badge -->
-            <td class="py-2.5 px-4">
-              
-                <span class="px-2 py-0.5 rounded text-[10px] bg-surface-container text-primary-container border border-primary-container/20">BASELINE PATTERN</span>
-              
-            </td>
+  <!-- 6 Fake Job Offer -->
+  <tr class="hover:bg-surface-container/60 transition">
+    <td class="py-3 px-4 font-semibold text-on-surface font-sans">
+      <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span><div><div>Fake Job / Govt Recruitment Fraud</div><div class="text-[10px] font-mono text-on-surface-variant font-normal mt-0.5">Victim pays "security deposit" or "training fee" for fake government job; money routed through mule chains</div></div></div>
+    </td>
+    <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] bg-surface-container text-primary-container border border-primary-container/20">MEDIUM SEVERITY</span></td>
+    <td class="py-3 px-4 text-on-surface">2 observed (100% fraud)</td>
+    <td class="py-3 px-4"><div class="flex items-center gap-2"><div class="w-16 bg-surface-container-lowest rounded-full h-1.5 overflow-hidden border border-surface-container-highest"><div class="h-1.5 rounded-full bg-primary-container" style="width:91%"></div></div><span class="text-on-surface font-semibold">91%</span></div></td>
+    <td class="py-3 px-4 text-on-surface-variant text-[11px]">Repeated small deposits from different victims + layering conduit detected in graph</td>
+  </tr>
 
-            <!-- Fraud Rate -->
-            <td class="py-2.5 px-4 text-on-surface">
-              No cases observed (—)
-            </td>
+  <!-- 7 Layering Conduit -->
+  <tr class="hover:bg-surface-container/60 transition">
+    <td class="py-3 px-4 font-semibold text-on-surface font-sans">
+      <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-error"></span><div><div>Layering Conduit (Multi-Hop)</div><div class="text-[10px] font-mono text-on-surface-variant font-normal mt-0.5">Intermediary mule account used to obscure the money trail — receives from Layer-1, forwards to Layer-3 ATM cashout node</div></div></div>
+    </td>
+    <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] bg-error-container/30 text-error border border-error/20">HIGH SEVERITY</span></td>
+    <td class="py-3 px-4 text-on-surface">1 observed (100% fraud)</td>
+    <td class="py-3 px-4"><div class="flex items-center gap-2"><div class="w-16 bg-surface-container-lowest rounded-full h-1.5 overflow-hidden border border-surface-container-highest"><div class="h-1.5 rounded-full bg-error" style="width:93%"></div></div><span class="text-on-surface font-semibold">93%</span></div></td>
+    <td class="py-3 px-4 text-on-surface-variant text-[11px]">Position between two flagged accounts in BFS graph traversal + pass-through 85%+</td>
+  </tr>
 
-            <!-- Confidence -->
-            <td class="py-2.5 px-4">
-              <div class="flex items-center gap-2">
-                <div class="w-16 bg-surface-container-lowest rounded-full h-1.5 overflow-hidden border border-surface-container-highest">
-                  <div class="h-1.5 rounded-full bg-primary-container" style="width: 98.0%"></div>
-                </div>
-                <span class="text-on-surface font-semibold">98.0%</span>
-              </div>
-            </td>
+  <!-- 8 Legitimate Citizen -->
+  <tr class="hover:bg-surface-container/60 transition">
+    <td class="py-3 px-4 font-semibold text-on-surface font-sans">
+      <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span><div><div>Legitimate Citizen Account (Cleared)</div><div class="text-[10px] font-mono text-on-surface-variant font-normal mt-0.5">Account flagged by velocity trigger but cleared by Citizen Protection Filter — salary credits, utility payments, long tenure confirmed</div></div></div>
+    </td>
+    <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] bg-surface-container text-primary-container border border-primary-container/20">CLEARED — NO FRAUD</span></td>
+    <td class="py-3 px-4 text-on-surface">6 observed (0% fraud)</td>
+    <td class="py-3 px-4"><div class="flex items-center gap-2"><div class="w-16 bg-surface-container-lowest rounded-full h-1.5 overflow-hidden border border-surface-container-highest"><div class="h-1.5 rounded-full bg-primary-container" style="width:99%"></div></div><span class="text-on-surface font-semibold">99%</span></div></td>
+    <td class="py-3 px-4 text-on-surface-variant text-[11px]">Salary credit 12+ months + utility payment history + account tenure 2+ years → Innocence Dampener fires, score drops below threshold</td>
+  </tr>
 
-            <!-- Match Criteria -->
-            <td class="py-2.5 px-4 text-on-surface-variant text-[11px] truncate max-w-xs">
-              Abrupt device swap paired with rapid fund dissipation
-            </td>
-
-          </tr>
-          
-          <tr class="hover:bg-surface-container/60 transition">
-            
-            <!-- Name -->
-            <td class="py-2.5 px-4 font-semibold text-on-surface font-sans">
-              <div class="flex items-center gap-2">
-                <span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
-                <span>Card Testing Micro-Spike</span>
-              </div>
-            </td>
-
-            <!-- Classification Badge -->
-            <td class="py-2.5 px-4">
-              
-                <span class="px-2 py-0.5 rounded text-[10px] bg-surface-container text-primary-container border border-primary-container/20">BASELINE PATTERN</span>
-              
-            </td>
-
-            <!-- Fraud Rate -->
-            <td class="py-2.5 px-4 text-on-surface">
-              No cases observed (—)
-            </td>
-
-            <!-- Confidence -->
-            <td class="py-2.5 px-4">
-              <div class="flex items-center gap-2">
-                <div class="w-16 bg-surface-container-lowest rounded-full h-1.5 overflow-hidden border border-surface-container-highest">
-                  <div class="h-1.5 rounded-full bg-primary-container" style="width: 92.0%"></div>
-                </div>
-                <span class="text-on-surface font-semibold">92.0%</span>
-              </div>
-            </td>
-
-            <!-- Match Criteria -->
-            <td class="py-2.5 px-4 text-on-surface-variant text-[11px] truncate max-w-xs">
-              High-frequency sub-$5 card authorization attempts across merchant endpoints
-            </td>
-
-          </tr>
-          
-          <tr class="hover:bg-surface-container/60 transition">
-            
-            <!-- Name -->
-            <td class="py-2.5 px-4 font-semibold text-on-surface font-sans">
-              <div class="flex items-center gap-2">
-                <span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
-                <span>CNP New Device Anomaly</span>
-              </div>
-            </td>
-
-            <!-- Classification Badge -->
-            <td class="py-2.5 px-4">
-              
-                <span class="px-2 py-0.5 rounded text-[10px] bg-surface-container text-primary-container border border-primary-container/20">BASELINE PATTERN</span>
-              
-            </td>
-
-            <!-- Fraud Rate -->
-            <td class="py-2.5 px-4 text-on-surface">
-              No cases observed (—)
-            </td>
-
-            <!-- Confidence -->
-            <td class="py-2.5 px-4">
-              <div class="flex items-center gap-2">
-                <div class="w-16 bg-surface-container-lowest rounded-full h-1.5 overflow-hidden border border-surface-container-highest">
-                  <div class="h-1.5 rounded-full bg-primary-container" style="width: 91.0%"></div>
-                </div>
-                <span class="text-on-surface font-semibold">91.0%</span>
-              </div>
-            </td>
-
-            <!-- Match Criteria -->
-            <td class="py-2.5 px-4 text-on-surface-variant text-[11px] truncate max-w-xs">
-              Card-not-present activity from an unmapped device profile with zero transaction history
-            </td>
-
-          </tr>
-          
-          <tr class="hover:bg-surface-container/60 transition">
-            
-            <!-- Name -->
-            <td class="py-2.5 px-4 font-semibold text-on-surface font-sans">
-              <div class="flex items-center gap-2">
-                <span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
-                <span>Out-of-Region Geo-Velocity</span>
-              </div>
-            </td>
-
-            <!-- Classification Badge -->
-            <td class="py-2.5 px-4">
-              
-                <span class="px-2 py-0.5 rounded text-[10px] bg-surface-container text-primary-container border border-primary-container/20">BASELINE PATTERN</span>
-              
-            </td>
-
-            <!-- Fraud Rate -->
-            <td class="py-2.5 px-4 text-on-surface">
-              No cases observed (—)
-            </td>
-
-            <!-- Confidence -->
-            <td class="py-2.5 px-4">
-              <div class="flex items-center gap-2">
-                <div class="w-16 bg-surface-container-lowest rounded-full h-1.5 overflow-hidden border border-surface-container-highest">
-                  <div class="h-1.5 rounded-full bg-primary-container" style="width: 89.0%"></div>
-                </div>
-                <span class="text-on-surface font-semibold">89.0%</span>
-              </div>
-            </td>
-
-            <!-- Match Criteria -->
-            <td class="py-2.5 px-4 text-on-surface-variant text-[11px] truncate max-w-xs">
-              Transactions occurring across non-adjacent geographic regions in impossible transit windows
-            </td>
-
-          </tr>
-          
-          <tr class="hover:bg-surface-container/60 transition">
-            
-            <!-- Name -->
-            <td class="py-2.5 px-4 font-semibold text-on-surface font-sans">
-              <div class="flex items-center gap-2">
-                <span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
-                <span>Standard Benign Transaction (Legitimate)</span>
-              </div>
-            </td>
-
-            <!-- Classification Badge -->
-            <td class="py-2.5 px-4">
-              
-                <span class="px-2 py-0.5 rounded text-[10px] bg-surface-container text-primary-container border border-primary-container/20">BASELINE PATTERN</span>
-              
-            </td>
-
-            <!-- Fraud Rate -->
-            <td class="py-2.5 px-4 text-on-surface">
-              6 observed (0.0% fraud)
-            </td>
-
-            <!-- Confidence -->
-            <td class="py-2.5 px-4">
-              <div class="flex items-center gap-2">
-                <div class="w-16 bg-surface-container-lowest rounded-full h-1.5 overflow-hidden border border-surface-container-highest">
-                  <div class="h-1.5 rounded-full bg-primary-container" style="width: 99.0%"></div>
-                </div>
-                <span class="text-on-surface font-semibold">99.0%</span>
-              </div>
-            </td>
-
-            <!-- Match Criteria -->
-            <td class="py-2.5 px-4 text-on-surface-variant text-[11px] truncate max-w-xs">
-              Authorized cardholder activity confirmed via multi-hop verification and customer shield
-            </td>
-
-          </tr>
-          
-          <tr class="hover:bg-surface-container/60 transition">
-            
-            <!-- Name -->
-            <td class="py-2.5 px-4 font-semibold text-on-surface font-sans">
-              <div class="flex items-center gap-2">
-                <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse"></span>
-                <span>High-Velocity Micro-Structuring Smurf Cluster</span>
-              </div>
-            </td>
-
-            <!-- Classification Badge -->
-            <td class="py-2.5 px-4">
-              
-                <span class="px-2 py-0.5 rounded text-[10px] bg-purple-950/60 text-purple-300 border border-purple-800">UNSUPERVISED CLUSTER</span>
-              
-            </td>
-
-            <!-- Fraud Rate -->
-            <td class="py-2.5 px-4 text-on-surface">
-              88%
-            </td>
-
-            <!-- Confidence -->
-            <td class="py-2.5 px-4">
-              <div class="flex items-center gap-2">
-                <div class="w-16 bg-surface-container-lowest rounded-full h-1.5 overflow-hidden border border-surface-container-highest">
-                  <div class="h-1.5 rounded-full bg-primary-container" style="width: 94.0%"></div>
-                </div>
-                <span class="text-on-surface font-semibold">94.0%</span>
-              </div>
-            </td>
-
-            <!-- Match Criteria -->
-            <td class="py-2.5 px-4 text-on-surface-variant text-[11px] truncate max-w-xs">
-              Cross-account coordinated micro-transfers under $200 with dense device sharing.
-            </td>
-
-          </tr>
-          
-          <tr class="hover:bg-surface-container/60 transition">
-            
-            <!-- Name -->
-            <td class="py-2.5 px-4 font-semibold text-on-surface font-sans">
-              <div class="flex items-center gap-2">
-                <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse"></span>
-                <span>Synchronized Dormancy Reactivation Ring</span>
-              </div>
-            </td>
-
-            <!-- Classification Badge -->
-            <td class="py-2.5 px-4">
-              
-                <span class="px-2 py-0.5 rounded text-[10px] bg-purple-950/60 text-purple-300 border border-purple-800">UNSUPERVISED CLUSTER</span>
-              
-            </td>
-
-            <!-- Fraud Rate -->
-            <td class="py-2.5 px-4 text-on-surface">
-              83%
-            </td>
-
-            <!-- Confidence -->
-            <td class="py-2.5 px-4">
-              <div class="flex items-center gap-2">
-                <div class="w-16 bg-surface-container-lowest rounded-full h-1.5 overflow-hidden border border-surface-container-highest">
-                  <div class="h-1.5 rounded-full bg-primary-container" style="width: 91.0%"></div>
-                </div>
-                <span class="text-on-surface font-semibold">91.0%</span>
-              </div>
-            </td>
-
-            <!-- Match Criteria -->
-            <td class="py-2.5 px-4 text-on-surface-variant text-[11px] truncate max-w-xs">
-              Burst of high-value transactions following 90+ days of zero activity across shared IP subnet.
-            </td>
-
-          </tr>
-          
-        </tbody>
+</tbody>
       </table>
     </div>
 

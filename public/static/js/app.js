@@ -292,7 +292,7 @@ async function populateCaseDropdown() {
                     opt.value = c.case_id;
                     const isLegit = c.verdict === 'legitimate' || c.status === 'closed_legitimate';
                     const tag = isLegit ? '✓ Legitimate' : 'Fraud';
-                    const exp = c.exposure_usd !== undefined ? `$${Number(c.exposure_usd).toFixed(2)}` : '$0.00';
+                    const expInr = c.exposure_usd !== undefined ? Math.round(Number(c.exposure_usd) * 83.5) : 0; const exp = `Rs.${expInr.toLocaleString('en-IN')}`;
                     opt.textContent = `${c.case_id} — ${tag} (${exp})`;
                     sel.appendChild(opt);
                 });
@@ -396,9 +396,9 @@ async function loadBenchmarkCase(caseInput) {
         // Update Metadata Micro-Strip (Bug fix: separate account and typology)
         const metaAcc = document.getElementById('meta-acc');
         const acct = data.target_account || data.trigger_account_id || data.customer_id || (data.case && (data.case.customer_id || data.case.card_id)) || 'C13487';
-        const amt = data.amount !== undefined ? data.amount : (data.case && data.case.exposure_usd !== undefined ? data.case.exposure_usd : 0);
+        const amt = data.amount !== undefined ? data.amount : (data.case && data.case.exposure_usd !== undefined ? data.case.exposure_usd * 83.5 : 0);
         if (metaAcc) {
-            metaAcc.textContent = `${acct} ($${Number(amt).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})})`;
+            const amtInr = Math.round(Number(amt) * 83.5); metaAcc.textContent = `${acct} (Rs.${amtInr.toLocaleString("en-IN")})`;
         }
         const metaNode = document.getElementById('meta-node');
         if (metaNode) {
@@ -425,7 +425,7 @@ async function loadBenchmarkCase(caseInput) {
         const actType = coc.action_type || (finalAct ? finalAct.action : 'CLOSE_NO_FRAUD');
         if (cocAction) {
             cocAction.textContent = actType;
-            if (actType === 'FREEZE_ACCOUNT' || actType === 'TIER_4_BLOCK' || actType === 'BLOCK_CARD' || actType === 'FILE_REPORT') {
+            if (actType === 'FREEZE_ACCOUNT' || actType === 'TIER_4_BLOCK' || actType === 'INITIATE_DEBIT_FREEZE_1930' || actType === 'REGISTER_FIR_SEC_66D' || actType === 'FLAG_STR_FIU_IND') {
                 cocAction.className = 'text-error font-semibold';
             } else {
                 cocAction.className = 'text-primary-container font-semibold';
@@ -541,8 +541,8 @@ function populateStreamLogs(data, completed = false) {
     const logsEl = document.getElementById('stream-terminal-logs');
     if (!logsEl) return;
 
-    const amtVal = data.amount !== undefined ? data.amount : (data.case && data.case.exposure_usd !== undefined ? data.case.exposure_usd : 0);
-    const t = Number(amtVal).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    const amtVal = data.amount !== undefined ? data.amount : (data.case && data.case.exposure_usd !== undefined ? data.case.exposure_usd * 83.5 : 0);
+    const t = Math.round(Number(amtVal)).toLocaleString('en-IN');
     const fProb = data.fraud_probability !== undefined ? data.fraud_probability : (data.case ? data.case.fraud_probability : 0.05);
     const isFraud = fProb >= 0.70;
     const isLegit = !isFraud;
@@ -552,9 +552,9 @@ function populateStreamLogs(data, completed = false) {
     const voi = data.optimal_stopping_gate || data.s09_voi_gate || {};
 
     let html = `
-        <div><span class="text-outline">[00:00.02]</span> <span class="text-primary-container">[INGEST]</span>: Ingested alert on Account ${acct} ($${t})</div>
+        <div><span class="text-outline">[00:00.02]</span> <span class="text-primary-container">[INGEST]</span>: Ingested alert on Account ${acct} (Rs.${Math.round(Number(amtVal)*83.5).toLocaleString("en-IN")})</div>
         <div><span class="text-outline">[00:00.14]</span> <span class="text-primary-fixed-dim">[TRAVERSAL]</span>: GSQL 2-hop traversal verified topological neighborhood around ${acct}</div>
-        <div><span class="text-outline">[00:00.28]</span> <span class="${isLegit ? 'text-primary-container' : 'text-error'}">[CUSTOMER_FILTER]</span>: Recurring=${shield.recurring?.active ? 'Yes' : 'No'}, Travel=${shield.travel?.active ? 'Yes' : 'No'}, Device=${shield.device?.active ? 'Trusted' : 'Untrusted'} (Verdict: ${isLegit ? 'Pass' : 'Exemption Denied'})</div>
+        <div><span class="text-outline">[00:00.28]</span> <span class="${isLegit ? 'text-primary-container' : 'text-error'}">[CITIZEN_FILTER]</span>: Salary=${shield.recurring?.active ? 'Yes' : 'No'}, Utility=${shield.travel?.active ? 'Yes' : 'No'}, Tenure=${shield.device?.active ? '2+yr' : 'New'} (Citizen Check: ${isLegit ? 'PASS — Account Cleared' : 'FAIL — Mule Evidence Confirmed'})</div>
         <div><span class="text-outline">[00:00.35]</span> <span class="text-primary">[STOPPING_GATE]</span>: Value of Information ${Number(voi.voi_score || 0.012).toFixed(3)} &lt; 0.05 threshold &rarr; Evidence sufficient</div>
     `;
 
@@ -562,7 +562,7 @@ function populateStreamLogs(data, completed = false) {
         if (isFraud) {
             html += `<div><span class="text-outline">[00:00.41]</span> <span class="text-error font-bold">[DISPOSITION]</span>: TIER 4 BLOCK &amp; I4C 1930 / Sec 66D IT Act Evidentiary Dossier Generated</div>`;
         } else {
-            html += `<div><span class="text-outline">[00:00.41]</span> <span class="text-primary-container font-bold">[DISPOSITION]</span>: CUSTOMER VERIFICATION CONFIRMED &rarr; CLOSE_NO_FRAUD</div>`;
+            html += `<div><span class="text-outline">[00:00.41]</span> <span class="text-primary-container font-bold">[DISPOSITION]</span>: CITIZEN ACCOUNT CLEARED &rarr; No fraud evidence — Account remains active</div>`;
         }
     }
 
@@ -652,8 +652,8 @@ async function runLiveAutonomousInvestigationTrace() {
     const cid = currentCaseId || 'HHG-014';
     const acct = data.target_account || data.trigger_account_id || data.customer_id || inner.customer_id || 'C13487';
     const txn = (data.trigger_txn_ids && data.trigger_txn_ids[0]) || inner.first_suspicious_txn_id || 'T3478561';
-    const amt = data.amount !== undefined ? data.amount : (inner.exposure_usd !== undefined ? inner.exposure_usd : 74.96);
-    const amtStr = Number(amt).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    const amt = data.amount !== undefined ? data.amount : (inner.exposure_usd !== undefined ? inner.exposure_usd : 0.0);
+    const amtStr = Math.round(Number(amt)*83.5).toLocaleString("en-IN");
     const risk = (data.fraud_probability !== undefined) ? data.fraud_probability : (inner.fraud_probability !== undefined ? inner.fraud_probability : 0.85);
     const isFraud = (data.verdict === 'fraud' || inner.verdict === 'fraud' || risk >= 0.70);
     const shield = data.customer_shield || data.s18_overblocking_shield || {};
@@ -672,7 +672,7 @@ async function runLiveAutonomousInvestigationTrace() {
     
     // Step 1: Ingest
     await new Promise(r => setTimeout(r, 350));
-    appendLog('00:00.08', 'INGEST', `Ingested alert on Account ${acct} ($${amtStr}) — ML Risk Score: ${(risk * 100).toFixed(1)}%`, 'text-primary-container');
+    const amtInrLive = Math.round(Number(amt)*83.5); appendLog('00:00.08', 'INGEST', `Received 1930 complaint — Account ${acct} — Victim Loss: Rs.${amtInrLive.toLocaleString("en-IN")} — Mule Risk: ${(risk * 100).toFixed(1)}%`, 'text-primary-container');
 
     // Step 2: Topological Traversal
     await new Promise(r => setTimeout(r, 450));
@@ -692,7 +692,7 @@ async function runLiveAutonomousInvestigationTrace() {
     const trv = shield.travel?.active ? 'Yes' : 'No';
     const dev = shield.device?.active ? 'Trusted' : 'Untrusted';
     const passShield = !isFraud;
-    appendLog('00:00.44', 'CUSTOMER_FILTER', `Recurring=${rec}, Travel=${trv}, Device=${dev} (Customer Shield: ${passShield ? 'PASS (Exemption Granted)' : 'FAIL (Exemption Denied)'})`, passShield ? 'text-primary-container' : 'text-error');
+    appendLog('00:00.44', 'CITIZEN_FILTER', `Salary Credits=${rec}, Utility Bills=${trv}, Account Tenure=${dev} — Citizen Protection: ${passShield ? 'PASS (Account Cleared)' : 'FAIL (Mule Evidence Stands)'}`, passShield ? 'text-primary-container' : 'text-error');
 
     // Step 5: MDL Stopping Gate
     await new Promise(r => setTimeout(r, 400));
@@ -702,15 +702,15 @@ async function runLiveAutonomousInvestigationTrace() {
     // Step 6: Final Decision
     await new Promise(r => setTimeout(r, 400));
     if (isFraud) {
-        appendLog('00:00.68', 'DISPOSITION', `CONFIRMED FRAUD: Escalated to TIER 4 BLOCK & I4C 1930 / Sec 66D IT Act Evidentiary Dossier Generated.`, 'text-error font-bold');
+        appendLog('00:00.68', 'DISPOSITION', `MULE ACCOUNT CONFIRMED: INITIATE_DEBIT_FREEZE_1930 executed. Sec 66D IT Act Evidentiary Dossier Generated for I4C / FIU-IND.`, 'text-error font-bold');
         if (badge) {
-            badge.textContent = 'CONFIRMED FRAUD — SAR FILED';
+            badge.textContent = 'MULE ACCOUNT — INITIATE_DEBIT_FREEZE_1930';
             badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-error-container/20 text-error border border-error/40 font-semibold';
         }
     } else {
-        appendLog('00:00.68', 'DISPOSITION', `CLOSE_NO_FRAUD: Legitimate cardholder activity confirmed via Customer Protection Shield.`, 'text-primary-container font-bold');
+        appendLog('00:00.68', 'DISPOSITION', `CLOSE_NO_FRAUD: Legitimate citizen account confirmed. Citizen Protection Shield verified — account cleared.`, 'text-primary-container font-bold');
         if (badge) {
-            badge.textContent = 'LEGITIMATE ACTIVITY — TRANSACTION ALLOWED';
+            badge.textContent = 'CLEARED — LEGITIMATE CITIZEN ACCOUNT';
             badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-surface-container-high text-primary-container border border-primary-container/30 font-semibold';
         }
     }
@@ -901,7 +901,7 @@ function applyFinalDispositionBadge(liveVerdict) {
     );
 
     if (isLegitimate) {
-        badge.textContent = 'LEGITIMATE ACTIVITY — TRANSACTION ALLOWED';
+        badge.textContent = 'CLEARED — LEGITIMATE CITIZEN ACCOUNT';
         badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-surface-container-high text-primary-container border border-primary-container/30 font-semibold';
     } else if (verdictStr === 'unknown') {
         badge.textContent = 'INVESTIGATION COMPLETE — VERDICT PENDING';
