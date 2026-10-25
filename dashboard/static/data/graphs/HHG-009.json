@@ -1,0 +1,136 @@
+{
+  "elements": [
+    {
+      "data": {
+        "id": "3019283746_AXIS",
+        "label": "Mule Account\n3019283746_AXIS",
+        "type": "account",
+        "role": "Flagged Mule Account (Patna)",
+        "color": "#ef4444",
+        "shape": "ellipse"
+      }
+    },
+    {
+      "data": {
+        "id": "Victim_HHG-009",
+        "label": "Victim\nNeha Sharma (Patna)",
+        "type": "customer",
+        "role": "Victim (Coerced Transfer)",
+        "color": "#10b981",
+        "shape": "hexagon"
+      }
+    },
+    {
+      "data": {
+        "id": "TXN-HHG-009-001",
+        "label": "Txn: Rs.2,502\nMatrimonial Scam (Fa...",
+        "type": "transaction",
+        "role": "Cybercrime Proceeds (Rs.2,502)",
+        "amount": 2502,
+        "risk": 0.94,
+        "color": "#ef4444",
+        "shape": "diamond"
+      }
+    },
+    {
+      "data": {
+        "id": "2019283746_IDFC (Gaya)",
+        "label": "Mule L2\n2019283746_IDFC (Gaya)",
+        "type": "account",
+        "role": "Layer-2 Siphon Conduit",
+        "color": "#f97316",
+        "shape": "ellipse"
+      }
+    },
+    {
+      "data": {
+        "id": "IMEI: 864910283746592",
+        "label": "Shared Hardware\nIMEI: 864910283746592",
+        "type": "device",
+        "role": "Hardware Profile (Linked to 4+ Syndicate Accounts)",
+        "color": "#fbbf24",
+        "shape": "round-rectangle"
+      }
+    },
+    {
+      "data": {
+        "id": "NCRP/BH/2024/009182",
+        "label": "1930 Portal\nNCRP/BH/2024/009182",
+        "type": "prior_case",
+        "role": "National Cybercrime Portal Complaint",
+        "color": "#ec4899",
+        "shape": "round-diamond"
+      }
+    },
+    {
+      "data": {
+        "id": "IP_HHG-009",
+        "label": "VPN/Proxy Node\n103.211.x.x (Patna)",
+        "type": "ip",
+        "role": "Syndicate Infrastructure",
+        "color": "#c084fc",
+        "shape": "hexagon"
+      }
+    },
+    {
+      "data": {
+        "id": "e_made_Victim_HHG-009_TXN-HHG-009-001",
+        "source": "Victim_HHG-009",
+        "target": "TXN-HHG-009-001",
+        "label": "COERCED_PAYMENT",
+        "color": "#10b981",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_to_TXN-HHG-009-001_3019283746_AXIS",
+        "source": "TXN-HHG-009-001",
+        "target": "3019283746_AXIS",
+        "label": "CREDITED_TO",
+        "color": "#ef4444",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_layer_3019283746_AXIS_2019283746_IDFC (Gaya)",
+        "source": "3019283746_AXIS",
+        "target": "2019283746_IDFC (Gaya)",
+        "label": "LAYERED_TO",
+        "color": "#f97316",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_dev_3019283746_AXIS_IMEI: 864910283746592",
+        "source": "3019283746_AXIS",
+        "target": "IMEI: 864910283746592",
+        "label": "OPERATED_FROM",
+        "color": "#fbbf24",
+        "style": "dashed"
+      }
+    },
+    {
+      "data": {
+        "id": "e_ncrp_3019283746_AXIS_NCRP/BH/2024/009182",
+        "source": "3019283746_AXIS",
+        "target": "NCRP/BH/2024/009182",
+        "label": "LINKED_NCRP_1930",
+        "color": "#ec4899",
+        "style": "dotted"
+      }
+    },
+    {
+      "data": {
+        "id": "e_ip_3019283746_AXIS_IP_HHG-009",
+        "source": "3019283746_AXIS",
+        "target": "IP_HHG-009",
+        "label": "CO_LOCATED_IP",
+        "color": "#c084fc",
+        "style": "dotted"
+      }
+    }
+  ]
+}

@@ -810,10 +810,10 @@ async def get_all_cases_tg(limit: int = 50) -> List[Dict[str, Any]]:
                         "verdict": "uncertain",
                         "risk_level": "HIGH" if r_score >= 0.70 else "MEDIUM",
                         "fraud_probability": r_score,
-                        "pattern": "card_not_present_fraud",
-                        "trigger_type": "card_not_present_fraud",
+                        "pattern": "digital_arrest_fraud",
+                        "trigger_type": "digital_arrest_fraud",
                         "exposure_usd": 150.0,
-                        "final_action": "VERIFY_WITH_CUSTOMER",
+                        "final_action": "RUN_CITIZEN_PROTECTION_FILTER",
                         "final_route": "auto",
                         "sar_file": False,
                         "created_at": row.get("opened_at", "2016-12-05 01:55:28"),
@@ -954,6 +954,9 @@ async def get_case_detail_tg(case_id: str) -> Dict[str, Any]:
                 mdl_val = round(0.20 + 0.10 * (f_prob - 0.70) / 0.30, 3)
                 uncertainty_val = round(max(0.05, min(0.18, 0.15 * (1.0 - (len(evidence_list) / 10)))), 3)
 
+            amt_val = data.get("amount", c.get("amount", float(c.get("exposure_usd", 0.0))))
+            tgt_acct = data.get("target_account") or data.get("trigger_account_id") or real_customer
+            typ_desc = data.get("alert_typology") or c.get("pattern_description") or c.get("pattern", "none")
             return {
                 "case_id": data.get("case_id", case_id),
                 "status": c.get("status", "closed_fraud"),
@@ -961,13 +964,14 @@ async def get_case_detail_tg(case_id: str) -> Dict[str, Any]:
                 "risk_level": risk_lvl,
                 "fraud_probability": f_prob,
                 "pattern": c.get("pattern", "none"),
-                "pattern_description": c.get("pattern_description", ""),
+                "pattern_description": typ_desc,
                 "exposure_usd": float(c.get("exposure_usd", 0.0)),
-                "amount": float(c.get("exposure_usd", 0.0)),
-                "target_account": real_customer,
-                "customer_id": real_customer,
+                "amount": amt_val,
+                "amount_inr": amt_val,
+                "target_account": tgt_acct,
+                "customer_id": tgt_acct,
                 "card_id": real_card,
-                "alert_typology": c.get("pattern_description") or c.get("pattern", "none"),
+                "alert_typology": typ_desc,
                 "opened_at": real_opened,
                 "first_suspicious_txn_id": first_txn,
                 "connected_card_ids": c.get("connected_card_ids", []),
@@ -1033,7 +1037,7 @@ async def get_case_detail_tg(case_id: str) -> Dict[str, Any]:
         "verdict": "fraud",
         "risk_level": "CRITICAL",
         "fraud_probability": 0.92,
-        "pattern": "card_not_present_new_device",
+        "pattern": "digital_arrest_fraud",
         "exposure_usd": 1250.0,
         "opened_at": "2026-09-20T12:00:00Z",
         "sar_required": True,
@@ -1042,7 +1046,7 @@ async def get_case_detail_tg(case_id: str) -> Dict[str, Any]:
             {"claim": "Transaction made from new device profile with foreign proxy", "source": "graph", "ref": "FROM_DEVICE"}
         ],
         "actions_final": [
-            {"action": "BLOCK_CARD", "route": "L1", "reason": "R2: Customer denies transaction"},
+            {"action": "INITIATE_DEBIT_FREEZE_1930", "route": "L1", "reason": "Sec 66D IT Act: 1930 golden-hour debit freeze"},
             {"action": "FILE_REPORT", "route": "L2", "reason": "R2: Exposure > $1,000"}
         ],
         "case_summary": "Autonomous investigation verified card compromise via unrecognized device.",
@@ -1052,10 +1056,20 @@ async def get_case_detail_tg(case_id: str) -> Dict[str, Any]:
 
 async def get_case_network_tg(case_id: str) -> Dict[str, Any]:
     """
-    Build Cytoscape.js network graph format strictly adhering to real schema and ground-truth data:
-    Vertices: Customer (hexagon), Card (ellipse), Transaction (diamond), DeviceProfile (round-rectangle), PriorCase (round-diamond)
-    Edges: OWNS, MADE, FROM_DEVICE, NEXT, SIMILAR_TO
+    Build Cytoscape.js network graph format adhering to real Bihar Police Cybercrime schema:
+    Returns pre-built high-fidelity Indian cybercrime graph if available.
     """
+    norm = case_id.upper().strip()
+    if not norm.startswith("HHG-") and norm.isdigit():
+        norm = f"HHG-{int(norm):03d}"
+    elif norm.startswith("CASE_"):
+        norm = f"HHG-{int(norm.replace('CASE_', '')):03d}"
+    for gp in [Path(f"public/data/graphs/{norm}.json"), Path(f"dashboard/static/data/graphs/{norm}.json")]:
+        if gp.exists():
+            try:
+                return json.loads(gp.read_text(encoding="utf-8"))
+            except Exception:
+                pass
     detail = await get_case_detail_tg(case_id)
     cid = detail.get("case_id", case_id)
 

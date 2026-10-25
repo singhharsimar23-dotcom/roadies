@@ -1,0 +1,96 @@
+{
+  "elements": [
+    {
+      "data": {
+        "id": "Ramashray Prasad (Bhagalpur)",
+        "label": "Citizen\nRamashray Prasad (Bhagalpur)",
+        "type": "customer",
+        "role": "Verified Legitimate Citizen",
+        "color": "#10b981",
+        "shape": "hexagon"
+      }
+    },
+    {
+      "data": {
+        "id": "2019283746_SBI",
+        "label": "Bank Account\n2019283746_SBI",
+        "type": "account",
+        "role": "Primary Bank Account (3+ Yr Clean)",
+        "color": "#3b82f6",
+        "shape": "ellipse"
+      }
+    },
+    {
+      "data": {
+        "id": "Emp_HHG-017",
+        "label": "Salary / Source\nIndian Railways Pension (EPFO)",
+        "type": "device",
+        "role": "Verified Institutional Source",
+        "color": "#10b981",
+        "shape": "round-rectangle"
+      }
+    },
+    {
+      "data": {
+        "id": "Util_HHG-017",
+        "label": "Utility Billing\nBhagalpur Municipal Tax & Power",
+        "type": "device",
+        "role": "Regular Utility Verification",
+        "color": "#00f2fe",
+        "shape": "round-rectangle"
+      }
+    },
+    {
+      "data": {
+        "id": "TXN-HHG-017-001",
+        "label": "Routine UPI: Rs.500\nClean Merchant Txn",
+        "type": "transaction",
+        "role": "Routine Everyday UPI Payment",
+        "amount": 500,
+        "risk": 0.04,
+        "color": "#10b981",
+        "shape": "diamond"
+      }
+    },
+    {
+      "data": {
+        "id": "e_owns_Ramashray Prasad (Bhagalpur)_2019283746_SBI",
+        "source": "Ramashray Prasad (Bhagalpur)",
+        "target": "2019283746_SBI",
+        "label": "OWNS",
+        "color": "#10b981",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_sal_Emp_HHG-017_2019283746_SBI",
+        "source": "Emp_HHG-017",
+        "target": "2019283746_SBI",
+        "label": "SALARY_CREDIT",
+        "color": "#10b981",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_util_2019283746_SBI_Util_HHG-017",
+        "source": "2019283746_SBI",
+        "target": "Util_HHG-017",
+        "label": "PAID_UTILITY",
+        "color": "#00f2fe",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_txn_2019283746_SBI_TXN-HHG-017-001",
+        "source": "2019283746_SBI",
+        "target": "TXN-HHG-017-001",
+        "label": "ROUTINE_UPI",
+        "color": "#3b82f6",
+        "style": "solid"
+      }
+    }
+  ]
+}

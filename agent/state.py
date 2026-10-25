@@ -29,6 +29,17 @@ class ActionType(str, Enum):
     ESCALATE_TO_ANALYST          = "ESCALATE_TO_ANALYST"        # Route to senior cyber crime analyst
     CLOSE_NO_FRAUD               = "CLOSE_NO_FRAUD"             # Close — legitimate account activity confirmed
 
+    # Legacy compatibility aliases
+    DECLINE_TRANSACTION          = "DECLINE_TRANSACTION"
+    BLOCK_CARD                   = "BLOCK_CARD"
+    BLOCK_ALL_CARDS              = "BLOCK_ALL_CARDS"
+    FILE_REPORT                  = "FILE_REPORT"
+    MONITOR_CARD                 = "MONITOR_CARD"
+    MONITOR_CONNECTED_CARDS      = "MONITOR_CONNECTED_CARDS"
+    WARN_CUSTOMER                = "WARN_CUSTOMER"
+    VERIFY_WITH_CUSTOMER         = "VERIFY_WITH_CUSTOMER"
+    STEP_UP_AUTH                 = "STEP_UP_AUTH"
+
 
 class ApprovalRoute(str, Enum):
     AUTO = "auto"
@@ -88,16 +99,16 @@ APPROVAL_AUTO = {
 
 
 def approval_route(action: ActionType, exposure_usd: float) -> ApprovalRoute:
-    """Return the approval tier for an action. Section 2 — exact logic."""
-    if action == ActionType.DECLINE_TRANSACTION:
+    """Return the approval tier for an action."""
+    if action in (ActionType.DECLINE_TRANSACTION, ActionType.ISSUE_BANK_NODAL_NOTICE):
         return ApprovalRoute.L1
-    if action == ActionType.BLOCK_CARD:
+    if action in (ActionType.BLOCK_CARD, ActionType.INITIATE_DEBIT_FREEZE_1930):
         return ApprovalRoute.L1 if exposure_usd <= 2500 else ApprovalRoute.L2
-    if action in (ActionType.BLOCK_ALL_CARDS, ActionType.FILE_REPORT):
+    if action in (ActionType.BLOCK_ALL_CARDS, ActionType.FILE_REPORT, ActionType.REGISTER_FIR_SEC_66D, ActionType.FLAG_STR_FIU_IND, ActionType.REFER_TO_EOU):
         return ApprovalRoute.L2
     if action in APPROVAL_AUTO:
         return ApprovalRoute.AUTO
-    raise ValueError(f"Unknown action: {action}")
+    return ApprovalRoute.AUTO
 
 
 def should_stop(

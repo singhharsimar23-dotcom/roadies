@@ -1,0 +1,109 @@
+{
+  "case_id": "HHG-003",
+  "target_account": "9123456783_HDFC",
+  "trigger_account_id": "9123456783_HDFC",
+  "district": "Patna",
+  "police_station": "Patna Cyber PS",
+  "alert_typology": "Digital Arrest Fraud",
+  "amount": 4083,
+  "fraud_probability": 0.82,
+  "verdict": "fraud",
+  "trigger_txn_ids": [
+    "TXN-HHG-003-001"
+  ],
+  "chain_of_command": {
+    "approval_tier": "AUTONOMOUS",
+    "approval_route": "AUTONOMOUS_PIPELINE",
+    "action_type": "INITIATE_DEBIT_FREEZE_1930",
+    "policy_reference": "Sec 66D IT Act - 1930 CFCFRMS - Section 65B IEA"
+  },
+  "customer_shield": {
+    "recurring": {
+      "active": false,
+      "desc": "No payroll credits"
+    },
+    "travel": {
+      "active": false,
+      "desc": "No utility payments"
+    },
+    "device": {
+      "active": false,
+      "desc": "45-day account tenure"
+    },
+    "verdict_flip": "FAIL \u2014 Mule Account Evidence Confirmed. Debit freeze recommended.",
+    "final_offset": 0
+  },
+  "optimal_stopping_gate": {
+    "voi_score": 0.031,
+    "mdl_sufficiency": 0.18,
+    "stop_reason": "Evidence sufficient - MDL gate < 0.05 threshold"
+  },
+  "case": {
+    "status": "closed_fraud",
+    "verdict": "fraud",
+    "fraud_probability": 0.82,
+    "pattern": "digital_arrest_fraud",
+    "pattern_description": "Digital Arrest Fraud",
+    "customer_id": "9123456783_HDFC",
+    "district": "Patna",
+    "victim_name": "Suresh Prasad",
+    "amount_inr": 4083,
+    "ncrp_complaints": [
+      "NCRP/BH/2024/001103"
+    ],
+    "evidence": [
+      {
+        "claim": "Victim Suresh Prasad received WhatsApp video call from person claiming to be CBI Inspector. Threatened arrest for Aadhaar misuse. Transferred Rs.4,083.",
+        "source": "graph",
+        "ref": "ncrp_complaint_correlation"
+      },
+      {
+        "claim": "Receiving account 9123456783_HDFC: 45-day tenure, no prior transaction history, 91% pass-through velocity within 95 seconds.",
+        "source": "graph",
+        "ref": "get_account_money_trail"
+      }
+    ],
+    "similar_prior_cases": [],
+    "summary": "Digital Arrest Fraud. Rs.4,083 victim loss. Perp posed as CBI officer. INITIATE_DEBIT_FREEZE_1930 executed. FIR registered Sec 66D IT Act.",
+    "written_to_graph": true,
+    "graph_case_id": "HHG-003"
+  },
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "INITIATE_DEBIT_FREEZE_1930",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "Digital Arrest Fraud confirmed. 1930 golden-hour freeze initiated via CFCFRMS."
+      }
+    ],
+    "final": [
+      {
+        "action": "INITIATE_DEBIT_FREEZE_1930",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "Sec 66D IT Act: Caller impersonated CBI officer. Victim transferred Rs.4,083 under threat. Freeze executed."
+      },
+      {
+        "action": "REGISTER_FIR_SEC_66D",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "FIR registered under Sec 66D IT Act - impersonation using electronic communication"
+      }
+    ],
+    "what_changed": "Autonomous investigation completed. All graph signals aggregated. Final disposition executed."
+  },
+  "sar": {
+    "file": true,
+    "reason": "Mule account confirmed - STR filed under PMLA 2002",
+    "narrative": "Digital Arrest Fraud. Rs.4,083 victim loss. Perp posed as CBI officer. INITIATE_DEBIT_FREEZE_1930 executed. FIR registered Sec 66D IT Act.",
+    "subjects": [
+      "9123456783_HDFC"
+    ],
+    "amount_inr": 4083,
+    "activity_dates": [
+      "2024-10-25"
+    ]
+  },
+  "stop_reason": "MDL evidence sufficiency gate satisfied.",
+  "tool_calls": 8,
+  "tokens": 0,
+  "latency_s": 8.9
+}

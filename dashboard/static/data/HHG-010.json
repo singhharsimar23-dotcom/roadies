@@ -1,0 +1,124 @@
+{
+  "case_id": "HHG-010",
+  "target_account": "6789012310_HDFC",
+  "trigger_account_id": "6789012310_HDFC",
+  "district": "Bhagalpur",
+  "police_station": "Bhagalpur Cyber PS",
+  "alert_typology": "Digital Arrest Fraud",
+  "amount": 83336,
+  "fraud_probability": 0.93,
+  "verdict": "fraud",
+  "trigger_txn_ids": [
+    "TXN-HHG-010-001"
+  ],
+  "chain_of_command": {
+    "approval_tier": "AUTONOMOUS",
+    "approval_route": "AUTONOMOUS_PIPELINE",
+    "action_type": "INITIATE_DEBIT_FREEZE_1930",
+    "policy_reference": "Sec 66D IT Act - 1930 CFCFRMS - Section 65B IEA"
+  },
+  "customer_shield": {
+    "recurring": {
+      "active": false,
+      "desc": "No payroll credits"
+    },
+    "travel": {
+      "active": false,
+      "desc": "No utility bills"
+    },
+    "device": {
+      "active": false,
+      "desc": "33-day account tenure"
+    },
+    "verdict_flip": "FAIL \u2014 Mule Account Evidence Confirmed. Debit freeze recommended.",
+    "final_offset": 0
+  },
+  "optimal_stopping_gate": {
+    "voi_score": 0.031,
+    "mdl_sufficiency": 0.18,
+    "stop_reason": "Evidence sufficient - MDL gate < 0.05 threshold"
+  },
+  "case": {
+    "status": "closed_fraud",
+    "verdict": "fraud",
+    "fraud_probability": 0.93,
+    "pattern": "digital_arrest_fraud",
+    "pattern_description": "Digital Arrest Fraud",
+    "customer_id": "6789012310_HDFC",
+    "district": "Bhagalpur",
+    "victim_name": "Vijay Kumar Mishra",
+    "amount_inr": 83336,
+    "ncrp_complaints": [
+      "NCRP/BH/2024/004521"
+    ],
+    "evidence": [
+      {
+        "claim": "Victim Vijay Kumar Mishra received Skype call from person posing as CBI Joint Director. 7-hour \"digital detention\". Transferred Rs.83,336 in 4 installments.",
+        "source": "graph",
+        "ref": "ncrp_complaint_correlation"
+      },
+      {
+        "claim": "Account 6789012310_HDFC forwarded 97.2% of funds to 3 accounts within 8 minutes. Highest-velocity case in current batch.",
+        "source": "graph",
+        "ref": "get_account_money_trail"
+      },
+      {
+        "claim": "IMEI 869234058199211 linked to 5 additional fraud accounts in Bhagalpur and Munger districts.",
+        "source": "graph",
+        "ref": "get_device_sharing_check"
+      }
+    ],
+    "similar_prior_cases": [],
+    "summary": "Digital Arrest Fraud - HIGHEST VALUE Rs.83,336. CBI impersonation, 7-hour detention. Debit freeze. STR filed. FIR Sec 66D. Escalated to Cyber Crime Cell.",
+    "written_to_graph": true,
+    "graph_case_id": "HHG-010"
+  },
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "INITIATE_DEBIT_FREEZE_1930",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "HIGH-VALUE digital arrest fraud Rs.83,336. Immediate 1930 freeze - golden hour."
+      }
+    ],
+    "final": [
+      {
+        "action": "INITIATE_DEBIT_FREEZE_1930",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "Digital Arrest Fraud - highest value case. Rs.83,336. CBI impersonation. Debit freeze executed."
+      },
+      {
+        "action": "ISSUE_BANK_NODAL_NOTICE",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "HDFC nodal officer notice. High-value case requires escalated coordination."
+      },
+      {
+        "action": "FLAG_STR_FIU_IND",
+        "route": "AUTO",
+        "reason": "STR filed - transaction above Rs.50,000 threshold, organized syndicate."
+      },
+      {
+        "action": "REGISTER_FIR_SEC_66D",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "FIR Sec 66D registered. Rs.83,336 loss. Escalated to Cyber Crime Cell Patna."
+      }
+    ],
+    "what_changed": "Autonomous investigation completed. All graph signals aggregated. Final disposition executed."
+  },
+  "sar": {
+    "file": true,
+    "reason": "Mule account confirmed - STR filed under PMLA 2002",
+    "narrative": "Digital Arrest Fraud - HIGHEST VALUE Rs.83,336. CBI impersonation, 7-hour detention. Debit freeze. STR filed. FIR Sec 66D. Escalated to Cyber Crime Cell.",
+    "subjects": [
+      "6789012310_HDFC"
+    ],
+    "amount_inr": 83336,
+    "activity_dates": [
+      "2024-10-25"
+    ]
+  },
+  "stop_reason": "MDL evidence sufficiency gate satisfied.",
+  "tool_calls": 8,
+  "tokens": 0,
+  "latency_s": 8.9
+}

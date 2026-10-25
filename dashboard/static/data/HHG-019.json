@@ -1,0 +1,109 @@
+{
+  "case_id": "HHG-019",
+  "target_account": "8901234519_PNB",
+  "trigger_account_id": "8901234519_PNB",
+  "district": "Nalanda",
+  "police_station": "Nalanda Cyber PS",
+  "alert_typology": "Fake Job / Govt Recruitment Fraud",
+  "amount": 8327,
+  "fraud_probability": 0.83,
+  "verdict": "fraud",
+  "trigger_txn_ids": [
+    "TXN-HHG-019-001"
+  ],
+  "chain_of_command": {
+    "approval_tier": "AUTONOMOUS",
+    "approval_route": "AUTONOMOUS_PIPELINE",
+    "action_type": "INITIATE_DEBIT_FREEZE_1930",
+    "policy_reference": "Sec 66D IT Act - 1930 CFCFRMS - Section 65B IEA"
+  },
+  "customer_shield": {
+    "recurring": {
+      "active": false,
+      "desc": "No payroll credits"
+    },
+    "travel": {
+      "active": false,
+      "desc": "No utility bills"
+    },
+    "device": {
+      "active": false,
+      "desc": "49-day tenure, IMEI linked to HHG-011 fraud ring"
+    },
+    "verdict_flip": "FAIL \u2014 Mule Account Evidence Confirmed. Debit freeze recommended.",
+    "final_offset": 0
+  },
+  "optimal_stopping_gate": {
+    "voi_score": 0.031,
+    "mdl_sufficiency": 0.18,
+    "stop_reason": "Evidence sufficient - MDL gate < 0.05 threshold"
+  },
+  "case": {
+    "status": "closed_fraud",
+    "verdict": "fraud",
+    "fraud_probability": 0.83,
+    "pattern": "fake_job_offer",
+    "pattern_description": "Fake Job / Govt Recruitment Fraud",
+    "customer_id": "8901234519_PNB",
+    "district": "Nalanda",
+    "victim_name": "Vivek Kumar",
+    "amount_inr": 8327,
+    "ncrp_complaints": [
+      "NCRP/BH/2024/002567"
+    ],
+    "evidence": [
+      {
+        "claim": "Victim Vivek Kumar paid Rs.8,327 as \"examination and training fee\" for fake RRB NTPC recruitment. Fraudsters sent fake appointment letter with official-looking letterhead.",
+        "source": "graph",
+        "ref": "ncrp_complaint_correlation"
+      },
+      {
+        "claim": "Connected to HHG-011 through shared IMEI device. Same fake job fraud ring operating in Nalanda and Patna districts.",
+        "source": "graph",
+        "ref": "get_device_sharing_check"
+      }
+    ],
+    "similar_prior_cases": [],
+    "summary": "Fake Railway Job Fraud. RRB NTPC impersonation. Rs.8,327 victim loss. Connected to HHG-011 via shared IMEI - same syndicate. Debit freeze. FIR Sec 66D.",
+    "written_to_graph": true,
+    "graph_case_id": "HHG-019"
+  },
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "INITIATE_DEBIT_FREEZE_1930",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "Fake railway recruitment fraud. 1930 freeze."
+      }
+    ],
+    "final": [
+      {
+        "action": "INITIATE_DEBIT_FREEZE_1930",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "Fake RRB NTPC recruitment fraud. Rs.8,327 paid as examination fee. Debit freeze executed."
+      },
+      {
+        "action": "REGISTER_FIR_SEC_66D",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "FIR Sec 66D - impersonation of Railway Recruitment Board (RRB)"
+      }
+    ],
+    "what_changed": "Autonomous investigation completed. All graph signals aggregated. Final disposition executed."
+  },
+  "sar": {
+    "file": true,
+    "reason": "Mule account confirmed - STR filed under PMLA 2002",
+    "narrative": "Fake Railway Job Fraud. RRB NTPC impersonation. Rs.8,327 victim loss. Connected to HHG-011 via shared IMEI - same syndicate. Debit freeze. FIR Sec 66D.",
+    "subjects": [
+      "8901234519_PNB"
+    ],
+    "amount_inr": 8327,
+    "activity_dates": [
+      "2024-10-25"
+    ]
+  },
+  "stop_reason": "MDL evidence sufficiency gate satisfied.",
+  "tool_calls": 8,
+  "tokens": 0,
+  "latency_s": 8.9
+}

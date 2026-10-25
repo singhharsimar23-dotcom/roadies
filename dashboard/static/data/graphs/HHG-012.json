@@ -1,0 +1,96 @@
+{
+  "elements": [
+    {
+      "data": {
+        "id": "Manoj Kumar (Gaya)",
+        "label": "Citizen\nManoj Kumar (Gaya)",
+        "type": "customer",
+        "role": "Verified Legitimate Citizen",
+        "color": "#10b981",
+        "shape": "hexagon"
+      }
+    },
+    {
+      "data": {
+        "id": "4019283746_SBI",
+        "label": "Bank Account\n4019283746_SBI",
+        "type": "account",
+        "role": "Primary Bank Account (3+ Yr Clean)",
+        "color": "#3b82f6",
+        "shape": "ellipse"
+      }
+    },
+    {
+      "data": {
+        "id": "Emp_HHG-012",
+        "label": "Salary / Source\nGaya Wholesale Textiles (GSTIN Verified)",
+        "type": "device",
+        "role": "Verified Institutional Source",
+        "color": "#10b981",
+        "shape": "round-rectangle"
+      }
+    },
+    {
+      "data": {
+        "id": "Util_HHG-012",
+        "label": "Utility Billing\nSouth Bihar Power Bill",
+        "type": "device",
+        "role": "Regular Utility Verification",
+        "color": "#00f2fe",
+        "shape": "round-rectangle"
+      }
+    },
+    {
+      "data": {
+        "id": "TXN-HHG-012-001",
+        "label": "Routine UPI: Rs.3500\nClean Merchant Txn",
+        "type": "transaction",
+        "role": "Routine Everyday UPI Payment",
+        "amount": 3500,
+        "risk": 0.04,
+        "color": "#10b981",
+        "shape": "diamond"
+      }
+    },
+    {
+      "data": {
+        "id": "e_owns_Manoj Kumar (Gaya)_4019283746_SBI",
+        "source": "Manoj Kumar (Gaya)",
+        "target": "4019283746_SBI",
+        "label": "OWNS",
+        "color": "#10b981",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_sal_Emp_HHG-012_4019283746_SBI",
+        "source": "Emp_HHG-012",
+        "target": "4019283746_SBI",
+        "label": "SALARY_CREDIT",
+        "color": "#10b981",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_util_4019283746_SBI_Util_HHG-012",
+        "source": "4019283746_SBI",
+        "target": "Util_HHG-012",
+        "label": "PAID_UTILITY",
+        "color": "#00f2fe",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_txn_4019283746_SBI_TXN-HHG-012-001",
+        "source": "4019283746_SBI",
+        "target": "TXN-HHG-012-001",
+        "label": "ROUTINE_UPI",
+        "color": "#3b82f6",
+        "style": "solid"
+      }
+    }
+  ]
+}

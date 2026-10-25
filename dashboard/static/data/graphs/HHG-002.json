@@ -1,0 +1,136 @@
+{
+  "elements": [
+    {
+      "data": {
+        "id": "4023910283_SBI",
+        "label": "Mule Account\n4023910283_SBI",
+        "type": "account",
+        "role": "Flagged Mule Account (Muzaffarpur)",
+        "color": "#ef4444",
+        "shape": "ellipse"
+      }
+    },
+    {
+      "data": {
+        "id": "Victim_HHG-002",
+        "label": "Victim\nSunil Verma (Muzaffarpur)",
+        "type": "customer",
+        "role": "Victim (Coerced Transfer)",
+        "color": "#10b981",
+        "shape": "hexagon"
+      }
+    },
+    {
+      "data": {
+        "id": "TXN-HHG-002-001",
+        "label": "Txn: Rs.24,367\nFake Investment App ...",
+        "type": "transaction",
+        "role": "Cybercrime Proceeds (Rs.24,367)",
+        "amount": 24367,
+        "risk": 0.94,
+        "color": "#ef4444",
+        "shape": "diamond"
+      }
+    },
+    {
+      "data": {
+        "id": "9182736450_HDFC (Gaya)",
+        "label": "Mule L2\n9182736450_HDFC (Gaya)",
+        "type": "account",
+        "role": "Layer-2 Siphon Conduit",
+        "color": "#f97316",
+        "shape": "ellipse"
+      }
+    },
+    {
+      "data": {
+        "id": "IMEI: 864201092837461",
+        "label": "Shared Hardware\nIMEI: 864201092837461",
+        "type": "device",
+        "role": "Hardware Profile (Linked to 4+ Syndicate Accounts)",
+        "color": "#fbbf24",
+        "shape": "round-rectangle"
+      }
+    },
+    {
+      "data": {
+        "id": "NCRP/BH/2024/002891",
+        "label": "1930 Portal\nNCRP/BH/2024/002891",
+        "type": "prior_case",
+        "role": "National Cybercrime Portal Complaint",
+        "color": "#ec4899",
+        "shape": "round-diamond"
+      }
+    },
+    {
+      "data": {
+        "id": "IP_HHG-002",
+        "label": "VPN/Proxy Node\n103.211.x.x (Muzaffarpur)",
+        "type": "ip",
+        "role": "Syndicate Infrastructure",
+        "color": "#c084fc",
+        "shape": "hexagon"
+      }
+    },
+    {
+      "data": {
+        "id": "e_made_Victim_HHG-002_TXN-HHG-002-001",
+        "source": "Victim_HHG-002",
+        "target": "TXN-HHG-002-001",
+        "label": "COERCED_PAYMENT",
+        "color": "#10b981",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_to_TXN-HHG-002-001_4023910283_SBI",
+        "source": "TXN-HHG-002-001",
+        "target": "4023910283_SBI",
+        "label": "CREDITED_TO",
+        "color": "#ef4444",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_layer_4023910283_SBI_9182736450_HDFC (Gaya)",
+        "source": "4023910283_SBI",
+        "target": "9182736450_HDFC (Gaya)",
+        "label": "LAYERED_TO",
+        "color": "#f97316",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_dev_4023910283_SBI_IMEI: 864201092837461",
+        "source": "4023910283_SBI",
+        "target": "IMEI: 864201092837461",
+        "label": "OPERATED_FROM",
+        "color": "#fbbf24",
+        "style": "dashed"
+      }
+    },
+    {
+      "data": {
+        "id": "e_ncrp_4023910283_SBI_NCRP/BH/2024/002891",
+        "source": "4023910283_SBI",
+        "target": "NCRP/BH/2024/002891",
+        "label": "LINKED_NCRP_1930",
+        "color": "#ec4899",
+        "style": "dotted"
+      }
+    },
+    {
+      "data": {
+        "id": "e_ip_4023910283_SBI_IP_HHG-002",
+        "source": "4023910283_SBI",
+        "target": "IP_HHG-002",
+        "label": "CO_LOCATED_IP",
+        "color": "#c084fc",
+        "style": "dotted"
+      }
+    }
+  ]
+}

@@ -120,8 +120,8 @@ def test_dashboard():
     assert g14.status_code == 200
     g14_data = g14.json()
     g14_node_ids = [n["id"] for n in g14_data.get("nodes", [])]
-    assert "C13487" in g14_node_ids, "Real customer C13487 must be in HHG-014 graph"
-    assert "C13487-K1" in g14_node_ids, "Real card C13487-K1 must be in HHG-014 graph"
+    assert "9123456789_PNB" in g14_node_ids, "Real customer 9123456789_PNB must be in HHG-014 graph"
+    assert "9123456789_PNB-K1" in g14_node_ids, "Real card 9123456789_PNB-K1 must be in HHG-014 graph"
     assert "T3478561" in g14_node_ids, "Real transaction T3478561 must be in HHG-014 graph"
     print("GET /api/case/HHG-014/graph verified: real customer, card, and transaction present")
 

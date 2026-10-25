@@ -1,0 +1,96 @@
+{
+  "elements": [
+    {
+      "data": {
+        "id": "Amit Kumar (Patna)",
+        "label": "Citizen\nAmit Kumar (Patna)",
+        "type": "customer",
+        "role": "Verified Legitimate Citizen",
+        "color": "#10b981",
+        "shape": "hexagon"
+      }
+    },
+    {
+      "data": {
+        "id": "3012456789_SBI",
+        "label": "Bank Account\n3012456789_SBI",
+        "type": "account",
+        "role": "Primary Bank Account (3+ Yr Clean)",
+        "color": "#3b82f6",
+        "shape": "ellipse"
+      }
+    },
+    {
+      "data": {
+        "id": "Emp_HHG-001",
+        "label": "Salary / Source\nBihar Govt Payroll (Finance Dept)",
+        "type": "device",
+        "role": "Verified Institutional Source",
+        "color": "#10b981",
+        "shape": "round-rectangle"
+      }
+    },
+    {
+      "data": {
+        "id": "Util_HHG-001",
+        "label": "Utility Billing\nSBPDCL Electricity Board",
+        "type": "device",
+        "role": "Regular Utility Verification",
+        "color": "#00f2fe",
+        "shape": "round-rectangle"
+      }
+    },
+    {
+      "data": {
+        "id": "TXN-HHG-001-001",
+        "label": "Routine UPI: Rs.450\nClean Merchant Txn",
+        "type": "transaction",
+        "role": "Routine Everyday UPI Payment",
+        "amount": 450,
+        "risk": 0.04,
+        "color": "#10b981",
+        "shape": "diamond"
+      }
+    },
+    {
+      "data": {
+        "id": "e_owns_Amit Kumar (Patna)_3012456789_SBI",
+        "source": "Amit Kumar (Patna)",
+        "target": "3012456789_SBI",
+        "label": "OWNS",
+        "color": "#10b981",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_sal_Emp_HHG-001_3012456789_SBI",
+        "source": "Emp_HHG-001",
+        "target": "3012456789_SBI",
+        "label": "SALARY_CREDIT",
+        "color": "#10b981",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_util_3012456789_SBI_Util_HHG-001",
+        "source": "3012456789_SBI",
+        "target": "Util_HHG-001",
+        "label": "PAID_UTILITY",
+        "color": "#00f2fe",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_txn_3012456789_SBI_TXN-HHG-001-001",
+        "source": "3012456789_SBI",
+        "target": "TXN-HHG-001-001",
+        "label": "ROUTINE_UPI",
+        "color": "#3b82f6",
+        "style": "solid"
+      }
+    }
+  ]
+}

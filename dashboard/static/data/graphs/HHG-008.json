@@ -1,0 +1,136 @@
+{
+  "elements": [
+    {
+      "data": {
+        "id": "9182736450_ICICI",
+        "label": "Mule Account\n9182736450_ICICI",
+        "type": "account",
+        "role": "Flagged Mule Account (Muzaffarpur)",
+        "color": "#ef4444",
+        "shape": "ellipse"
+      }
+    },
+    {
+      "data": {
+        "id": "Victim_HHG-008",
+        "label": "Victim\nSyndicate Collector Hub",
+        "type": "customer",
+        "role": "Victim (Coerced Transfer)",
+        "color": "#10b981",
+        "shape": "hexagon"
+      }
+    },
+    {
+      "data": {
+        "id": "TXN-HHG-008-001",
+        "label": "Txn: Rs.4,640\nMule Account Hub (Mu...",
+        "type": "transaction",
+        "role": "Cybercrime Proceeds (Rs.4,640)",
+        "amount": 4640,
+        "risk": 0.94,
+        "color": "#ef4444",
+        "shape": "diamond"
+      }
+    },
+    {
+      "data": {
+        "id": "4102938475_CRYPTO_P2P",
+        "label": "Mule L2\n4102938475_CRYPTO_P2P",
+        "type": "account",
+        "role": "Layer-2 Siphon Conduit",
+        "color": "#f97316",
+        "shape": "ellipse"
+      }
+    },
+    {
+      "data": {
+        "id": "IMEI: 863910283746501",
+        "label": "Shared Hardware\nIMEI: 863910283746501",
+        "type": "device",
+        "role": "Hardware Profile (Linked to 4+ Syndicate Accounts)",
+        "color": "#fbbf24",
+        "shape": "round-rectangle"
+      }
+    },
+    {
+      "data": {
+        "id": "NCRP/BH/2024/008491",
+        "label": "1930 Portal\nNCRP/BH/2024/008491",
+        "type": "prior_case",
+        "role": "National Cybercrime Portal Complaint",
+        "color": "#ec4899",
+        "shape": "round-diamond"
+      }
+    },
+    {
+      "data": {
+        "id": "IP_HHG-008",
+        "label": "VPN/Proxy Node\n103.211.x.x (Muzaffarpur)",
+        "type": "ip",
+        "role": "Syndicate Infrastructure",
+        "color": "#c084fc",
+        "shape": "hexagon"
+      }
+    },
+    {
+      "data": {
+        "id": "e_made_Victim_HHG-008_TXN-HHG-008-001",
+        "source": "Victim_HHG-008",
+        "target": "TXN-HHG-008-001",
+        "label": "COERCED_PAYMENT",
+        "color": "#10b981",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_to_TXN-HHG-008-001_9182736450_ICICI",
+        "source": "TXN-HHG-008-001",
+        "target": "9182736450_ICICI",
+        "label": "CREDITED_TO",
+        "color": "#ef4444",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_layer_9182736450_ICICI_4102938475_CRYPTO_P2P",
+        "source": "9182736450_ICICI",
+        "target": "4102938475_CRYPTO_P2P",
+        "label": "LAYERED_TO",
+        "color": "#f97316",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_dev_9182736450_ICICI_IMEI: 863910283746501",
+        "source": "9182736450_ICICI",
+        "target": "IMEI: 863910283746501",
+        "label": "OPERATED_FROM",
+        "color": "#fbbf24",
+        "style": "dashed"
+      }
+    },
+    {
+      "data": {
+        "id": "e_ncrp_9182736450_ICICI_NCRP/BH/2024/008491",
+        "source": "9182736450_ICICI",
+        "target": "NCRP/BH/2024/008491",
+        "label": "LINKED_NCRP_1930",
+        "color": "#ec4899",
+        "style": "dotted"
+      }
+    },
+    {
+      "data": {
+        "id": "e_ip_9182736450_ICICI_IP_HHG-008",
+        "source": "9182736450_ICICI",
+        "target": "IP_HHG-008",
+        "label": "CO_LOCATED_IP",
+        "color": "#c084fc",
+        "style": "dotted"
+      }
+    }
+  ]
+}

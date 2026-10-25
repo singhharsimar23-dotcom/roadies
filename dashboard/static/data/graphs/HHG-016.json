@@ -1,0 +1,136 @@
+{
+  "elements": [
+    {
+      "data": {
+        "id": "6102938475_CANARA",
+        "label": "Mule Account\n6102938475_CANARA",
+        "type": "account",
+        "role": "Flagged Mule Account (Muzaffarpur)",
+        "color": "#ef4444",
+        "shape": "ellipse"
+      }
+    },
+    {
+      "data": {
+        "id": "Victim_HHG-016",
+        "label": "Victim\nMd. Tariq (Muzaffarpur)",
+        "type": "customer",
+        "role": "Victim (Coerced Transfer)",
+        "color": "#10b981",
+        "shape": "hexagon"
+      }
+    },
+    {
+      "data": {
+        "id": "TXN-HHG-016-001",
+        "label": "Txn: Rs.4,972\nUPI / SIM Swap Phish...",
+        "type": "transaction",
+        "role": "Cybercrime Proceeds (Rs.4,972)",
+        "amount": 4972,
+        "risk": 0.94,
+        "color": "#ef4444",
+        "shape": "diamond"
+      }
+    },
+    {
+      "data": {
+        "id": "5102938475_UCO_BANK (Gaya)",
+        "label": "Mule L2\n5102938475_UCO_BANK (Gaya)",
+        "type": "account",
+        "role": "Layer-2 Siphon Conduit",
+        "color": "#f97316",
+        "shape": "ellipse"
+      }
+    },
+    {
+      "data": {
+        "id": "IMEI: 868910283746556",
+        "label": "Shared Hardware\nIMEI: 868910283746556",
+        "type": "device",
+        "role": "Hardware Profile (Linked to 4+ Syndicate Accounts)",
+        "color": "#fbbf24",
+        "shape": "round-rectangle"
+      }
+    },
+    {
+      "data": {
+        "id": "NCRP/BH/2024/016394",
+        "label": "1930 Portal\nNCRP/BH/2024/016394",
+        "type": "prior_case",
+        "role": "National Cybercrime Portal Complaint",
+        "color": "#ec4899",
+        "shape": "round-diamond"
+      }
+    },
+    {
+      "data": {
+        "id": "IP_HHG-016",
+        "label": "VPN/Proxy Node\n103.211.x.x (Muzaffarpur)",
+        "type": "ip",
+        "role": "Syndicate Infrastructure",
+        "color": "#c084fc",
+        "shape": "hexagon"
+      }
+    },
+    {
+      "data": {
+        "id": "e_made_Victim_HHG-016_TXN-HHG-016-001",
+        "source": "Victim_HHG-016",
+        "target": "TXN-HHG-016-001",
+        "label": "COERCED_PAYMENT",
+        "color": "#10b981",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_to_TXN-HHG-016-001_6102938475_CANARA",
+        "source": "TXN-HHG-016-001",
+        "target": "6102938475_CANARA",
+        "label": "CREDITED_TO",
+        "color": "#ef4444",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_layer_6102938475_CANARA_5102938475_UCO_BANK (Gaya)",
+        "source": "6102938475_CANARA",
+        "target": "5102938475_UCO_BANK (Gaya)",
+        "label": "LAYERED_TO",
+        "color": "#f97316",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_dev_6102938475_CANARA_IMEI: 868910283746556",
+        "source": "6102938475_CANARA",
+        "target": "IMEI: 868910283746556",
+        "label": "OPERATED_FROM",
+        "color": "#fbbf24",
+        "style": "dashed"
+      }
+    },
+    {
+      "data": {
+        "id": "e_ncrp_6102938475_CANARA_NCRP/BH/2024/016394",
+        "source": "6102938475_CANARA",
+        "target": "NCRP/BH/2024/016394",
+        "label": "LINKED_NCRP_1930",
+        "color": "#ec4899",
+        "style": "dotted"
+      }
+    },
+    {
+      "data": {
+        "id": "e_ip_6102938475_CANARA_IP_HHG-016",
+        "source": "6102938475_CANARA",
+        "target": "IP_HHG-016",
+        "label": "CO_LOCATED_IP",
+        "color": "#c084fc",
+        "style": "dotted"
+      }
+    }
+  ]
+}

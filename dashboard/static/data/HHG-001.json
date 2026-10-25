@@ -1,0 +1,110 @@
+{
+  "case_id": "HHG-001",
+  "target_account": "7654321001_SBI",
+  "trigger_account_id": "7654321001_SBI",
+  "district": "Patna",
+  "police_station": "Patna Cyber PS",
+  "alert_typology": "Legitimate Citizen Account",
+  "amount": 0,
+  "fraud_probability": 0.04,
+  "verdict": "legitimate",
+  "trigger_txn_ids": [
+    "TXN-HHG-001-001"
+  ],
+  "chain_of_command": {
+    "approval_tier": "AUTO_CLEAR",
+    "approval_route": "CITIZEN_PROTECTION_FILTER \u2192 CLOSE_NO_FRAUD",
+    "action_type": "CLOSE_NO_FRAUD",
+    "policy_reference": "Citizen Protection Filter - Anti-Overblocking Protocol"
+  },
+  "customer_shield": {
+    "recurring": {
+      "active": true,
+      "desc": "Bihar State Govt payroll credit - 36 months verified"
+    },
+    "travel": {
+      "active": true,
+      "desc": "BSPHCL electricity bill payment 24 months"
+    },
+    "device": {
+      "active": true,
+      "desc": "Account opened 2021, established banking relationship"
+    },
+    "verdict_flip": "PASS \u2014 Innocent Citizen Verified. Account remains active.",
+    "final_offset": -0.35
+  },
+  "optimal_stopping_gate": {
+    "voi_score": 0.009,
+    "mdl_sufficiency": 0.06,
+    "stop_reason": "Evidence sufficient - MDL gate < 0.05 threshold"
+  },
+  "case": {
+    "status": "closed_legitimate",
+    "verdict": "legitimate",
+    "fraud_probability": 0.04,
+    "pattern": "legitimate_citizen",
+    "pattern_description": "Legitimate Citizen Account",
+    "customer_id": "7654321001_SBI",
+    "district": "Patna",
+    "victim_name": "Rajesh Kumar",
+    "amount_inr": 0,
+    "ncrp_complaints": [],
+    "evidence": [
+      {
+        "claim": "Account 7654321001_SBI active for 36 months with regular salary credits from Bihar State Govt payroll.",
+        "source": "graph",
+        "ref": "get_account_tenure_check"
+      },
+      {
+        "claim": "Utility bill payments (BSPHCL electricity) verified for 24 consecutive months.",
+        "source": "graph",
+        "ref": "get_payment_pattern_check"
+      },
+      {
+        "claim": "No NCRP/1930 complaints linked to this account across any Bihar district.",
+        "source": "graph",
+        "ref": "ncrp_complaint_correlation"
+      }
+    ],
+    "similar_prior_cases": [],
+    "summary": "Autonomous investigation concluded verdict=legitimate. Citizen Protection Filter PASS: salary credits, utility payments, 36-month tenure confirmed. No freeze action taken.",
+    "written_to_graph": true,
+    "graph_case_id": "HHG-001"
+  },
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "RUN_CITIZEN_PROTECTION_FILTER",
+        "route": "AUTO",
+        "reason": "Pillar 6: Salary credits verified - apply innocence dampener before any freeze"
+      },
+      {
+        "action": "CLOSE_NO_FRAUD",
+        "route": "AUTO",
+        "reason": "Pillar 2: Risk score 0.04 < 0.50 threshold. Citizen Protection Filter: PASS"
+      }
+    ],
+    "final": [
+      {
+        "action": "CLOSE_NO_FRAUD",
+        "route": "AUTO",
+        "reason": "Legitimate citizen confirmed: 3-year SBI account, regular payroll credits from Bihar Govt, utility payments verified. Score: 0.04"
+      }
+    ],
+    "what_changed": "Autonomous investigation completed. All graph signals aggregated. Final disposition executed."
+  },
+  "sar": {
+    "file": false,
+    "reason": "",
+    "narrative": "",
+    "subjects": [],
+    "amount_inr": 0,
+    "activity_dates": [
+      "2024-10-25"
+    ]
+  },
+  "stop_reason": "MDL evidence sufficiency gate satisfied.",
+  "tool_calls": 5,
+  "tokens": 0,
+  "latency_s": 4.2
+}

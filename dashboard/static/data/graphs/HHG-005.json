@@ -1,0 +1,96 @@
+{
+  "elements": [
+    {
+      "data": {
+        "id": "Pooja Kumari (Nalanda)",
+        "label": "Citizen\nPooja Kumari (Nalanda)",
+        "type": "customer",
+        "role": "Verified Legitimate Citizen",
+        "color": "#10b981",
+        "shape": "hexagon"
+      }
+    },
+    {
+      "data": {
+        "id": "5019283746_PNB",
+        "label": "Bank Account\n5019283746_PNB",
+        "type": "account",
+        "role": "Primary Bank Account (3+ Yr Clean)",
+        "color": "#3b82f6",
+        "shape": "ellipse"
+      }
+    },
+    {
+      "data": {
+        "id": "Emp_HHG-005",
+        "label": "Salary / Source\nBihar Education Dept (High School)",
+        "type": "device",
+        "role": "Verified Institutional Source",
+        "color": "#10b981",
+        "shape": "round-rectangle"
+      }
+    },
+    {
+      "data": {
+        "id": "Util_HHG-005",
+        "label": "Utility Billing\nNBPDCL Power Distribution",
+        "type": "device",
+        "role": "Regular Utility Verification",
+        "color": "#00f2fe",
+        "shape": "round-rectangle"
+      }
+    },
+    {
+      "data": {
+        "id": "TXN-HHG-005-001",
+        "label": "Routine UPI: Rs.1200\nClean Merchant Txn",
+        "type": "transaction",
+        "role": "Routine Everyday UPI Payment",
+        "amount": 1200,
+        "risk": 0.04,
+        "color": "#10b981",
+        "shape": "diamond"
+      }
+    },
+    {
+      "data": {
+        "id": "e_owns_Pooja Kumari (Nalanda)_5019283746_PNB",
+        "source": "Pooja Kumari (Nalanda)",
+        "target": "5019283746_PNB",
+        "label": "OWNS",
+        "color": "#10b981",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_sal_Emp_HHG-005_5019283746_PNB",
+        "source": "Emp_HHG-005",
+        "target": "5019283746_PNB",
+        "label": "SALARY_CREDIT",
+        "color": "#10b981",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_util_5019283746_PNB_Util_HHG-005",
+        "source": "5019283746_PNB",
+        "target": "Util_HHG-005",
+        "label": "PAID_UTILITY",
+        "color": "#00f2fe",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_txn_5019283746_PNB_TXN-HHG-005-001",
+        "source": "5019283746_PNB",
+        "target": "TXN-HHG-005-001",
+        "label": "ROUTINE_UPI",
+        "color": "#3b82f6",
+        "style": "solid"
+      }
+    }
+  ]
+}

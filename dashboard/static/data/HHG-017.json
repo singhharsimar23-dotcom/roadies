@@ -1,0 +1,100 @@
+{
+  "case_id": "HHG-017",
+  "target_account": "2345678917_SBI",
+  "trigger_account_id": "2345678917_SBI",
+  "district": "Bhagalpur",
+  "police_station": "Bhagalpur Cyber PS",
+  "alert_typology": "Legitimate Citizen Account",
+  "amount": 0,
+  "fraud_probability": 0.08,
+  "verdict": "legitimate",
+  "trigger_txn_ids": [
+    "TXN-HHG-017-001"
+  ],
+  "chain_of_command": {
+    "approval_tier": "AUTO_CLEAR",
+    "approval_route": "CITIZEN_PROTECTION_FILTER \u2192 CLOSE_NO_FRAUD",
+    "action_type": "CLOSE_NO_FRAUD",
+    "policy_reference": "Citizen Protection Filter - Anti-Overblocking Protocol"
+  },
+  "customer_shield": {
+    "recurring": {
+      "active": true,
+      "desc": "Bhagalpur Steel Ltd payroll credit - 84 months"
+    },
+    "travel": {
+      "active": true,
+      "desc": "Home loan EMI and utility bills regular"
+    },
+    "device": {
+      "active": true,
+      "desc": "7-year SBI account, single device owner"
+    },
+    "verdict_flip": "PASS \u2014 Innocent Citizen Verified. Account remains active.",
+    "final_offset": -0.45
+  },
+  "optimal_stopping_gate": {
+    "voi_score": 0.009,
+    "mdl_sufficiency": 0.06,
+    "stop_reason": "Evidence sufficient - MDL gate < 0.05 threshold"
+  },
+  "case": {
+    "status": "closed_legitimate",
+    "verdict": "legitimate",
+    "fraud_probability": 0.08,
+    "pattern": "legitimate_citizen",
+    "pattern_description": "Legitimate Citizen Account",
+    "customer_id": "2345678917_SBI",
+    "district": "Bhagalpur",
+    "victim_name": "Arun Kumar Sinha",
+    "amount_inr": 0,
+    "ncrp_complaints": [],
+    "evidence": [
+      {
+        "claim": "Account 2345678917_SBI: 7-year tenure. Monthly salary from Bhagalpur Steel Ltd. Home loan EMI to SBI Housing Finance. Stable financial profile.",
+        "source": "graph",
+        "ref": "get_account_tenure_check"
+      },
+      {
+        "claim": "No NCRP complaints. No shared IMEI. Device registered to same individual for 4 years.",
+        "source": "graph",
+        "ref": "ncrp_complaint_correlation"
+      }
+    ],
+    "similar_prior_cases": [],
+    "summary": "Legitimate salaried employee account. 7-year tenure, payroll + home loan EMI confirmed. Citizen Protection Filter PASS. No action taken.",
+    "written_to_graph": true,
+    "graph_case_id": "HHG-017"
+  },
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "CLOSE_NO_FRAUD",
+        "route": "AUTO",
+        "reason": "Citizen Protection Filter PASS. Salaried private employee. Long-standing SBI account."
+      }
+    ],
+    "final": [
+      {
+        "action": "CLOSE_NO_FRAUD",
+        "route": "AUTO",
+        "reason": "Legitimate salaried employee: 7-year SBI Bhagalpur account, private company payroll credits, home loan EMI payments confirm stable financial profile."
+      }
+    ],
+    "what_changed": "Autonomous investigation completed. All graph signals aggregated. Final disposition executed."
+  },
+  "sar": {
+    "file": false,
+    "reason": "",
+    "narrative": "",
+    "subjects": [],
+    "amount_inr": 0,
+    "activity_dates": [
+      "2024-10-25"
+    ]
+  },
+  "stop_reason": "MDL evidence sufficiency gate satisfied.",
+  "tool_calls": 5,
+  "tokens": 0,
+  "latency_s": 4.2
+}

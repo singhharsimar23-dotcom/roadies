@@ -1,0 +1,114 @@
+{
+  "case_id": "HHG-006",
+  "target_account": "9012345606_SBI",
+  "trigger_account_id": "9012345606_SBI",
+  "district": "Nalanda",
+  "police_station": "Nalanda Cyber PS",
+  "alert_typology": "Fake Investment App Fraud",
+  "amount": 40177,
+  "fraud_probability": 0.91,
+  "verdict": "fraud",
+  "trigger_txn_ids": [
+    "TXN-HHG-006-001"
+  ],
+  "chain_of_command": {
+    "approval_tier": "AUTONOMOUS",
+    "approval_route": "AUTONOMOUS_PIPELINE",
+    "action_type": "INITIATE_DEBIT_FREEZE_1930",
+    "policy_reference": "Sec 66D IT Act - 1930 CFCFRMS - Section 65B IEA"
+  },
+  "customer_shield": {
+    "recurring": {
+      "active": false,
+      "desc": "No payroll credits"
+    },
+    "travel": {
+      "active": false,
+      "desc": "No utility payments"
+    },
+    "device": {
+      "active": false,
+      "desc": "28-day tenure"
+    },
+    "verdict_flip": "FAIL \u2014 Mule Account Evidence Confirmed. Debit freeze recommended.",
+    "final_offset": 0
+  },
+  "optimal_stopping_gate": {
+    "voi_score": 0.031,
+    "mdl_sufficiency": 0.18,
+    "stop_reason": "Evidence sufficient - MDL gate < 0.05 threshold"
+  },
+  "case": {
+    "status": "closed_fraud",
+    "verdict": "fraud",
+    "fraud_probability": 0.91,
+    "pattern": "fake_investment_platform",
+    "pattern_description": "Fake Investment App Fraud",
+    "customer_id": "9012345606_SBI",
+    "district": "Nalanda",
+    "victim_name": "Mukesh Kumar",
+    "amount_inr": 40177,
+    "ncrp_complaints": [
+      "NCRP/BH/2024/003201"
+    ],
+    "evidence": [
+      {
+        "claim": "Victim Mukesh Kumar deposited Rs.40,177 into account 9012345606_SBI after fake trading app showed Rs.2.1L profit. Withdrawal blocked by platform.",
+        "source": "graph",
+        "ref": "ncrp_complaint_correlation"
+      },
+      {
+        "claim": "96.1% of funds forwarded within 55 seconds. Highest velocity in current batch. Connected to 5 additional fraud accounts via IMEI graph.",
+        "source": "graph",
+        "ref": "get_account_money_trail"
+      }
+    ],
+    "similar_prior_cases": [],
+    "summary": "Fake Investment App Fraud. Rs.40,177 victim loss. Highest velocity case (96.1% in 55s). Debit freeze executed. STR filed.",
+    "written_to_graph": true,
+    "graph_case_id": "HHG-006"
+  },
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "INITIATE_DEBIT_FREEZE_1930",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "Large-value fake investment fraud. Immediate 1930 freeze."
+      }
+    ],
+    "final": [
+      {
+        "action": "INITIATE_DEBIT_FREEZE_1930",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "Rs.40,177 fake investment fraud. Mule risk 0.91. Debit freeze executed via CFCFRMS."
+      },
+      {
+        "action": "ISSUE_BANK_NODAL_NOTICE",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "Bank nodal officer SBI notified for account freeze coordination"
+      },
+      {
+        "action": "FLAG_STR_FIU_IND",
+        "route": "AUTO",
+        "reason": "STR filed - high-value fake investment platform fraud"
+      }
+    ],
+    "what_changed": "Autonomous investigation completed. All graph signals aggregated. Final disposition executed."
+  },
+  "sar": {
+    "file": true,
+    "reason": "Mule account confirmed - STR filed under PMLA 2002",
+    "narrative": "Fake Investment App Fraud. Rs.40,177 victim loss. Highest velocity case (96.1% in 55s). Debit freeze executed. STR filed.",
+    "subjects": [
+      "9012345606_SBI"
+    ],
+    "amount_inr": 40177,
+    "activity_dates": [
+      "2024-10-25"
+    ]
+  },
+  "stop_reason": "MDL evidence sufficiency gate satisfied.",
+  "tool_calls": 8,
+  "tokens": 0,
+  "latency_s": 8.9
+}

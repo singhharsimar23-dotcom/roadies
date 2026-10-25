@@ -151,16 +151,16 @@
             <td class="py-2.5 px-4 text-xs font-mono">
               {% if c.pattern == 'account_takeover' %}
                 <span class="text-error font-medium">Account Takeover (ATO)</span>
-              {% elif c.pattern == 'card_not_present_fraud' %}
-                <span class="text-error font-medium">Card-Not-Present (CNP)</span>
+              {% elif c.pattern == 'digital_arrest_fraud' %}
+                <span class="text-error font-medium">Digital Arrest Fraud</span>
               {% elif c.pattern == 'card_testing' %}
-                <span class="text-amber-400 font-medium">Card Testing Velocity</span>
-              {% elif c.pattern == 'card_not_present_new_device' %}
-                <span class="text-error font-medium">CNP New Device Anomaly</span>
+                <span class="text-amber-400 font-medium">UPI OTP Phishing</span>
+              {% elif c.pattern == 'fake_investment_app_fraud' %}
+                <span class="text-error font-medium">Fake Investment App Fraud</span>
               {% elif c.pattern == 'out_of_region_use' %}
-                <span class="text-amber-400 font-medium">Out-of-Region Geo-Velocity</span>
+                <span class="text-amber-400 font-medium">Mule Account Hub</span>
               {% elif c.pattern == 'none' or c.verdict == 'legitimate' %}
-                <span class="text-primary-container/90 font-medium">Legitimate Cardholder</span>
+                <span class="text-primary-container/90 font-medium">Legitimate Citizen (Cleared)</span>
               {% else %}
                 <span class="text-on-surface-variant capitalize">{{ c.pattern|replace('_', ' ') }}</span>
               {% endif %}

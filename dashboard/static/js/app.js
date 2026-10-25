@@ -4,9 +4,9 @@
  * - TigerGraph Cytoscape Multi-Hop Graph Traversal
  * - 20-Case HHG Benchmark Suite (cases/HHG-001.json..HHG-020.json)
  * - Institutional Chain of Command Policy Escalation
- * - Customer Protection Filter (Anti-Overblocking)
+ * - Citizen Protection Filter (Anti-Overblocking / Anti-Wrongful-Freeze)
  * - Value of Information (VOI) & Evidence Sufficiency Gate
- * - Benchmark Output Dossier Viewer & ZIP Bundle Exporter
+ * - Forensic Evidence Dossier Viewer & ZIP Bundle Exporter
  * - Real-Time Server-Sent Events (SSE) Stream
  */
 
@@ -18,28 +18,41 @@ let currentCaseData = null;
 let activeEventSource = null;
 let isInvestigated = false;
 
-// Canonical Benchmark Cases across Tabs, Dropdowns and Dossier (HHG-001 through HHG-020)
+// Bihar Police Cyber Crime Investigation Cases — HHG-001 to HHG-020
+
+// Helper to get case amount in INR reliably
+function getCaseAmountINR(data) {
+    if (!data) return 0;
+    if (data.amount !== undefined) return Number(data.amount);
+    if (data.amount_inr !== undefined) return Number(data.amount_inr);
+    if (data.case && data.case.amount !== undefined) return Number(data.case.amount);
+    if (data.case && data.case.amount_inr !== undefined) return Number(data.case.amount_inr);
+    if (data.exposure_usd !== undefined) return Math.round(Number(data.exposure_usd) * 83.5);
+    if (data.case && data.case.exposure_usd !== undefined) return Math.round(Number(data.case.exposure_usd) * 83.5);
+    return 0;
+}
+
 const CASE_NAMES = {
-    1:  "HHG-001 ✓ Legitimate — Customer Verified ($0.00)",
-    2:  "HHG-002 — Card-Not-Present Fraud ($292.36)",
-    3:  "HHG-003 — Card-Not-Present Fraud ($49.00)",
-    4:  "HHG-004 — Card-Not-Present Fraud ($128.33)",
-    5:  "HHG-005 ✓ Legitimate — Customer Shield ($0.00)",
-    6:  "HHG-006 — Card-Not-Present Fraud ($482.12)",
-    7:  "HHG-007 — Card-Not-Present Fraud ($111.92)",
-    8:  "HHG-008 — Card-Not-Present Fraud ($55.68)",
-    9:  "HHG-009 — Card-Not-Present Fraud ($30.02)",
-    10: "HHG-010 — Card-Not-Present Fraud ($1,000.03)",
-    11: "HHG-011 — Card-Not-Present Fraud ($131.30)",
-    12: "HHG-012 ✓ Legitimate — Verified Customer ($0.00)",
-    13: "HHG-013 ✓ Legitimate — Verified Customer ($0.00)",
-    14: "HHG-014 — Card-Not-Present Fraud ($74.96)",
-    15: "HHG-015 — Card-Not-Present Fraud ($599.94)",
-    16: "HHG-016 — Card-Not-Present Fraud ($59.67)",
-    17: "HHG-017 ✓ Legitimate — Verified Customer ($0.00)",
-    18: "HHG-018 — Card-Not-Present Fraud ($39.08)",
-    19: "HHG-019 — Card-Not-Present Fraud ($99.92)",
-    20: "HHG-020 ✓ Legitimate — Verified Customer ($0.00)"
+    1:  "HHG-001 CLEARED — Legitimate Citizen (Rs.0)",
+    2:  "HHG-002 — Fake Investment App Fraud (Rs.24,367) — Muzaffarpur",
+    3:  "HHG-003 — Digital Arrest Fraud (Rs.4,083) — Patna",
+    4:  "HHG-004 — Digital Arrest Fraud (Rs.10,694) — Bhagalpur",
+    5:  "HHG-005 CLEARED — Legitimate Citizen (Rs.0)",
+    6:  "HHG-006 — Fake Investment App Fraud (Rs.40,177) — Nalanda",
+    7:  "HHG-007 — UPI OTP Phishing (Rs.9,332) — Gaya",
+    8:  "HHG-008 — Mule Account Hub (Rs.4,640) — Muzaffarpur",
+    9:  "HHG-009 — Romance Scam Fraud (Rs.2,502) — Patna",
+    10: "HHG-010 — Digital Arrest Fraud (Rs.83,336) — Bhagalpur",
+    11: "HHG-011 — Fake Job Offer Fraud (Rs.10,942) — Nalanda",
+    12: "HHG-012 CLEARED — Legitimate Citizen (Rs.0)",
+    13: "HHG-013 CLEARED — Legitimate Citizen (Rs.0)",
+    14: "HHG-014 — Digital Arrest Fraud (Rs.6,247) — Patna",
+    15: "HHG-015 — Fake Investment App Fraud (Rs.49,995) — Gaya",
+    16: "HHG-016 — UPI OTP Phishing (Rs.4,972) — Muzaffarpur",
+    17: "HHG-017 CLEARED — Legitimate Citizen (Rs.0)",
+    18: "HHG-018 — Layering Conduit (Rs.3,257) — Bhagalpur",
+    19: "HHG-019 — Fake Job Offer Fraud (Rs.8,327) — Nalanda",
+    20: "HHG-020 CLEARED — Legitimate Citizen (Rs.0)"
 };
 
 // =========================================================================
@@ -241,7 +254,7 @@ function initCytoscape() {
                 html += `<div><span class="text-outline">Assessed Risk:</span> <span class="${d.risk > 0.5 ? 'text-error' : 'text-primary-container'} font-semibold">${(d.risk * 100).toFixed(1)}%</span></div>`;
             }
             if (d.amount !== undefined) {
-                html += `<div><span class="text-outline">Amount:</span> <span class="text-primary font-semibold">$${Number(d.amount).toLocaleString(undefined, {minimumFractionDigits: 2})}</span></div>`;
+                html += `<div><span class="text-outline">Amount:</span> <span class="text-primary font-semibold">Rs.${Math.round(Number(d.amount)).toLocaleString('en-IN')}</span></div>`;
             }
             html += `<div><span class="text-outline">Sub-Graph Degree:</span> <span class="text-on-surface">${node.degree()} connections</span></div>`;
             body.innerHTML = html;
@@ -284,15 +297,17 @@ async function populateCaseDropdown() {
     try {
         const res = await fetch('/api/cases');
         if (res.ok) {
-            const cases = await res.json();
+            const result = await res.json();
+            const cases = Array.isArray(result) ? result : (result.cases || []);
             if (Array.isArray(cases) && cases.length > 0) {
                 sel.innerHTML = '';
                 cases.forEach(c => {
                     const opt = document.createElement('option');
                     opt.value = c.case_id;
                     const isLegit = c.verdict === 'legitimate' || c.status === 'closed_legitimate';
-                    const tag = isLegit ? '✓ Legitimate' : 'Fraud';
-                    const exp = c.exposure_usd !== undefined ? `$${Number(c.exposure_usd).toFixed(2)}` : '$0.00';
+                    const tag = isLegit ? 'CLEARED' : (c.alert_typology || 'Fraud');
+                    const amtInr = c.amount_inr !== undefined ? c.amount_inr : (c.amount !== undefined ? c.amount : (c.exposure_usd ? Math.round(Number(c.exposure_usd) * 83.5) : 0));
+                    const exp = `Rs.${Number(amtInr).toLocaleString('en-IN')}`;
                     opt.textContent = `${c.case_id} — ${tag} (${exp})`;
                     sel.appendChild(opt);
                 });
@@ -382,7 +397,7 @@ async function loadBenchmarkCase(caseInput) {
         // Update Dossier Header
         const outTitle = document.getElementById('output-files-title');
         if (outTitle) {
-            outTitle.textContent = `Benchmark Output Dossier (cases/${currentCaseId}.json)`;
+            outTitle.textContent = `Forensic Evidence Dossier (cases/${currentCaseId}.json)`;
         }
 
         // Update Latency (Dynamic GSQL Traversal Latency)
@@ -395,14 +410,31 @@ async function loadBenchmarkCase(caseInput) {
 
         // Update Metadata Micro-Strip (Bug fix: separate account and typology)
         const metaAcc = document.getElementById('meta-acc');
-        const acct = data.target_account || data.trigger_account_id || data.customer_id || (data.case && (data.case.customer_id || data.case.card_id)) || 'C13487';
-        const amt = data.amount !== undefined ? data.amount : (data.case && data.case.exposure_usd !== undefined ? data.case.exposure_usd : 0);
+        const acct = data.target_account || data.trigger_account_id || data.customer_id || (data.case && (data.case.customer_id || data.case.card_id)) || '9123456789_PNB';
+        const amt = getCaseAmountINR(data);
         if (metaAcc) {
-            metaAcc.textContent = `${acct} ($${Number(amt).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})})`;
+            metaAcc.textContent = `${acct} (Rs.${Math.round(Number(amt)).toLocaleString('en-IN')})`;
         }
         const metaNode = document.getElementById('meta-node');
         if (metaNode) {
             metaNode.textContent = data.alert_typology || (data.case && (data.case.pattern_description || data.case.pattern)) || 'Suspicious Transaction Alert';
+        }
+        // Update XAI panel header to match loaded case
+        const xaiAccEl = document.getElementById('xai-account-id');
+        const xaiScoreEl = document.getElementById('xai-final-score');
+        const fraudProb = data.fraud_probability !== undefined ? data.fraud_probability : (data.case ? data.case.fraud_probability : 0.05);
+        const isLegitCase = fraudProb < 0.70;
+        if (xaiAccEl) xaiAccEl.textContent = data.target_account || data.trigger_account_id || data.customer_id || (data.case && data.case.customer_id) || 'N/A';
+        if (xaiScoreEl) {
+            const scoreVal = Number(fraudProb).toFixed(2);
+            if (isLegitCase) {
+                xaiScoreEl.textContent = `${scoreVal} — CLEARED (Low Risk)`;
+                xaiScoreEl.className = 'text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-surface-container text-primary-container border border-primary-container/25';
+            } else {
+                const label = fraudProb >= 0.90 ? 'CRITICAL_FREEZE' : 'HIGH_REVIEW';
+                xaiScoreEl.textContent = `${scoreVal} — ${label}`;
+                xaiScoreEl.className = 'text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-error-container/30 text-error border border-error/25';
+            }
         }
 
         // Update Chain of Command
@@ -425,7 +457,7 @@ async function loadBenchmarkCase(caseInput) {
         const actType = coc.action_type || (finalAct ? finalAct.action : 'CLOSE_NO_FRAUD');
         if (cocAction) {
             cocAction.textContent = actType;
-            if (actType === 'FREEZE_ACCOUNT' || actType === 'TIER_4_BLOCK' || actType === 'BLOCK_CARD' || actType === 'FILE_REPORT') {
+            if (actType === 'FREEZE_ACCOUNT' || actType === 'TIER_4_BLOCK' || actType === 'INITIATE_DEBIT_FREEZE_1930' || actType === 'REGISTER_FIR_SEC_66D' || actType === 'FLAG_STR_FIU_IND') {
                 cocAction.className = 'text-error font-semibold';
             } else {
                 cocAction.className = 'text-primary-container font-semibold';
@@ -441,10 +473,18 @@ async function loadBenchmarkCase(caseInput) {
         updateFilterRow('det-recurring', shield.recurring);
         updateFilterRow('det-travel', shield.travel);
         updateFilterRow('det-device', shield.device);
+        // For fraud cases with no shield data, explicitly set all to NOT APPLICABLE
+        const isFraudCase = (data.verdict === 'fraud' || (data.case && data.case.verdict === 'fraud'));
+        if (isFraudCase && !shield.recurring && !shield.travel && !shield.device) {
+            ['det-recurring-status','det-travel-status','det-device-status'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) { el.textContent = 'NOT APPLICABLE'; el.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-surface-container-lowest text-outline font-semibold'; }
+            });
+        }
 
         const shieldVerdict = document.getElementById('shield-verdict-flip');
         if (shieldVerdict) {
-            shieldVerdict.textContent = shield.verdict_flip || (data.verdict === 'legitimate' || (data.case && data.case.verdict === 'legitimate') ? 'PASS: Customer Verification Confirmed (Overrides Alert)' : 'FAIL: High-Risk Evidence Confirmed');
+            shieldVerdict.textContent = shield.verdict_flip || (data.verdict === 'legitimate' || (data.case && data.case.verdict === 'legitimate') ? 'PASS — Innocent Citizen Verified. Account remains active.' : 'FAIL — Mule Account Evidence Confirmed. Debit freeze recommended.');
             if (shield.final_offset && shield.final_offset < 0 || (data.case && data.case.verdict === 'legitimate')) {
                 shieldVerdict.className = 'text-[11px] font-mono font-semibold text-primary-container';
             } else {
@@ -541,28 +581,28 @@ function populateStreamLogs(data, completed = false) {
     const logsEl = document.getElementById('stream-terminal-logs');
     if (!logsEl) return;
 
-    const amtVal = data.amount !== undefined ? data.amount : (data.case && data.case.exposure_usd !== undefined ? data.case.exposure_usd : 0);
-    const t = Number(amtVal).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    const amtVal = getCaseAmountINR(data);
+    const t = Math.round(Number(amtVal)).toLocaleString('en-IN');
     const fProb = data.fraud_probability !== undefined ? data.fraud_probability : (data.case ? data.case.fraud_probability : 0.05);
     const isFraud = fProb >= 0.70;
     const isLegit = !isFraud;
-    const acct = data.target_account || data.trigger_account_id || data.customer_id || (data.case && (data.case.customer_id || data.case.card_id)) || 'C13487';
-    const txn = (data.trigger_txn_ids && data.trigger_txn_ids[0]) || (data.case && data.case.first_suspicious_txn_id) || 'T3478561';
+    const acct = data.target_account || data.trigger_account_id || data.customer_id || (data.case && (data.case.customer_id || data.case.card_id)) || '9123456789_PNB';
+    const txn = (data.trigger_txn_ids && data.trigger_txn_ids[0]) || (data.case && data.case.first_suspicious_txn_id) || 'TXN-HHG-014-001';
     const shield = data.customer_shield || data.s18_overblocking_shield || {};
     const voi = data.optimal_stopping_gate || data.s09_voi_gate || {};
 
     let html = `
-        <div><span class="text-outline">[00:00.02]</span> <span class="text-primary-container">[INGEST]</span>: Ingested alert on Account ${acct} ($${t})</div>
+        <div><span class="text-outline">[00:00.02]</span> <span class="text-primary-container">[INGEST]</span>: Ingested alert on Account ${acct} (Rs.${t})</div>
         <div><span class="text-outline">[00:00.14]</span> <span class="text-primary-fixed-dim">[TRAVERSAL]</span>: GSQL 2-hop traversal verified topological neighborhood around ${acct}</div>
-        <div><span class="text-outline">[00:00.28]</span> <span class="${isLegit ? 'text-primary-container' : 'text-error'}">[CUSTOMER_FILTER]</span>: Recurring=${shield.recurring?.active ? 'Yes' : 'No'}, Travel=${shield.travel?.active ? 'Yes' : 'No'}, Device=${shield.device?.active ? 'Trusted' : 'Untrusted'} (Verdict: ${isLegit ? 'Pass' : 'Exemption Denied'})</div>
+        <div><span class="text-outline">[00:00.28]</span> <span class="${isLegit ? 'text-primary-container' : 'text-error'}">[CITIZEN_FILTER]</span>: Salary=${shield.recurring?.active ? 'Yes' : 'No'}, Utility=${shield.travel?.active ? 'Yes' : 'No'}, Tenure=${shield.device?.active ? '2+yr' : 'New'} (Citizen Check: ${isLegit ? 'PASS — Account Cleared' : 'FAIL — Mule Evidence Confirmed'})</div>
         <div><span class="text-outline">[00:00.35]</span> <span class="text-primary">[STOPPING_GATE]</span>: Value of Information ${Number(voi.voi_score || 0.012).toFixed(3)} &lt; 0.05 threshold &rarr; Evidence sufficient</div>
     `;
 
     if (completed || isLegit) {
         if (isFraud) {
-            html += `<div><span class="text-outline">[00:00.41]</span> <span class="text-error font-bold">[DISPOSITION]</span>: TIER 4 BLOCK &amp; I4C 1930 / Sec 66D IT Act Evidentiary Dossier Generated</div>`;
+            html += `<div><span class="text-outline">[00:00.41]</span> <span class="text-error font-bold">[DISPOSITION]</span>: INITIATE_DEBIT_FREEZE_1930 &amp; I4C / Sec 66D IT Act Evidentiary Dossier Generated</div>`;
         } else {
-            html += `<div><span class="text-outline">[00:00.41]</span> <span class="text-primary-container font-bold">[DISPOSITION]</span>: CUSTOMER VERIFICATION CONFIRMED &rarr; CLOSE_NO_FRAUD</div>`;
+            html += `<div><span class="text-outline">[00:00.41]</span> <span class="text-primary-container font-bold">[DISPOSITION]</span>: CITIZEN ACCOUNT CLEARED &rarr; Verified legitimate citizen — Account remains active</div>`;
         }
     }
 
@@ -650,10 +690,10 @@ async function runLiveAutonomousInvestigationTrace() {
     const data = currentCaseData || {};
     const inner = data.case || {};
     const cid = currentCaseId || 'HHG-014';
-    const acct = data.target_account || data.trigger_account_id || data.customer_id || inner.customer_id || 'C13487';
-    const txn = (data.trigger_txn_ids && data.trigger_txn_ids[0]) || inner.first_suspicious_txn_id || 'T3478561';
-    const amt = data.amount !== undefined ? data.amount : (inner.exposure_usd !== undefined ? inner.exposure_usd : 74.96);
-    const amtStr = Number(amt).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    const acct = data.target_account || data.trigger_account_id || data.customer_id || inner.customer_id || '9123456789_PNB';
+    const txn = (data.trigger_txn_ids && data.trigger_txn_ids[0]) || inner.first_suspicious_txn_id || 'TXN-HHG-014-001';
+    const amt = getCaseAmountINR(data);
+    const amtStr = Math.round(Number(amt)).toLocaleString("en-IN");
     const risk = (data.fraud_probability !== undefined) ? data.fraud_probability : (inner.fraud_probability !== undefined ? inner.fraud_probability : 0.85);
     const isFraud = (data.verdict === 'fraud' || inner.verdict === 'fraud' || risk >= 0.70);
     const shield = data.customer_shield || data.s18_overblocking_shield || {};
@@ -672,7 +712,7 @@ async function runLiveAutonomousInvestigationTrace() {
     
     // Step 1: Ingest
     await new Promise(r => setTimeout(r, 350));
-    appendLog('00:00.08', 'INGEST', `Ingested alert on Account ${acct} ($${amtStr}) — ML Risk Score: ${(risk * 100).toFixed(1)}%`, 'text-primary-container');
+    appendLog('00:00.08', 'INGEST', `Received 1930 complaint — Account ${acct} — Victim Loss: Rs.${amtStr} — Mule Risk: ${(risk * 100).toFixed(1)}%`, 'text-primary-container');
 
     // Step 2: Topological Traversal
     await new Promise(r => setTimeout(r, 450));
@@ -692,7 +732,7 @@ async function runLiveAutonomousInvestigationTrace() {
     const trv = shield.travel?.active ? 'Yes' : 'No';
     const dev = shield.device?.active ? 'Trusted' : 'Untrusted';
     const passShield = !isFraud;
-    appendLog('00:00.44', 'CUSTOMER_FILTER', `Recurring=${rec}, Travel=${trv}, Device=${dev} (Customer Shield: ${passShield ? 'PASS (Exemption Granted)' : 'FAIL (Exemption Denied)'})`, passShield ? 'text-primary-container' : 'text-error');
+    appendLog('00:00.44', 'CITIZEN_FILTER', `Salary Credits=${rec}, Utility Bills=${trv}, Account Tenure=${dev} — Citizen Protection: ${passShield ? 'PASS (Account Cleared)' : 'FAIL (Mule Evidence Stands)'}`, passShield ? 'text-primary-container' : 'text-error');
 
     // Step 5: MDL Stopping Gate
     await new Promise(r => setTimeout(r, 400));
@@ -702,15 +742,15 @@ async function runLiveAutonomousInvestigationTrace() {
     // Step 6: Final Decision
     await new Promise(r => setTimeout(r, 400));
     if (isFraud) {
-        appendLog('00:00.68', 'DISPOSITION', `CONFIRMED FRAUD: Escalated to TIER 4 BLOCK & I4C 1930 / Sec 66D IT Act Evidentiary Dossier Generated.`, 'text-error font-bold');
+        appendLog('00:00.68', 'DISPOSITION', `MULE ACCOUNT CONFIRMED: INITIATE_DEBIT_FREEZE_1930 executed. Sec 66D IT Act Evidentiary Dossier Generated for I4C / FIU-IND.`, 'text-error font-bold');
         if (badge) {
-            badge.textContent = 'CONFIRMED FRAUD — SAR FILED';
+            badge.textContent = 'MULE ACCOUNT — INITIATE_DEBIT_FREEZE_1930';
             badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-error-container/20 text-error border border-error/40 font-semibold';
         }
     } else {
-        appendLog('00:00.68', 'DISPOSITION', `CLOSE_NO_FRAUD: Legitimate cardholder activity confirmed via Customer Protection Shield.`, 'text-primary-container font-bold');
+        appendLog('00:00.68', 'DISPOSITION', `CLOSE_NO_FRAUD: Legitimate citizen account confirmed. Citizen Protection Shield verified — account cleared.`, 'text-primary-container font-bold');
         if (badge) {
-            badge.textContent = 'LEGITIMATE ACTIVITY — TRANSACTION ALLOWED';
+            badge.textContent = 'CLEARED — LEGITIMATE CITIZEN ACCOUNT';
             badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-surface-container-high text-primary-container border border-primary-container/30 font-semibold';
         }
     }
@@ -901,7 +941,7 @@ function applyFinalDispositionBadge(liveVerdict) {
     );
 
     if (isLegitimate) {
-        badge.textContent = 'LEGITIMATE ACTIVITY — TRANSACTION ALLOWED';
+        badge.textContent = 'CLEARED — LEGITIMATE CITIZEN ACCOUNT';
         badge.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-surface-container-high text-primary-container border border-primary-container/30 font-semibold';
     } else if (verdictStr === 'unknown') {
         badge.textContent = 'INVESTIGATION COMPLETE — VERDICT PENDING';

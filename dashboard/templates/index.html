@@ -3,435 +3,204 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>FraudSight — Bihar Police Cyber Crime Investigation & Mule Account Detection</title>
-    
-    <!-- Fonts & Icons -->
+    <title>FraudSight — Bihar Police Cyber Crime Investigation &amp; Mule Account Detection</title>
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
-    
-    <!-- Cytoscape for Real Graph Rendering -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.28.1/cytoscape.min.js"></script>
-
-    <!-- Tailwind CSS with Sentinel Theme -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script id="tailwind-config">
-    tailwind.config = {
-        darkMode: "class",
-        theme: {
-            extend: {
-                colors: {
-                    "background": "#051424",
-                    "surface": "#051424",
-                    "surface-container-lowest": "#010f1f",
-                    "surface-container-low": "#0d1c2d",
-                    "surface-container": "#122131",
-                    "surface-container-high": "#1c2b3c",
-                    "surface-container-highest": "#273647",
-                    "on-surface": "#d4e4fa",
-                    "on-surface-variant": "#b9cacb",
-                    "primary": "#e0fdff",
-                    "primary-container": "#00f2fe",
-                    "primary-fixed-dim": "#00dce6",
-                    "on-primary-container": "#00373a",
-                    "error": "#ffb4ab",
-                    "error-container": "#93000a",
-                    "outline": "#849495"
-                },
-                fontFamily: {
-                    sans: ["Inter", "sans-serif"],
-                    mono: ["JetBrains Mono", "monospace"]
-                }
-            }
-        }
-    };
-    </script>
+    <script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"background":"#051424","surface":"#051424","surface-container-lowest":"#010f1f","surface-container-low":"#0d1c2d","surface-container":"#122131","surface-container-high":"#1c2b3c","surface-container-highest":"#273647","on-surface":"#d4e4fa","on-surface-variant":"#b9cacb","primary":"#e0fdff","primary-container":"#00f2fe","primary-fixed-dim":"#00dce6","on-primary-container":"#00373a","error":"#ffb4ab","error-container":"#93000a","outline":"#849495"},fontFamily:{sans:["Inter","sans-serif"],mono:["JetBrains Mono","monospace"]}}}};</script>
     <style>
-        ::-webkit-scrollbar { width: 5px; height: 5px; }
-        ::-webkit-scrollbar-track { background: #010f1f; }
-        ::-webkit-scrollbar-thumb { background: #1c2b3c; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #273647; }
-        #cy-container { width: 100%; height: 100%; }
+        ::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:#010f1f}::-webkit-scrollbar-thumb{background:#1c2b3c;border-radius:3px}::-webkit-scrollbar-thumb:hover{background:#273647}
+        #cy-container{width:100%;height:100%;position:absolute;inset:0}
+        .freeze-pulse{animation:freeze-glow 1.8s ease-in-out infinite}
+        @keyframes freeze-glow{0%,100%{box-shadow:0 0 0 0 rgba(255,100,80,0)}50%{box-shadow:0 0 10px 2px rgba(255,100,80,.35)}}
+        .trail-hop{transition:all .25s ease}.trail-hop:hover{transform:translateX(3px)}
     </style>
 </head>
 <body class="bg-background font-sans text-xs text-on-surface antialiased min-h-screen">
-    
-    <!-- Top Navigation Header -->
-    <header class="fixed top-0 left-0 right-0 h-14 z-50 bg-surface-container-lowest/90 backdrop-blur-xl border-b border-surface-container-highest/60">
-        <div class="h-14 w-full px-5 flex items-center justify-between gap-4">
-            <div class="flex items-center gap-4 shrink-0">
-                <a href="/" class="flex items-center gap-2.5">
-                    <div class="w-7 h-7 rounded-lg bg-surface-container-high flex items-center justify-center border border-primary-container/30 text-primary-container shadow-sm">
-                        <span class="material-symbols-outlined text-[18px]">hub</span>
-                    </div>
-                    <span class="text-sm font-semibold tracking-tight text-on-surface">FraudSight</span>
-                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-surface-container-high text-primary-container border border-primary-container/20 uppercase tracking-wider">Bihar Police Cyber Cell • TigerGraph</span>
-                </a>
-                
-                <div class="h-4 w-px bg-surface-container-highest"></div>
-                
-                <nav class="flex items-center gap-1">
-                    <a class="px-3 py-1 bg-surface-container-high text-primary-container border border-primary-container/20 rounded-lg font-medium text-xs transition-colors" href="/">Cockpit</a>
-                    <a class="px-3 py-1 rounded-lg text-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" href="/cases">Cyber Crime Cases (20)</a>
-                    <a class="px-3 py-1 rounded-lg text-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" href="/analytics">TigerGraph Analytics</a>
-                    <a class="px-3 py-1 rounded-lg text-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" href="/about">Architecture</a>
-                </nav>
-            </div>
-
-            <div class="flex items-center gap-3 shrink-0">
-                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-low border border-primary-container/20">
-                    <span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
-                    <span class="text-[10px] font-mono uppercase text-primary-fixed-dim font-semibold tracking-wider" id="tg-status-tag">Bihar Police Cyber Grid • TigerGraph GSQL Connected</span>
-                </div>
-                
-                <button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary-container hover:bg-primary-fixed-dim text-on-primary-container font-semibold transition-colors shadow-sm" id="btn-launch-investigation" onclick="triggerInvestigation()">
-                    <span class="material-symbols-outlined text-[16px] animate-spin hidden" id="investigation-spinner">sync</span>
-                    <span class="material-symbols-outlined text-[16px]" id="investigation-icon">bolt</span>
-                    <span>Run Investigation</span>
-                </button>
-            </div>
+<header class="fixed top-0 left-0 right-0 h-14 z-50 bg-surface-container-lowest/90 backdrop-blur-xl border-b border-surface-container-highest/60">
+  <div class="h-14 w-full px-5 flex items-center justify-between gap-4">
+    <div class="flex items-center gap-4 shrink-0">
+      <a href="/" class="flex items-center gap-2.5">
+        <div class="w-7 h-7 rounded-lg bg-surface-container-high flex items-center justify-center border border-primary-container/30 text-primary-container shadow-sm"><span class="material-symbols-outlined text-[18px]">hub</span></div>
+        <span class="text-sm font-semibold tracking-tight text-on-surface">FraudSight</span>
+        <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-surface-container-high text-primary-container border border-primary-container/20 uppercase tracking-wider">Bihar Police Cyber Crime Cell</span>
+      </a>
+      <div class="h-4 w-px bg-surface-container-highest"></div>
+      <nav class="flex items-center gap-1">
+        <a class="px-3 py-1 bg-surface-container-high text-primary-container border border-primary-container/20 rounded-lg font-medium text-xs" href="/">Cockpit</a>
+        <a class="px-3 py-1 rounded-lg text-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container" href="/cases">Syndicate Ledger (20)</a>
+        <a class="px-3 py-1 rounded-lg text-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container" href="/analytics">Graph Analytics</a>
+        <a class="px-3 py-1 rounded-lg text-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container" href="/about">Architecture</a>
+      </nav>
+    </div>
+    <div class="flex items-center gap-3 shrink-0">
+      <div class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-low border border-primary-container/20">
+        <span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+        <span class="text-[10px] font-mono uppercase text-primary-fixed-dim font-semibold tracking-wider" id="tg-status-tag">AI Engine Active - 20 Cases Loaded - Demo Mode</span>
+      </div>
+      <button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary-container hover:bg-primary-fixed-dim text-on-primary-container font-semibold transition-colors shadow-sm" id="btn-launch-investigation" onclick="triggerInvestigation()">
+        <span class="material-symbols-outlined text-[16px] animate-spin hidden" id="investigation-spinner">sync</span>
+        <span class="material-symbols-outlined text-[16px]" id="investigation-icon">bolt</span>
+        <span>Run Investigation</span>
+      </button>
+    </div>
+  </div>
+</header>
+<main class="relative pt-14 w-full bg-background min-h-screen">
+  <div class="flex flex-col w-full pb-8">
+    <!-- Pillars bar -->
+    <section class="w-full px-5 pt-3 pb-3 bg-surface-container-lowest border-b border-surface-container-highest/60">
+      <div class="max-w-7xl mx-auto flex flex-col gap-2">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-mono text-outline uppercase tracking-wider">Bihar Police Cyber Command - 6-Pillar Compliance</span>
+            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-surface-container-high text-primary-container">6 / 6 Active</span>
+          </div>
+          <span class="text-[10px] font-mono text-outline">Txn Analysis - Mule Detection - Money Trail - 1930 Correlation - Graph Topology - Police Cockpit</span>
         </div>
-    </header>
-
-    <!-- Main View Wrapper -->
-    <main class="relative pt-14 w-full bg-background min-h-screen">
-        <div class="flex flex-col w-full pb-8">
-            
-            <!-- 6 Bihar Police Cybercrime Pillars -->
-            <section class="w-full px-5 pt-3 pb-3 bg-surface-container-lowest border-b border-surface-container-highest/60">
-                <div class="max-w-7xl mx-auto flex flex-col gap-2">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <span class="text-[10px] font-mono text-outline uppercase tracking-wider">Bihar Police Cyber Command Pillars</span>
-                            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-surface-container-high text-primary-container">6 Pillars Active</span>
-                        </div>
-                        <span class="text-[10px] font-mono text-outline">Transaction Analysis • Mule Detection • Money Trail • 1930 Correlation • Graph Topology • Police Cockpit</span>
-                    </div>
-
-                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
-                        <!-- Pillar 1 -->
-                        <div class="bg-surface-container-low rounded-lg p-2.5 border border-surface-container-high">
-                            <div class="flex items-center justify-between mb-1">
-                                <span class="text-[9px] font-mono text-outline uppercase">[1] Txn Analysis</span>
-                                <span class="text-[9px] font-mono text-primary-container bg-primary-container/10 px-1 rounded">&lt;180s Smurf</span>
-                            </div>
-                            <h4 class="text-xs font-semibold text-on-surface">Rapid Layering</h4>
-                            <p class="text-[9px] font-mono text-on-surface-variant mt-0.5 truncate">Pass-through Velocity</p>
-                            <div class="flex items-center gap-1 mt-1 text-primary text-[9px] font-mono">
-                                <span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
-                                <span>Entropy Monitored</span>
-                            </div>
-                        </div>
-
-                        <!-- Pillar 2 -->
-                        <div class="bg-surface-container-low rounded-lg p-2.5 border border-surface-container-high">
-                            <div class="flex items-center justify-between mb-1">
-                                <span class="text-[9px] font-mono text-outline uppercase">[2] Mule Detection</span>
-                                <span class="text-[9px] font-mono text-primary-fixed-dim bg-surface-container px-1 rounded">Dynamic XAI</span>
-                            </div>
-                            <h4 class="text-xs font-semibold text-on-surface">Mule Risk Scoring</h4>
-                            <p class="text-[9px] font-mono text-on-surface-variant mt-0.5 truncate">Multi-factor (0.0-1.0)</p>
-                            <div class="flex items-center gap-1 mt-1 text-primary-container text-[9px] font-mono">
-                                <span class="material-symbols-outlined text-[11px]">verified</span>
-                                <span>Ranked Leads</span>
-                            </div>
-                        </div>
-
-                        <!-- Pillar 3 -->
-                        <div class="bg-surface-container-low rounded-lg p-2.5 border border-surface-container-high">
-                            <div class="flex items-center justify-between mb-1">
-                                <span class="text-[9px] font-mono text-outline uppercase">[3] Money Trail</span>
-                                <span class="text-[9px] font-mono text-primary bg-primary-container/10 px-1 rounded" id="pillar-tg-lat">24ms GSQL</span>
-                            </div>
-                            <h4 class="text-xs font-semibold text-on-surface">Multi-Hop BFS</h4>
-                            <p class="text-[9px] font-mono text-on-surface-variant mt-0.5 truncate">Layer 1 &rarr; Layer 2 &rarr; Cashout</p>
-                            <div class="flex items-center gap-1 mt-1 text-on-surface-variant text-[9px] font-mono">
-                                <span class="material-symbols-outlined text-[11px] text-primary-container">hub</span>
-                                <span>Chain Traced</span>
-                            </div>
-                        </div>
-
-                        <!-- Pillar 4 -->
-                        <div class="bg-surface-container-low rounded-lg p-2.5 border border-surface-container-high">
-                            <div class="flex items-center justify-between mb-1">
-                                <span class="text-[9px] font-mono text-outline uppercase">[4] 1930 / NCRP</span>
-                                <span class="text-[9px] font-mono text-primary-container bg-surface-container px-1 rounded">I4C Live</span>
-                            </div>
-                            <h4 class="text-xs font-semibold text-on-surface">Complaint Correlation</h4>
-                            <p class="text-[9px] font-mono text-on-surface-variant mt-0.5 truncate">Multi-District Convergence</p>
-                            <div class="flex items-center gap-1 mt-1 text-primary-container text-[9px] font-mono">
-                                <span class="material-symbols-outlined text-[11px]">link</span>
-                                <span>Syndicate Hubs</span>
-                            </div>
-                        </div>
-
-                        <!-- Pillar 5 -->
-                        <div class="bg-surface-container-low rounded-lg p-2.5 border border-surface-container-high">
-                            <div class="flex items-center justify-between mb-1">
-                                <span class="text-[9px] font-mono text-outline uppercase">[5] Graph Topology</span>
-                                <span class="text-[9px] font-mono text-primary-container bg-primary-container/10 px-1 rounded">Cytoscape</span>
-                            </div>
-                            <h4 class="text-xs font-semibold text-on-surface">Network Visualizer</h4>
-                            <p class="text-[9px] font-mono text-on-surface-variant mt-0.5 truncate">IMEI &amp; Device Rings</p>
-                            <div class="flex items-center gap-1 mt-1 text-primary text-[9px] font-mono">
-                                <span class="material-symbols-outlined text-[11px]">bubble_chart</span>
-                                <span>Cluster Halos</span>
-                            </div>
-                        </div>
-
-                        <!-- Pillar 6 -->
-                        <div class="bg-surface-container-low rounded-lg p-2.5 border border-surface-container-high">
-                            <div class="flex items-center justify-between mb-1">
-                                <span class="text-[9px] font-mono text-outline uppercase">[6] Police Cockpit</span>
-                                <span class="text-[9px] font-mono text-primary-fixed-dim bg-surface-container px-1 rounded">Sec 65B IEA</span>
-                            </div>
-                            <h4 class="text-xs font-semibold text-on-surface">Evidentiary Dossier</h4>
-                            <p class="text-[9px] font-mono text-on-surface-variant mt-0.5 truncate">Court-Ready Reports</p>
-                            <div class="flex items-center gap-1 mt-1 text-primary-container text-[9px] font-mono">
-                                <span class="material-symbols-outlined text-[11px]">gavel</span>
-                                <span>1930 Debit Freeze</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Main Two Column Workspace -->
-            <section class="w-full px-5 py-4">
-                <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-4">
-                    
-                    <!-- LEFT COLUMN: 40% (lg:col-span-5) -->
-                    <div class="lg:col-span-5 flex flex-col gap-4">
-                        
-                        <!-- Case Selector Card -->
-                        <div class="bg-surface-container-low rounded-xl p-3.5 border border-surface-container-high shadow-sm">
-                            <div class="flex items-center justify-between pb-2 border-b border-surface-container-highest">
-                                <div class="flex items-center gap-2">
-                                    <span class="material-symbols-outlined text-[18px] text-primary-container">cases</span>
-                                    <span class="text-xs font-semibold text-on-surface">Benchmark Case Selection</span>
-                                </div>
-                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-surface-container text-outline border border-surface-container-highest font-semibold" id="case-badge-type">ALERT INGESTION (PENDING)</span>
-                            </div>
-
-                            <!-- 4 Rapid Selector Tabs -->
-                            <!-- 4 Rapid Selector Tabs -->
-                            <div class="grid grid-cols-2 gap-1.5 pt-2">
-                                <button class="p-2 rounded-lg text-left bg-surface-container-high text-primary-container border border-primary-container/30 text-xs transition-all" id="tab-c014" onclick="loadBenchmarkCase('HHG-014')">
-                                    <div class="text-[10px] font-mono text-outline uppercase">HHG-014 (Fraud)</div>
-                                    <div class="font-medium truncate">Analyst Flag ($74.96)</div>
-                                </button>
-                                <button class="p-2 rounded-lg text-left bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high border border-transparent text-xs transition-all" id="tab-c007" onclick="loadBenchmarkCase('HHG-007')">
-                                    <div class="text-[10px] font-mono text-outline uppercase">HHG-007 (Fraud)</div>
-                                    <div class="font-medium truncate">Card-Not-Present ($111.92)</div>
-                                </button>
-                                <button class="p-2 rounded-lg text-left bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high border border-transparent text-xs transition-all" id="tab-c002" onclick="loadBenchmarkCase('HHG-002')">
-                                    <div class="text-[10px] font-mono text-outline uppercase">HHG-002 (Fraud)</div>
-                                    <div class="font-medium truncate">CNP New Device ($292.36)</div>
-                                </button>
-                                <button class="p-2 rounded-lg text-left bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high border border-transparent text-xs transition-all" id="tab-c001" onclick="loadBenchmarkCase('HHG-001')">
-                                    <div class="text-[10px] font-mono text-outline uppercase">HHG-001 (Legitimate)</div>
-                                    <div class="font-medium truncate">Customer Verified ($0.00)</div>
-                                </button>
-                            </div>
-
-                            <!-- Dropdown for All 20 Cases -->
-                            <div class="mt-2.5 flex items-center gap-2">
-                                <span class="text-[10px] font-mono text-outline">Select case:</span>
-                                <select class="bg-surface-container border border-surface-container-highest rounded px-2 py-1 text-xs text-on-surface font-mono flex-1 focus:outline-none focus:border-primary-container" id="case-select-dropdown" onchange="loadBenchmarkCase(this.value)">
-                                    <!-- Populated via JS -->
-                                </select>
-                            </div>
-
-                            <!-- Case Metadata Micro-Strip -->
-                            <div class="grid grid-cols-2 gap-2 mt-2.5 pt-2.5 border-t border-surface-container-highest">
-                                <div class="bg-surface-container rounded p-2">
-                                    <span class="text-[10px] font-mono text-outline block">Target Account</span>
-                                    <span class="text-xs font-mono text-on-surface font-semibold block truncate" id="meta-acc">C13487 ($74.96)</span>
-                                </div>
-                                <div class="bg-surface-container rounded p-2">
-                                    <span class="text-[10px] font-mono text-outline block">Alert Typology</span>
-                                    <span class="text-xs font-mono text-on-surface font-semibold block truncate" id="meta-node">Card-Not-Present Fraud</span>
-                                </div>
-                            </div>
-
-                            <!-- Live Reasoning Stream Feed -->
-                            <div class="mt-3">
-                                <div class="flex items-center justify-between pb-1">
-                                    <div class="flex items-center gap-1.5">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></span>
-                                        <span class="text-[10px] font-mono text-outline uppercase tracking-wider" id="stream-label">Investigation Timeline (HHG-014)</span>
-                                    </div>
-                                    <span class="text-[10px] font-mono text-primary-fixed-dim">Autonomous Reasoning Stream</span>
-                                </div>
-                                <div class="bg-surface-container-lowest rounded-lg p-2.5 border border-surface-container-high font-mono text-[11px] text-on-surface space-y-1 max-h-[140px] overflow-y-auto" id="stream-terminal-logs">
-                                    <div class="text-on-surface-variant">// Loading live autonomous investigation timeline...</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Chain of Command & Institutional Escalation Card -->
-                        <div class="bg-surface-container-low rounded-xl p-3.5 border border-surface-container-high shadow-sm">
-                            <div class="flex items-center justify-between pb-2 border-b border-surface-container-highest">
-                                <div class="flex items-center gap-1.5">
-                                    <span class="material-symbols-outlined text-[18px] text-primary-container">account_tree</span>
-                                    <span class="text-xs font-semibold text-on-surface">Institutional Chain of Command</span>
-                                </div>
-                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-surface-container text-primary-container border border-primary-container/20 font-semibold uppercase" id="chain-approval-tier">auto</span>
-                            </div>
-
-                            <div class="mt-2.5 space-y-2 font-mono text-xs">
-                                <div class="flex items-center justify-between p-2 rounded bg-surface-container border border-surface-container-highest">
-                                    <span class="text-outline">Approval Routing:</span>
-                                    <span class="text-on-surface font-semibold truncate max-w-[280px]" id="chain-approval-route">AUTONOMOUS_PIPELINE</span>
-                                </div>
-                                <div class="flex items-center justify-between p-2 rounded bg-surface-container border border-surface-container-highest">
-                                    <span class="text-outline">Action Executed:</span>
-                                    <span class="text-primary-container font-semibold" id="chain-action-type">CLOSE_NO_FRAUD</span>
-                                </div>
-                                <div class="flex items-center justify-between p-2 rounded bg-surface-container border border-surface-container-highest">
-                                    <span class="text-outline">Policy Reference:</span>
-                                    <span class="text-primary-container font-semibold" id="chain-policy-ref">R3: Customer Confirmation</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Customer Protection Filter (Anti-Overblocking) Card -->
-                        <div class="bg-surface-container-low rounded-xl p-3.5 border border-surface-container-high shadow-sm">
-                            <div class="flex items-center justify-between pb-2 border-b border-surface-container-highest">
-                                <div class="flex items-center gap-1.5">
-                                    <span class="material-symbols-outlined text-[18px] text-primary-container">verified_user</span>
-                                    <span class="text-xs font-semibold text-on-surface">Customer Protection Filter</span>
-                                </div>
-                                <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-surface-container text-primary-container">Anti-Overblocking</span>
-                            </div>
-                            <p class="text-[11px] text-on-surface-variant mt-2 mb-2">Evaluates verified customer innocence indicators (recurring cadence, airline corridors, registered hardware) to prevent wrongful account freezing.</p>
-                            
-                            <div class="space-y-1.5">
-                                <!-- Detector 1 -->
-                                <div class="p-2 rounded bg-surface-container border border-surface-container-highest flex items-center justify-between">
-                                    <div class="min-w-0 pr-2">
-                                        <div class="flex items-center gap-1.5">
-                                            <span class="font-mono text-[11px] text-primary-container font-medium">Recurring Subscription Cadence</span>
-                                            <span class="text-[10px] font-mono px-1 rounded bg-surface-container-lowest text-outline">Risk Dampener: Cadence</span>
-                                        </div>
-                                        <span class="text-[10px] text-on-surface-variant block mt-0.5" id="det-recurring-desc">Monthly billing cadence &amp; fixed subscription amount</span>
-                                    </div>
-                                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-primary-container/20 text-primary-container font-semibold" id="det-recurring-status">PASS (Active)</span>
-                                </div>
-
-                                <!-- Detector 2 -->
-                                <div class="p-2 rounded bg-surface-container border border-surface-container-highest flex items-center justify-between">
-                                    <div class="min-w-0 pr-2">
-                                        <div class="flex items-center gap-1.5">
-                                            <span class="font-mono text-[11px] text-primary-container font-medium">Flight Corridor Velocity</span>
-                                            <span class="text-[10px] font-mono px-1 rounded bg-surface-container-lowest text-outline">Risk Dampener: Transit</span>
-                                        </div>
-                                        <span class="text-[10px] text-on-surface-variant block mt-0.5" id="det-travel-desc">Physical velocity corresponds to scheduled airline flight route</span>
-                                    </div>
-                                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-surface-container-lowest text-outline font-semibold" id="det-travel-status">NOT APPLICABLE</span>
-                                </div>
-
-                                <!-- Detector 3 -->
-                                <div class="p-2 rounded bg-surface-container border border-surface-container-highest flex items-center justify-between">
-                                    <div class="min-w-0 pr-2">
-                                        <div class="flex items-center gap-1.5">
-                                            <span class="font-mono text-[11px] text-primary-container font-medium">Trusted Hardware Anchor</span>
-                                            <span class="text-[10px] font-mono px-1 rounded bg-surface-container-lowest text-outline">Risk Dampener: Hardware</span>
-                                        </div>
-                                        <span class="text-[10px] text-on-surface-variant block mt-0.5" id="det-device-desc">Historical hardware fingerprint verified over 90+ days</span>
-                                    </div>
-                                    <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-primary-container/20 text-primary-container font-semibold" id="det-device-status">PASS (Active)</span>
-                                </div>
-                            </div>
-
-                            <div class="mt-2.5 p-2 rounded bg-surface-container flex items-center justify-between">
-                                <span class="text-[10px] font-mono text-outline">Filter Outcome:</span>
-                                <span class="text-[11px] font-mono font-semibold text-primary-container" id="shield-verdict-flip">PASS: Customer Verification Confirmed (Overrides Alert)</span>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <!-- RIGHT COLUMN: 60% (lg:col-span-7) -->
-                    <div class="lg:col-span-7 flex flex-col gap-4">
-                        
-                        <!-- TigerGraph Cytoscape Network Visualizer -->
-                        <div class="bg-surface-container-low rounded-xl p-3.5 border border-surface-container-high shadow-sm flex flex-col gap-2">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
-                                    <span class="text-xs font-semibold text-on-surface">TigerGraph Topological Network</span>
-                                    <span class="text-[10px] font-mono text-outline">Multi-Hop Subgraph</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <span class="text-[10px] font-mono text-primary-container px-2 py-0.5 rounded bg-surface-container border border-primary-container/20" id="query-label">GSQL Subgraph Traversal</span>
-                                    <button class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant hover:text-on-surface text-[10px] font-mono" onclick="resetGraphView()">Fit View</button>
-                                </div>
-                            </div>
-
-                            <!-- Cytoscape Interactive Container -->
-                            <div class="relative w-full h-[320px] rounded-lg bg-surface-container-lowest border border-surface-container-high overflow-hidden">
-                                <div id="cy-container"></div>
-                                
-                                <!-- Optimal Stopping Gate Indicator in visualizer corner -->
-                                <div class="absolute right-2 bottom-2 bg-surface-container-low/90 backdrop-blur-md px-2.5 py-1 rounded border border-surface-container-high text-[10px] font-mono flex items-center gap-1.5 z-10" id="voi-math-indicator">
-                                    <span class="material-symbols-outlined text-[13px] text-primary-container">functions</span>
-                                    <span class="text-outline">Stopping Gate: VOI = </span>
-                                    <span class="text-primary font-bold" id="voi-math-val">0.031</span>
-                                    <span class="text-primary-container">&lt; 0.05 (Evidence Sufficient)</span>
-                                </div>
-
-                                <!-- Node Click Info Drawer -->
-                                <div class="absolute top-2 left-2 bg-surface-container-low/95 backdrop-blur-md p-2.5 rounded border border-primary-container/40 text-[11px] font-mono z-10 hidden" id="node-info-drawer">
-                                    <div class="flex items-center justify-between gap-4 font-semibold text-primary-container mb-1">
-                                        <span id="node-info-id">NODE_ID</span>
-                                        <button onclick="document.getElementById('node-info-drawer').classList.add('hidden')" class="text-outline hover:text-on-surface">✕</button>
-                                    </div>
-                                    <div id="node-info-body" class="text-on-surface-variant text-[10px] space-y-0.5"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Benchmark Output Files Viewer -->
-                        <div class="bg-surface-container-low rounded-xl p-3.5 border border-surface-container-high shadow-sm">
-                            <div class="flex items-center justify-between pb-2">
-                                <div class="flex items-center gap-2">
-                                    <span class="material-symbols-outlined text-[18px] text-primary-container">folder_zip</span>
-                                    <span class="text-xs font-semibold text-on-surface" id="output-files-title">Benchmark Output Dossier (cases/HHG-014.json)</span>
-                                </div>
-                                <div class="flex items-center gap-1.5">
-                                    <button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface text-[11px] font-mono transition-colors flex items-center gap-1" onclick="copyJsonToClipboard()">
-                                        <span class="material-symbols-outlined text-[12px]">content_copy</span>
-                                        <span id="copy-btn-text">Copy JSON</span>
-                                    </button>
-                                    <button class="px-2.5 py-1 rounded bg-primary-container/20 text-primary-container hover:bg-primary-container hover:text-on-primary-container text-[11px] font-mono transition-colors flex items-center gap-1" onclick="downloadZipBundle()">
-                                        <span class="material-symbols-outlined text-[12px]">download</span>
-                                        <span>Download Bundle (.zip)</span>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- File Tabs -->
-                            <div class="flex items-center gap-1 border-b border-surface-container-highest pb-1 mb-2">
-                                <button class="px-2.5 py-1 rounded text-[11px] font-mono bg-surface-container-high text-primary-container font-semibold" id="tab-file-case" onclick="switchFileTab('case_record')">case_record.json</button>
-                                <button class="px-2.5 py-1 rounded text-[11px] font-mono text-on-surface-variant hover:text-on-surface hover:bg-surface-container" id="tab-file-sar" onclick="switchFileTab('sar')">sar.json (FFIEC 111)</button>
-                                <button class="px-2.5 py-1 rounded text-[11px] font-mono text-on-surface-variant hover:text-on-surface hover:bg-surface-container" id="tab-file-before" onclick="switchFileTab('action_before')">action_before.json</button>
-                                <button class="px-2.5 py-1 rounded text-[11px] font-mono text-on-surface-variant hover:text-on-surface hover:bg-surface-container" id="tab-file-after" onclick="switchFileTab('action_after')">action_after.json</button>
-                            </div>
-
-                            <!-- Real Syntax-Highlighted JSON Box -->
-                            <div class="bg-surface-container-lowest rounded-lg p-2.5 border border-surface-container-high">
-                                <pre class="font-mono text-[11px] text-on-surface overflow-x-auto max-h-[220px] leading-relaxed select-all" id="json-file-content">// Loading case files...</pre>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </section>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+          <div class="bg-surface-container-low rounded-lg p-2.5 border border-surface-container-high"><div class="flex items-center justify-between mb-1"><span class="text-[9px] font-mono text-outline uppercase">[1] Txn Analysis</span><span class="text-[9px] font-mono text-primary-container bg-primary-container/10 px-1 rounded">&lt;180s Trigger</span></div><h4 class="text-xs font-semibold text-on-surface">Rapid Layering</h4><p class="text-[9px] font-mono text-on-surface-variant mt-0.5">Pass-through Velocity</p><div class="flex items-center gap-1 mt-1 text-[9px] font-mono"><span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span><span>Velocity Flagged</span></div></div>
+          <div class="bg-surface-container-low rounded-lg p-2.5 border border-surface-container-high"><div class="flex items-center justify-between mb-1"><span class="text-[9px] font-mono text-outline uppercase">[2] Mule Detection</span><span class="text-[9px] font-mono text-primary-fixed-dim bg-surface-container px-1 rounded">XAI Scored</span></div><h4 class="text-xs font-semibold text-on-surface">Dynamic Risk Score</h4><p class="text-[9px] font-mono text-on-surface-variant mt-0.5">4-Component Formula</p><div class="flex items-center gap-1 mt-1 text-primary-container text-[9px] font-mono"><span class="material-symbols-outlined text-[11px]">verified</span><span>Ranked Leads</span></div></div>
+          <div class="bg-surface-container-low rounded-lg p-2.5 border border-surface-container-high"><div class="flex items-center justify-between mb-1"><span class="text-[9px] font-mono text-outline uppercase">[3] Money Trail</span><span class="text-[9px] font-mono text-primary bg-primary-container/10 px-1 rounded" id="pillar-tg-lat">4-Hop BFS</span></div><h4 class="text-xs font-semibold text-on-surface">Fund Chain Trace</h4><p class="text-[9px] font-mono text-on-surface-variant mt-0.5">Victim-L1-L2-Cashout</p><div class="flex items-center gap-1 mt-1 text-[9px] font-mono"><span class="material-symbols-outlined text-[11px] text-primary-container">hub</span><span>Chain Traced</span></div></div>
+          <div class="bg-surface-container-low rounded-lg p-2.5 border border-surface-container-high"><div class="flex items-center justify-between mb-1"><span class="text-[9px] font-mono text-outline uppercase">[4] 1930 / NCRP</span><span class="text-[9px] font-mono text-primary-container bg-surface-container px-1 rounded">I4C Linked</span></div><h4 class="text-xs font-semibold text-on-surface">Complaint Correlation</h4><p class="text-[9px] font-mono text-on-surface-variant mt-0.5">Multi-District Coverage</p><div class="flex items-center gap-1 mt-1 text-primary-container text-[9px] font-mono"><span class="material-symbols-outlined text-[11px]">link</span><span>Syndicate Hubs</span></div></div>
+          <div class="bg-surface-container-low rounded-lg p-2.5 border border-surface-container-high"><div class="flex items-center justify-between mb-1"><span class="text-[9px] font-mono text-outline uppercase">[5] Graph Topology</span><span class="text-[9px] font-mono text-primary-container bg-primary-container/10 px-1 rounded">Cytoscape</span></div><h4 class="text-xs font-semibold text-on-surface">Network Visualizer</h4><p class="text-[9px] font-mono text-on-surface-variant mt-0.5">IMEI + Account Rings</p><div class="flex items-center gap-1 mt-1 text-[9px] font-mono"><span class="material-symbols-outlined text-[11px]">bubble_chart</span><span>IMEI Clusters</span></div></div>
+          <div class="bg-surface-container-low rounded-lg p-2.5 border border-surface-container-high"><div class="flex items-center justify-between mb-1"><span class="text-[9px] font-mono text-outline uppercase">[6] Police Cockpit</span><span class="text-[9px] font-mono text-primary-fixed-dim bg-surface-container px-1 rounded">Sec 65B IEA</span></div><h4 class="text-xs font-semibold text-on-surface">Evidentiary Dossier</h4><p class="text-[9px] font-mono text-on-surface-variant mt-0.5">Court-Ready Reports</p><div class="flex items-center gap-1 mt-1 text-primary-container text-[9px] font-mono"><span class="material-symbols-outlined text-[11px]">gavel</span><span>1930 Debit Freeze</span></div></div>
         </div>
-    </main>
-
-    <script src="/static/js/app.js"></script>
+      </div>
+    </section>
+    <!-- Main Workspace -->
+    <section class="w-full px-5 py-4">
+      <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <!-- LEFT COLUMN -->
+        <div class="lg:col-span-5 flex flex-col gap-4">
+          <!-- Active Investigation Queue -->
+          <div class="bg-surface-container-low rounded-xl p-3.5 border border-surface-container-high shadow-sm">
+            <div class="flex items-center justify-between pb-2 border-b border-surface-container-highest">
+              <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px] text-primary-container">policy</span><span class="text-xs font-semibold text-on-surface">Active Investigation Queue</span></div>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-surface-container text-outline border border-surface-container-highest font-semibold" id="case-badge-type">STATUS: PENDING ASSIGNMENT</span>
+            </div>
+            <div class="grid grid-cols-2 gap-1.5 pt-2">
+              <button class="p-2 rounded-lg text-left bg-surface-container-high text-primary-container border border-primary-container/30 text-xs transition-all" id="tab-c014" onclick="loadBenchmarkCase('HHG-014')"><div class="text-[10px] font-mono text-outline uppercase">HHG-014 - Patna Cyber PS</div><div class="font-medium truncate">Digital Arrest Fraud (Rs.6,247)</div></button>
+              <button class="p-2 rounded-lg text-left bg-surface-container text-on-surface-variant hover:bg-surface-container-high border border-transparent text-xs transition-all" id="tab-c007" onclick="loadBenchmarkCase('HHG-007')"><div class="text-[10px] font-mono text-outline uppercase">HHG-007 - Gaya Cyber PS</div><div class="font-medium truncate">UPI OTP Phishing (Rs.9,332)</div></button>
+              <button class="p-2 rounded-lg text-left bg-surface-container text-on-surface-variant hover:bg-surface-container-high border border-transparent text-xs transition-all" id="tab-c002" onclick="loadBenchmarkCase('HHG-002')"><div class="text-[10px] font-mono text-outline uppercase">HHG-002 - Muzaffarpur PS</div><div class="font-medium truncate">Fake Investment App (Rs.24,367)</div></button>
+              <button class="p-2 rounded-lg text-left bg-surface-container text-on-surface-variant hover:bg-surface-container-high border border-transparent text-xs transition-all" id="tab-c001" onclick="loadBenchmarkCase('HHG-001')"><div class="text-[10px] font-mono text-outline uppercase">HHG-001 - Account CLEARED</div><div class="font-medium truncate">Legitimate Citizen (Rs.0)</div></button>
+            </div>
+            <div class="mt-2.5 flex items-center gap-2"><span class="text-[10px] font-mono text-outline">Full queue:</span><select class="bg-surface-container border border-surface-container-highest rounded px-2 py-1 text-xs text-on-surface font-mono flex-1 focus:outline-none focus:border-primary-container" id="case-select-dropdown" onchange="loadBenchmarkCase(this.value)"></select></div>
+            <div class="grid grid-cols-2 gap-2 mt-2.5 pt-2.5 border-t border-surface-container-highest">
+              <div class="bg-surface-container rounded p-2"><span class="text-[10px] font-mono text-outline block">Flagged Account</span><span class="text-xs font-mono text-on-surface font-semibold block truncate" id="meta-acc">9123456789_PNB (Rs.6,247)</span></div>
+              <div class="bg-surface-container rounded p-2"><span class="text-[10px] font-mono text-outline block">Fraud Typology</span><span class="text-xs font-mono text-on-surface font-semibold block truncate" id="meta-node">Digital Arrest Fraud</span></div>
+            </div>
+            <div class="mt-3">
+              <div class="flex items-center justify-between pb-1"><div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></span><span class="text-[10px] font-mono text-outline uppercase tracking-wider" id="stream-label">AI Investigation Timeline (HHG-014)</span></div><span class="text-[10px] font-mono text-primary-fixed-dim">Autonomous Reasoning</span></div>
+              <div class="bg-surface-container-lowest rounded-lg p-2.5 border border-surface-container-high font-mono text-[11px] text-on-surface space-y-1 max-h-[140px] overflow-y-auto" id="stream-terminal-logs"><div class="text-on-surface-variant">// Loading investigation timeline...</div></div>
+            </div>
+          </div>
+          <!-- 1930 Complaint Correlation -->
+          <div class="bg-surface-container-low rounded-xl p-3.5 border border-surface-container-high shadow-sm">
+            <div class="flex items-center justify-between pb-2 border-b border-surface-container-highest"><div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[18px] text-primary-container">emergency</span><span class="text-xs font-semibold text-on-surface">1930 / NCRP Complaint Correlation</span></div><span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-error-container/30 text-error border border-error/20">Pillar 4 Live</span></div>
+            <div class="grid grid-cols-3 gap-2 mt-2.5">
+              <div class="bg-surface-container rounded-lg p-2 text-center"><div class="text-base font-bold font-mono text-error">5</div><div class="text-[9px] font-mono text-outline uppercase mt-0.5">Total NCRP Linked</div></div>
+              <div class="bg-surface-container rounded-lg p-2 text-center"><div class="text-base font-bold font-mono text-primary-container">5</div><div class="text-[9px] font-mono text-outline uppercase mt-0.5">Bihar Districts</div></div>
+              <div class="bg-surface-container rounded-lg p-2 text-center"><div class="text-base font-bold font-mono text-on-surface">Rs.3.4L</div><div class="text-[9px] font-mono text-outline uppercase mt-0.5">Victim Loss</div></div>
+            </div>
+            <div class="mt-2.5 p-2.5 rounded-lg bg-error-container/10 border border-error/20 freeze-pulse"><div class="flex items-center gap-2 mb-1.5"><span class="w-2 h-2 rounded-full bg-error animate-pulse"></span><span class="text-[10px] font-mono text-error font-semibold uppercase tracking-wider">SYNDICATE HUB DETECTED</span></div><div class="text-[11px] font-mono text-on-surface">Acct: <span class="text-primary-container">9123456789_PNB</span></div><div class="text-[10px] font-mono text-on-surface-variant mt-0.5">3 complaints across Patna + Gaya + Muzaffarpur</div><div class="text-[10px] font-mono text-error mt-0.5">Action: INITIATE_DEBIT_FREEZE_1930</div></div>
+            <div class="mt-2.5 space-y-1.5">
+              <div class="p-2 rounded bg-surface-container border border-surface-container-highest flex items-center justify-between"><div><div class="text-[10px] font-mono text-primary-container font-semibold">NCRP/BH/2024/001234</div><div class="text-[9px] font-mono text-on-surface-variant">Patna - Digital Arrest Fraud - Rs.45,000</div></div><span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-error-container/30 text-error">CRITICAL</span></div>
+              <div class="p-2 rounded bg-surface-container border border-surface-container-highest flex items-center justify-between"><div><div class="text-[10px] font-mono text-primary-container font-semibold">NCRP/BH/2024/002891</div><div class="text-[9px] font-mono text-on-surface-variant">Gaya - Fake Investment App - Rs.1,20,000</div></div><span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-error-container/30 text-error">CRITICAL</span></div>
+              <div class="p-2 rounded bg-surface-container border border-surface-container-highest flex items-center justify-between"><div><div class="text-[10px] font-mono text-primary-container font-semibold">NCRP/BH/2024/003445</div><div class="text-[9px] font-mono text-on-surface-variant">Muzaffarpur - UPI OTP Phishing - Rs.78,500</div></div><span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-surface-container-high text-primary-container">HIGH</span></div>
+            </div>
+          </div>
+          <!-- Mule Leaderboard -->
+          <div class="bg-surface-container-low rounded-xl p-3.5 border border-surface-container-high shadow-sm">
+            <div class="flex items-center justify-between pb-2 border-b border-surface-container-highest"><div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[18px] text-primary-container">leaderboard</span><span class="text-xs font-semibold text-on-surface">Mule Account Risk Leaderboard</span></div><span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-surface-container text-primary-container">Ranked by XAI Score</span></div>
+            <div class="mt-2.5 space-y-1.5">
+              <div class="p-2 rounded-lg bg-error-container/10 border border-error/25 flex items-center gap-2"><span class="text-[10px] font-mono text-error font-bold w-5">#1</span><div class="flex-1 min-w-0"><div class="font-mono text-[10px] text-on-surface font-semibold">9123456789_PNB</div><div class="text-[9px] font-mono text-on-surface-variant">3 NCRP - Patna+Gaya+Muz - IMEI x4</div></div><div class="text-right shrink-0"><div class="text-sm font-bold font-mono text-error">0.94</div><div class="text-[9px] font-mono text-error">CRITICAL_FREEZE</div></div></div>
+              <div class="p-2 rounded-lg bg-surface-container border border-surface-container-highest flex items-center gap-2"><span class="text-[10px] font-mono text-error font-bold w-5">#2</span><div class="flex-1 min-w-0"><div class="font-mono text-[10px] text-on-surface font-semibold">8765432101_HDFC</div><div class="text-[9px] font-mono text-on-surface-variant">2 NCRP - Gaya+Bhagalpur - Mule Hub</div></div><div class="text-right shrink-0"><div class="text-sm font-bold font-mono text-error">0.81</div><div class="text-[9px] font-mono text-primary-container">HIGH_REVIEW</div></div></div>
+              <div class="p-2 rounded-lg bg-surface-container border border-surface-container-highest flex items-center gap-2"><span class="text-[10px] font-mono text-outline font-bold w-5">#3</span><div class="flex-1 min-w-0"><div class="font-mono text-[10px] text-on-surface font-semibold">9876543210_SBI</div><div class="text-[9px] font-mono text-on-surface-variant">2 NCRP - Patna+Nalanda - Layering</div></div><div class="text-right shrink-0"><div class="text-sm font-bold font-mono text-on-surface">0.73</div><div class="text-[9px] font-mono text-primary-container">HIGH_REVIEW</div></div></div>
+              <div class="p-2 rounded-lg bg-surface-container border border-surface-container-highest flex items-center gap-2"><span class="text-[10px] font-mono text-outline font-bold w-5">#4</span><div class="flex-1 min-w-0"><div class="font-mono text-[10px] text-on-surface font-semibold">7654321098_AXIS</div><div class="text-[9px] font-mono text-on-surface-variant">1 NCRP - Muzaffarpur - Cashout Node</div></div><div class="text-right shrink-0"><div class="text-sm font-bold font-mono text-on-surface-variant">0.58</div><div class="text-[9px] font-mono text-on-surface-variant">MEDIUM_WATCH</div></div></div>
+            </div>
+          </div>
+          <!-- Citizen Protection Filter -->
+          <div class="bg-surface-container-low rounded-xl p-3.5 border border-surface-container-high shadow-sm">
+            <div class="flex items-center justify-between pb-2 border-b border-surface-container-highest"><div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[18px] text-primary-container">verified_user</span><span class="text-xs font-semibold text-on-surface">Citizen Protection Filter</span></div><span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-surface-container text-primary-container">Anti-Overblocking</span></div>
+            <p class="text-[11px] text-on-surface-variant mt-2 mb-2">Evaluates salary credits, utility payments, and account tenure to prevent wrongful freezing of legitimate citizens. 6 of 20 cases cleared.</p>
+            <div class="space-y-1.5">
+              <div class="p-2 rounded bg-surface-container border border-surface-container-highest flex items-center justify-between"><div class="min-w-0 pr-2"><div class="flex items-center gap-1.5"><span class="font-mono text-[11px] text-primary-container font-medium">Recurring Salary / Payroll Credits</span><span class="text-[10px] font-mono px-1 rounded bg-surface-container-lowest text-outline">Innocence Dampener</span></div><span class="text-[10px] text-on-surface-variant block mt-0.5" id="det-recurring-desc">Regular employer payroll verified 12+ months</span></div><span class="text-[10px] font-mono px-2 py-0.5 rounded bg-surface-container-lowest text-outline font-semibold" id="det-recurring-status">NOT APPLICABLE</span></div>
+              <div class="p-2 rounded bg-surface-container border border-surface-container-highest flex items-center justify-between"><div class="min-w-0 pr-2"><div class="flex items-center gap-1.5"><span class="font-mono text-[11px] text-primary-container font-medium">Utility Bill Payment History</span><span class="text-[10px] font-mono px-1 rounded bg-surface-container-lowest text-outline">Innocence Dampener</span></div><span class="text-[10px] text-on-surface-variant block mt-0.5" id="det-travel-desc">Electricity / gas / water payment cadence</span></div><span class="text-[10px] font-mono px-2 py-0.5 rounded bg-surface-container-lowest text-outline font-semibold" id="det-travel-status">NOT APPLICABLE</span></div>
+              <div class="p-2 rounded bg-surface-container border border-surface-container-highest flex items-center justify-between"><div class="min-w-0 pr-2"><div class="flex items-center gap-1.5"><span class="font-mono text-[11px] text-primary-container font-medium">Account Tenure (2+ Years)</span><span class="text-[10px] font-mono px-1 rounded bg-surface-container-lowest text-outline">Innocence Dampener</span></div><span class="text-[10px] text-on-surface-variant block mt-0.5" id="det-device-desc">Established customer - long-standing bank relation</span></div><span class="text-[10px] font-mono px-2 py-0.5 rounded bg-surface-container-lowest text-outline font-semibold" id="det-device-status">NOT APPLICABLE</span></div>
+            </div>
+            <div class="mt-2.5 p-2 rounded bg-surface-container flex items-center justify-between"><span class="text-[10px] font-mono text-outline">Filter Outcome:</span><span class="text-[11px] font-mono font-semibold text-error" id="shield-verdict-flip">FAIL - Mule Account Evidence Confirmed</span></div>
+          </div>
+          <!-- Escalation Chain -->
+          <div class="bg-surface-container-low rounded-xl p-3.5 border border-surface-container-high shadow-sm">
+            <div class="flex items-center justify-between pb-2 border-b border-surface-container-highest"><div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[18px] text-primary-container">account_tree</span><span class="text-xs font-semibold text-on-surface">Institutional Escalation Chain</span></div><span class="text-[10px] font-mono px-2 py-0.5 rounded bg-surface-container text-primary-container border border-primary-container/20 font-semibold uppercase" id="chain-approval-tier">auto</span></div>
+            <div class="mt-2.5 space-y-2 font-mono text-xs">
+              <div class="flex items-center justify-between p-2 rounded bg-surface-container border border-surface-container-highest"><span class="text-outline">Approval Route:</span><span class="text-on-surface font-semibold truncate max-w-[280px]" id="chain-approval-route">AUTONOMOUS_PIPELINE</span></div>
+              <div class="flex items-center justify-between p-2 rounded bg-surface-container border border-surface-container-highest"><span class="text-outline">Action Executed:</span><span class="text-primary-container font-semibold" id="chain-action-type">INITIATE_DEBIT_FREEZE_1930</span></div>
+              <div class="flex items-center justify-between p-2 rounded bg-surface-container border border-surface-container-highest"><span class="text-outline">Legal Basis:</span><span class="text-primary-container font-semibold" id="chain-policy-ref">Sec 66D IT Act - 1930 CFCFRMS</span></div>
+              <div class="flex items-center justify-between p-2 rounded bg-surface-container border border-surface-container-highest"><span class="text-outline">Reporting Mandate:</span><span class="text-primary-container font-semibold">STR to FIU-IND - FIR to Cyber PS</span></div>
+            </div>
+          </div>
+        </div>
+        <!-- RIGHT COLUMN -->
+        <div class="lg:col-span-7 flex flex-col gap-4">
+          <!-- Network Visualizer -->
+          <div class="bg-surface-container-low rounded-xl p-3.5 border border-surface-container-high shadow-sm flex flex-col gap-2">
+            <div class="flex items-center justify-between"><div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span><span class="text-xs font-semibold text-on-surface">Account Network Visualizer</span><span class="text-[10px] font-mono text-outline">Multi-Hop Money Trail (4-Hop BFS)</span></div><div class="flex items-center gap-2"><span class="text-[10px] font-mono text-primary-container px-2 py-0.5 rounded bg-surface-container border border-primary-container/20" id="query-label">TRANSFERRED_TO Edge Traversal</span><button class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant hover:text-on-surface text-[10px] font-mono" onclick="resetGraphView()">Fit View</button></div></div>
+            <div class="relative w-full h-[320px] rounded-lg bg-surface-container-lowest border border-surface-container-high overflow-hidden">
+              <div id="cy-container"></div>
+              <div class="absolute left-2 top-2 bg-surface-container-low/90 backdrop-blur-md px-2 py-1.5 rounded border border-surface-container-high text-[9px] font-mono z-10 space-y-1">
+                <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-green-500 shrink-0"></span><span class="text-on-surface-variant">Victim Account</span></div>
+                <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-yellow-400 shrink-0"></span><span class="text-on-surface-variant">Layer-1 Mule</span></div>
+                <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span><span class="text-on-surface-variant">Layer-2 Mule</span></div>
+                <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-red-500 shrink-0"></span><span class="text-on-surface-variant">Cashout Node</span></div>
+              </div>
+              <div class="absolute right-2 bottom-2 bg-surface-container-low/90 backdrop-blur-md px-2.5 py-1 rounded border border-surface-container-high text-[10px] font-mono flex items-center gap-1.5 z-10" id="voi-math-indicator"><span class="material-symbols-outlined text-[13px] text-primary-container">functions</span><span class="text-outline">MDL Gate: S = </span><span class="text-primary font-bold" id="voi-math-val">0.031</span><span class="text-primary-container">&lt; 0.05 (Evidence Sufficient)</span></div>
+              <div class="absolute top-2 right-2 bg-surface-container-low/95 backdrop-blur-md p-2.5 rounded border border-primary-container/40 text-[11px] font-mono z-10 hidden" id="node-info-drawer"><div class="flex items-center justify-between gap-4 font-semibold text-primary-container mb-1"><span id="node-info-id">NODE_ID</span><button onclick="document.getElementById('node-info-drawer').classList.add('hidden')" class="text-outline hover:text-on-surface">x</button></div><div id="node-info-body" class="text-on-surface-variant text-[10px] space-y-0.5"></div></div>
+            </div>
+            <div class="pt-2 border-t border-surface-container-highest">
+              <div class="text-[10px] font-mono text-outline uppercase mb-2">Fund Movement Chain - Victim to Cashout</div>
+              <div class="flex items-center gap-1.5 font-mono text-[10px] overflow-x-auto pb-1" id="money-trail-strip">
+                <div class="trail-hop flex items-center gap-1 px-2 py-1 rounded bg-green-900/30 border border-green-500/30 shrink-0"><span class="text-green-400">Victim (Patna)</span><span class="text-on-surface-variant text-[9px]">Rs.6,247</span></div>
+                <span class="text-outline shrink-0">-&gt;</span>
+                <div class="trail-hop flex items-center gap-1 px-2 py-1 rounded bg-yellow-900/30 border border-yellow-500/30 shrink-0"><span class="text-yellow-400">9876543210_SBI</span><span class="text-on-surface-variant text-[9px]">L1 140s</span></div>
+                <span class="text-outline shrink-0">-&gt;</span>
+                <div class="trail-hop flex items-center gap-1 px-2 py-1 rounded bg-orange-900/30 border border-orange-500/30 shrink-0"><span class="text-orange-400">9123456789_PNB</span><span class="text-on-surface-variant text-[9px]">L2 92s</span></div>
+                <span class="text-outline shrink-0">-&gt;</span>
+                <div class="trail-hop flex items-center gap-1 px-2 py-1 rounded bg-red-900/30 border border-red-500/30 shrink-0"><span class="text-red-400">ATM CASHOUT</span><span class="text-on-surface-variant text-[9px]">Rs.5,940 out</span></div>
+              </div>
+            </div>
+          </div>
+          <!-- XAI Breakdown -->
+          <div class="bg-surface-container-low rounded-xl p-3.5 border border-surface-container-high shadow-sm">
+            <div class="flex items-center justify-between pb-2 border-b border-surface-container-highest"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px] text-primary-container">insights</span><span class="text-xs font-semibold text-on-surface">Mule Risk Score - XAI Breakdown</span></div><div class="flex items-center gap-2"><span class="text-[10px] font-mono text-outline">Account:</span><span class="text-[11px] font-mono text-primary-container font-bold" id="xai-account-id">9123456789_PNB</span><span class="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-error-container/30 text-error border border-error/25" id="xai-final-score">0.94 - CRITICAL_FREEZE</span></div></div>
+            <div class="mt-2.5 space-y-2" id="xai-components">
+              <div class="p-2.5 rounded-lg bg-surface-container border border-surface-container-highest"><div class="flex items-center justify-between mb-1.5"><span class="text-[11px] font-mono text-primary-container font-semibold">Fund Velocity (Pass-Through Speed)</span><span class="text-[11px] font-mono text-error font-bold">+0.350</span></div><div class="w-full bg-surface-container-lowest rounded-full h-1.5 mb-1.5"><div class="h-full rounded-full bg-error" style="width:92%"></div></div><p class="text-[10px] font-mono text-on-surface-variant">95.3% of received funds re-transmitted within 140 seconds. 11 transactions in a 24-hour burst window. Classic pass-through mule pattern detected by GSQL velocity query.</p></div>
+              <div class="p-2.5 rounded-lg bg-surface-container border border-surface-container-highest"><div class="flex items-center justify-between mb-1.5"><span class="text-[11px] font-mono text-primary-container font-semibold">Topological Centrality (Graph Position)</span><span class="text-[11px] font-mono text-error font-bold">+0.220</span></div><div class="w-full bg-surface-container-lowest rounded-full h-1.5 mb-1.5"><div class="h-full rounded-full bg-primary-container" style="width:72%"></div></div><p class="text-[10px] font-mono text-on-surface-variant">Account at CENTER of fraud cluster - 3 of 7 connected accounts flagged. Hub-and-spoke mule structure.</p></div>
+              <div class="p-2.5 rounded-lg bg-surface-container border border-surface-container-highest"><div class="flex items-center justify-between mb-1.5"><span class="text-[11px] font-mono text-primary-container font-semibold">1930 / NCRP Complaint Linkage</span><span class="text-[11px] font-mono text-error font-bold">+0.200</span></div><div class="w-full bg-surface-container-lowest rounded-full h-1.5 mb-1.5"><div class="h-full rounded-full bg-primary-container" style="width:78%"></div></div><p class="text-[10px] font-mono text-on-surface-variant">Account in 3 citizen complaints - Patna, Gaya, Muzaffarpur. Multi-district = organized syndicate.</p></div>
+              <div class="p-2.5 rounded-lg bg-surface-container border border-surface-container-highest"><div class="flex items-center justify-between mb-1.5"><span class="text-[11px] font-mono text-primary-container font-semibold">Hardware Sharing (IMEI / Device)</span><span class="text-[11px] font-mono text-error font-bold">+0.170</span></div><div class="w-full bg-surface-container-lowest rounded-full h-1.5 mb-1.5"><div class="h-full rounded-full bg-primary-container" style="width:80%"></div></div><p class="text-[10px] font-mono text-on-surface-variant">IMEI 869234058162847 shared with 4 blacklisted accounts. Single operator controlling multiple mule accounts.</p></div>
+              <div class="p-2.5 rounded-lg bg-surface-container border border-primary-container/10"><div class="flex items-center justify-between mb-1.5"><span class="text-[11px] font-mono text-primary-container font-semibold">Innocence Dampener (Citizen Protection)</span><span class="text-[11px] font-mono text-primary-container font-bold">0.000</span></div><div class="w-full bg-surface-container-lowest rounded-full h-1.5 mb-1.5"><div class="h-full rounded-full bg-surface-container-highest" style="width:0%"></div></div><p class="text-[10px] font-mono text-on-surface-variant">No verified innocence indicators - no payroll, no utility payments, 45-day account tenure. No dampening applied.</p></div>
+            </div>
+          </div>
+          <!-- Forensic Dossier -->
+          <div class="bg-surface-container-low rounded-xl p-3.5 border border-surface-container-high shadow-sm">
+            <div class="flex items-center justify-between pb-2"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px] text-primary-container">folder_zip</span><span class="text-xs font-semibold text-on-surface" id="output-files-title">Forensic Evidence Dossier - Section 65B IEA</span></div><div class="flex items-center gap-1.5"><button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface text-[11px] font-mono transition-colors flex items-center gap-1" onclick="copyJsonToClipboard()"><span class="material-symbols-outlined text-[12px]">content_copy</span><span id="copy-btn-text">Copy JSON</span></button><button class="px-2.5 py-1 rounded bg-primary-container/20 text-primary-container hover:bg-primary-container hover:text-on-primary-container text-[11px] font-mono transition-colors flex items-center gap-1" onclick="downloadZipBundle()"><span class="material-symbols-outlined text-[12px]">download</span><span>Export Dossier</span></button></div></div>
+            <div class="flex items-center gap-1 border-b border-surface-container-highest pb-1 mb-2">
+              <button class="px-2.5 py-1 rounded text-[11px] font-mono bg-surface-container-high text-primary-container font-semibold" id="tab-file-case" onclick="switchFileTab('case_record')">investigation_record.json</button>
+              <button class="px-2.5 py-1 rounded text-[11px] font-mono text-on-surface-variant hover:text-on-surface hover:bg-surface-container" id="tab-file-sar" onclick="switchFileTab('sar')">str_fiu_ind.json</button>
+              <button class="px-2.5 py-1 rounded text-[11px] font-mono text-on-surface-variant hover:text-on-surface hover:bg-surface-container" id="tab-file-before" onclick="switchFileTab('action_before')">initial_actions.json</button>
+              <button class="px-2.5 py-1 rounded text-[11px] font-mono text-on-surface-variant hover:text-on-surface hover:bg-surface-container" id="tab-file-after" onclick="switchFileTab('action_after')">final_actions.json</button>
+            </div>
+            <div class="bg-surface-container-lowest rounded-lg p-2.5 border border-surface-container-high"><pre class="font-mono text-[11px] text-on-surface overflow-x-auto max-h-[220px] leading-relaxed select-all" id="json-file-content">// Loading investigation record...</pre></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+<script src="/static/js/app.js"></script>
 </body>
 </html>

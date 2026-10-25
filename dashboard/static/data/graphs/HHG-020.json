@@ -1,0 +1,96 @@
+{
+  "elements": [
+    {
+      "data": {
+        "id": "Dr. Rashmi Verma (Patna)",
+        "label": "Citizen\nDr. Rashmi Verma (Patna)",
+        "type": "customer",
+        "role": "Verified Legitimate Citizen",
+        "color": "#10b981",
+        "shape": "hexagon"
+      }
+    },
+    {
+      "data": {
+        "id": "9019283746_HDFC",
+        "label": "Bank Account\n9019283746_HDFC",
+        "type": "account",
+        "role": "Primary Bank Account (3+ Yr Clean)",
+        "color": "#3b82f6",
+        "shape": "ellipse"
+      }
+    },
+    {
+      "data": {
+        "id": "Emp_HHG-020",
+        "label": "Salary / Source\nAIIMS Patna Hospital Payroll",
+        "type": "device",
+        "role": "Verified Institutional Source",
+        "color": "#10b981",
+        "shape": "round-rectangle"
+      }
+    },
+    {
+      "data": {
+        "id": "Util_HHG-020",
+        "label": "Utility Billing\nPatna Smart City Water & Power",
+        "type": "device",
+        "role": "Regular Utility Verification",
+        "color": "#00f2fe",
+        "shape": "round-rectangle"
+      }
+    },
+    {
+      "data": {
+        "id": "TXN-HHG-020-001",
+        "label": "Routine UPI: Rs.2200\nClean Merchant Txn",
+        "type": "transaction",
+        "role": "Routine Everyday UPI Payment",
+        "amount": 2200,
+        "risk": 0.04,
+        "color": "#10b981",
+        "shape": "diamond"
+      }
+    },
+    {
+      "data": {
+        "id": "e_owns_Dr. Rashmi Verma (Patna)_9019283746_HDFC",
+        "source": "Dr. Rashmi Verma (Patna)",
+        "target": "9019283746_HDFC",
+        "label": "OWNS",
+        "color": "#10b981",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_sal_Emp_HHG-020_9019283746_HDFC",
+        "source": "Emp_HHG-020",
+        "target": "9019283746_HDFC",
+        "label": "SALARY_CREDIT",
+        "color": "#10b981",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_util_9019283746_HDFC_Util_HHG-020",
+        "source": "9019283746_HDFC",
+        "target": "Util_HHG-020",
+        "label": "PAID_UTILITY",
+        "color": "#00f2fe",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_txn_9019283746_HDFC_TXN-HHG-020-001",
+        "source": "9019283746_HDFC",
+        "target": "TXN-HHG-020-001",
+        "label": "ROUTINE_UPI",
+        "color": "#3b82f6",
+        "style": "solid"
+      }
+    }
+  ]
+}

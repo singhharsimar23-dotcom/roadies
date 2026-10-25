@@ -1,0 +1,109 @@
+{
+  "case_id": "HHG-018",
+  "target_account": "9876543218_UCO",
+  "trigger_account_id": "9876543218_UCO",
+  "district": "Bhagalpur",
+  "police_station": "Bhagalpur Cyber PS",
+  "alert_typology": "Layering Conduit (Multi-Hop)",
+  "amount": 3257,
+  "fraud_probability": 0.87,
+  "verdict": "fraud",
+  "trigger_txn_ids": [
+    "TXN-HHG-018-001"
+  ],
+  "chain_of_command": {
+    "approval_tier": "AUTONOMOUS",
+    "approval_route": "AUTONOMOUS_PIPELINE",
+    "action_type": "INITIATE_DEBIT_FREEZE_1930",
+    "policy_reference": "Sec 66D IT Act - 1930 CFCFRMS - Section 65B IEA"
+  },
+  "customer_shield": {
+    "recurring": {
+      "active": false,
+      "desc": "No payroll credits"
+    },
+    "travel": {
+      "active": false,
+      "desc": "No utility payments"
+    },
+    "device": {
+      "active": false,
+      "desc": "58-day tenure, conduit position in fraud graph"
+    },
+    "verdict_flip": "FAIL \u2014 Mule Account Evidence Confirmed. Debit freeze recommended.",
+    "final_offset": 0
+  },
+  "optimal_stopping_gate": {
+    "voi_score": 0.031,
+    "mdl_sufficiency": 0.18,
+    "stop_reason": "Evidence sufficient - MDL gate < 0.05 threshold"
+  },
+  "case": {
+    "status": "closed_fraud",
+    "verdict": "fraud",
+    "fraud_probability": 0.87,
+    "pattern": "layering_conduit",
+    "pattern_description": "Layering Conduit (Multi-Hop)",
+    "customer_id": "9876543218_UCO",
+    "district": "Bhagalpur",
+    "victim_name": "Multiple Victims",
+    "amount_inr": 3257,
+    "ncrp_complaints": [
+      "NCRP/BH/2024/001234"
+    ],
+    "evidence": [
+      {
+        "claim": "Account 9876543218_UCO identified as Layer-2 conduit. Receives from 9123456789_PNB (Layer-1 mule hub) and forwards to ATM cashout nodes within 92 seconds.",
+        "source": "graph",
+        "ref": "get_account_money_trail"
+      },
+      {
+        "claim": "Graph BFS traversal confirms account sits between 2 flagged accounts in fraud cluster. 88.1% fund pass-through rate. Conduit in digital arrest syndicate money trail.",
+        "source": "graph",
+        "ref": "get_fraud_cluster_analysis"
+      }
+    ],
+    "similar_prior_cases": [],
+    "summary": "Layering Conduit. Intermediate mule in digital arrest fraud money trail. Rs.3,257 layered. Debit freeze executed. STR filed.",
+    "written_to_graph": true,
+    "graph_case_id": "HHG-018"
+  },
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "INITIATE_DEBIT_FREEZE_1930",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "Layering conduit between 2 flagged accounts. BFS traversal confirms mule position."
+      }
+    ],
+    "final": [
+      {
+        "action": "INITIATE_DEBIT_FREEZE_1930",
+        "route": "AUTONOMOUS_PIPELINE",
+        "reason": "Layering conduit confirmed. Account 9876543218_UCO sits between Layer-1 and Layer-3 in money trail. Debit freeze executed."
+      },
+      {
+        "action": "FLAG_STR_FIU_IND",
+        "route": "AUTO",
+        "reason": "STR filed - layering conduit enabling multi-hop money trail obfuscation"
+      }
+    ],
+    "what_changed": "Autonomous investigation completed. All graph signals aggregated. Final disposition executed."
+  },
+  "sar": {
+    "file": true,
+    "reason": "Mule account confirmed - STR filed under PMLA 2002",
+    "narrative": "Layering Conduit. Intermediate mule in digital arrest fraud money trail. Rs.3,257 layered. Debit freeze executed. STR filed.",
+    "subjects": [
+      "9876543218_UCO"
+    ],
+    "amount_inr": 3257,
+    "activity_dates": [
+      "2024-10-25"
+    ]
+  },
+  "stop_reason": "MDL evidence sufficiency gate satisfied.",
+  "tool_calls": 8,
+  "tokens": 0,
+  "latency_s": 8.9
+}

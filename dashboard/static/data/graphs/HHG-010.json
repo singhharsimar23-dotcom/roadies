@@ -1,0 +1,136 @@
+{
+  "elements": [
+    {
+      "data": {
+        "id": "8192039485_HDFC",
+        "label": "Mule Account\n8192039485_HDFC",
+        "type": "account",
+        "role": "Flagged Mule Account (Bhagalpur)",
+        "color": "#ef4444",
+        "shape": "ellipse"
+      }
+    },
+    {
+      "data": {
+        "id": "Victim_HHG-010",
+        "label": "Victim\nProf. S. N. Mishra (Bhagalpur)",
+        "type": "customer",
+        "role": "Victim (Coerced Transfer)",
+        "color": "#10b981",
+        "shape": "hexagon"
+      }
+    },
+    {
+      "data": {
+        "id": "TXN-HHG-010-001",
+        "label": "Txn: Rs.83,336\nDigital Arrest Fraud...",
+        "type": "transaction",
+        "role": "Cybercrime Proceeds (Rs.83,336)",
+        "amount": 83336,
+        "risk": 0.94,
+        "color": "#ef4444",
+        "shape": "diamond"
+      }
+    },
+    {
+      "data": {
+        "id": "7102938475_YES_BANK (Patna)",
+        "label": "Mule L2\n7102938475_YES_BANK (Patna)",
+        "type": "account",
+        "role": "Layer-2 Siphon Conduit",
+        "color": "#f97316",
+        "shape": "ellipse"
+      }
+    },
+    {
+      "data": {
+        "id": "IMEI: 865910283746583",
+        "label": "Shared Hardware\nIMEI: 865910283746583",
+        "type": "device",
+        "role": "Hardware Profile (Linked to 4+ Syndicate Accounts)",
+        "color": "#fbbf24",
+        "shape": "round-rectangle"
+      }
+    },
+    {
+      "data": {
+        "id": "NCRP/BH/2024/010293",
+        "label": "1930 Portal\nNCRP/BH/2024/010293",
+        "type": "prior_case",
+        "role": "National Cybercrime Portal Complaint",
+        "color": "#ec4899",
+        "shape": "round-diamond"
+      }
+    },
+    {
+      "data": {
+        "id": "IP_HHG-010",
+        "label": "VPN/Proxy Node\n103.211.x.x (Bhagalpur)",
+        "type": "ip",
+        "role": "Syndicate Infrastructure",
+        "color": "#c084fc",
+        "shape": "hexagon"
+      }
+    },
+    {
+      "data": {
+        "id": "e_made_Victim_HHG-010_TXN-HHG-010-001",
+        "source": "Victim_HHG-010",
+        "target": "TXN-HHG-010-001",
+        "label": "COERCED_PAYMENT",
+        "color": "#10b981",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_to_TXN-HHG-010-001_8192039485_HDFC",
+        "source": "TXN-HHG-010-001",
+        "target": "8192039485_HDFC",
+        "label": "CREDITED_TO",
+        "color": "#ef4444",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_layer_8192039485_HDFC_7102938475_YES_BANK (Patna)",
+        "source": "8192039485_HDFC",
+        "target": "7102938475_YES_BANK (Patna)",
+        "label": "LAYERED_TO",
+        "color": "#f97316",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_dev_8192039485_HDFC_IMEI: 865910283746583",
+        "source": "8192039485_HDFC",
+        "target": "IMEI: 865910283746583",
+        "label": "OPERATED_FROM",
+        "color": "#fbbf24",
+        "style": "dashed"
+      }
+    },
+    {
+      "data": {
+        "id": "e_ncrp_8192039485_HDFC_NCRP/BH/2024/010293",
+        "source": "8192039485_HDFC",
+        "target": "NCRP/BH/2024/010293",
+        "label": "LINKED_NCRP_1930",
+        "color": "#ec4899",
+        "style": "dotted"
+      }
+    },
+    {
+      "data": {
+        "id": "e_ip_8192039485_HDFC_IP_HHG-010",
+        "source": "8192039485_HDFC",
+        "target": "IP_HHG-010",
+        "label": "CO_LOCATED_IP",
+        "color": "#c084fc",
+        "style": "dotted"
+      }
+    }
+  ]
+}

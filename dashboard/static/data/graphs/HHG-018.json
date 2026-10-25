@@ -1,0 +1,136 @@
+{
+  "elements": [
+    {
+      "data": {
+        "id": "8102938475_UNION",
+        "label": "Mule Account\n8102938475_UNION",
+        "type": "account",
+        "role": "Flagged Mule Account (Bhagalpur)",
+        "color": "#ef4444",
+        "shape": "ellipse"
+      }
+    },
+    {
+      "data": {
+        "id": "Victim_HHG-018",
+        "label": "Victim\nLayering Conduit Intermediary",
+        "type": "customer",
+        "role": "Victim (Coerced Transfer)",
+        "color": "#10b981",
+        "shape": "hexagon"
+      }
+    },
+    {
+      "data": {
+        "id": "TXN-HHG-018-001",
+        "label": "Txn: Rs.3,257\nMulti-Hop Rapid Laye...",
+        "type": "transaction",
+        "role": "Cybercrime Proceeds (Rs.3,257)",
+        "amount": 3257,
+        "risk": 0.94,
+        "color": "#ef4444",
+        "shape": "diamond"
+      }
+    },
+    {
+      "data": {
+        "id": "7102938475_ATM_CASH_OUT (Bhagalpur)",
+        "label": "Mule L2\n7102938475_ATM_CASH_OUT (Bhagalpur)",
+        "type": "account",
+        "role": "Layer-2 Siphon Conduit",
+        "color": "#f97316",
+        "shape": "ellipse"
+      }
+    },
+    {
+      "data": {
+        "id": "IMEI: 869910283746547",
+        "label": "Shared Hardware\nIMEI: 869910283746547",
+        "type": "device",
+        "role": "Hardware Profile (Linked to 4+ Syndicate Accounts)",
+        "color": "#fbbf24",
+        "shape": "round-rectangle"
+      }
+    },
+    {
+      "data": {
+        "id": "NCRP/BH/2024/018495",
+        "label": "1930 Portal\nNCRP/BH/2024/018495",
+        "type": "prior_case",
+        "role": "National Cybercrime Portal Complaint",
+        "color": "#ec4899",
+        "shape": "round-diamond"
+      }
+    },
+    {
+      "data": {
+        "id": "IP_HHG-018",
+        "label": "VPN/Proxy Node\n103.211.x.x (Bhagalpur)",
+        "type": "ip",
+        "role": "Syndicate Infrastructure",
+        "color": "#c084fc",
+        "shape": "hexagon"
+      }
+    },
+    {
+      "data": {
+        "id": "e_made_Victim_HHG-018_TXN-HHG-018-001",
+        "source": "Victim_HHG-018",
+        "target": "TXN-HHG-018-001",
+        "label": "COERCED_PAYMENT",
+        "color": "#10b981",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_to_TXN-HHG-018-001_8102938475_UNION",
+        "source": "TXN-HHG-018-001",
+        "target": "8102938475_UNION",
+        "label": "CREDITED_TO",
+        "color": "#ef4444",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_layer_8102938475_UNION_7102938475_ATM_CASH_OUT (Bhagalpur)",
+        "source": "8102938475_UNION",
+        "target": "7102938475_ATM_CASH_OUT (Bhagalpur)",
+        "label": "LAYERED_TO",
+        "color": "#f97316",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_dev_8102938475_UNION_IMEI: 869910283746547",
+        "source": "8102938475_UNION",
+        "target": "IMEI: 869910283746547",
+        "label": "OPERATED_FROM",
+        "color": "#fbbf24",
+        "style": "dashed"
+      }
+    },
+    {
+      "data": {
+        "id": "e_ncrp_8102938475_UNION_NCRP/BH/2024/018495",
+        "source": "8102938475_UNION",
+        "target": "NCRP/BH/2024/018495",
+        "label": "LINKED_NCRP_1930",
+        "color": "#ec4899",
+        "style": "dotted"
+      }
+    },
+    {
+      "data": {
+        "id": "e_ip_8102938475_UNION_IP_HHG-018",
+        "source": "8102938475_UNION",
+        "target": "IP_HHG-018",
+        "label": "CO_LOCATED_IP",
+        "color": "#c084fc",
+        "style": "dotted"
+      }
+    }
+  ]
+}

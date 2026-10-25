@@ -1,0 +1,96 @@
+{
+  "elements": [
+    {
+      "data": {
+        "id": "Rahul Anand (Muzaffarpur)",
+        "label": "Citizen\nRahul Anand (Muzaffarpur)",
+        "type": "customer",
+        "role": "Verified Legitimate Citizen",
+        "color": "#10b981",
+        "shape": "hexagon"
+      }
+    },
+    {
+      "data": {
+        "id": "3019283745_PNB",
+        "label": "Bank Account\n3019283745_PNB",
+        "type": "account",
+        "role": "Primary Bank Account (3+ Yr Clean)",
+        "color": "#3b82f6",
+        "shape": "ellipse"
+      }
+    },
+    {
+      "data": {
+        "id": "Emp_HHG-013",
+        "label": "Salary / Source\nCollege Student Allowance (Family Transfer)",
+        "type": "device",
+        "role": "Verified Institutional Source",
+        "color": "#10b981",
+        "shape": "round-rectangle"
+      }
+    },
+    {
+      "data": {
+        "id": "Util_HHG-013",
+        "label": "Utility Billing\nBSNL Broadband Recharges",
+        "type": "device",
+        "role": "Regular Utility Verification",
+        "color": "#00f2fe",
+        "shape": "round-rectangle"
+      }
+    },
+    {
+      "data": {
+        "id": "TXN-HHG-013-001",
+        "label": "Routine UPI: Rs.1800\nClean Merchant Txn",
+        "type": "transaction",
+        "role": "Routine Everyday UPI Payment",
+        "amount": 1800,
+        "risk": 0.04,
+        "color": "#10b981",
+        "shape": "diamond"
+      }
+    },
+    {
+      "data": {
+        "id": "e_owns_Rahul Anand (Muzaffarpur)_3019283745_PNB",
+        "source": "Rahul Anand (Muzaffarpur)",
+        "target": "3019283745_PNB",
+        "label": "OWNS",
+        "color": "#10b981",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_sal_Emp_HHG-013_3019283745_PNB",
+        "source": "Emp_HHG-013",
+        "target": "3019283745_PNB",
+        "label": "SALARY_CREDIT",
+        "color": "#10b981",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_util_3019283745_PNB_Util_HHG-013",
+        "source": "3019283745_PNB",
+        "target": "Util_HHG-013",
+        "label": "PAID_UTILITY",
+        "color": "#00f2fe",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_txn_3019283745_PNB_TXN-HHG-013-001",
+        "source": "3019283745_PNB",
+        "target": "TXN-HHG-013-001",
+        "label": "ROUTINE_UPI",
+        "color": "#3b82f6",
+        "style": "solid"
+      }
+    }
+  ]
+}

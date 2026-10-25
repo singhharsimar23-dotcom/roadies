@@ -1,0 +1,136 @@
+{
+  "elements": [
+    {
+      "data": {
+        "id": "5192038475_SBI",
+        "label": "Mule Account\n5192038475_SBI",
+        "type": "account",
+        "role": "Flagged Mule Account (Nalanda)",
+        "color": "#ef4444",
+        "shape": "ellipse"
+      }
+    },
+    {
+      "data": {
+        "id": "Victim_HHG-011",
+        "label": "Victim\nVikram Singh (Nalanda)",
+        "type": "customer",
+        "role": "Victim (Coerced Transfer)",
+        "color": "#10b981",
+        "shape": "hexagon"
+      }
+    },
+    {
+      "data": {
+        "id": "TXN-HHG-011-001",
+        "label": "Txn: Rs.10,942\nFake Govt Job Portal...",
+        "type": "transaction",
+        "role": "Cybercrime Proceeds (Rs.10,942)",
+        "amount": 10942,
+        "risk": 0.94,
+        "color": "#ef4444",
+        "shape": "diamond"
+      }
+    },
+    {
+      "data": {
+        "id": "4192038475_BOI (Bhagalpur)",
+        "label": "Mule L2\n4192038475_BOI (Bhagalpur)",
+        "type": "account",
+        "role": "Layer-2 Siphon Conduit",
+        "color": "#f97316",
+        "shape": "ellipse"
+      }
+    },
+    {
+      "data": {
+        "id": "IMEI: 866910283746574",
+        "label": "Shared Hardware\nIMEI: 866910283746574",
+        "type": "device",
+        "role": "Hardware Profile (Linked to 4+ Syndicate Accounts)",
+        "color": "#fbbf24",
+        "shape": "round-rectangle"
+      }
+    },
+    {
+      "data": {
+        "id": "NCRP/BH/2024/011204",
+        "label": "1930 Portal\nNCRP/BH/2024/011204",
+        "type": "prior_case",
+        "role": "National Cybercrime Portal Complaint",
+        "color": "#ec4899",
+        "shape": "round-diamond"
+      }
+    },
+    {
+      "data": {
+        "id": "IP_HHG-011",
+        "label": "VPN/Proxy Node\n103.211.x.x (Nalanda)",
+        "type": "ip",
+        "role": "Syndicate Infrastructure",
+        "color": "#c084fc",
+        "shape": "hexagon"
+      }
+    },
+    {
+      "data": {
+        "id": "e_made_Victim_HHG-011_TXN-HHG-011-001",
+        "source": "Victim_HHG-011",
+        "target": "TXN-HHG-011-001",
+        "label": "COERCED_PAYMENT",
+        "color": "#10b981",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_to_TXN-HHG-011-001_5192038475_SBI",
+        "source": "TXN-HHG-011-001",
+        "target": "5192038475_SBI",
+        "label": "CREDITED_TO",
+        "color": "#ef4444",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_layer_5192038475_SBI_4192038475_BOI (Bhagalpur)",
+        "source": "5192038475_SBI",
+        "target": "4192038475_BOI (Bhagalpur)",
+        "label": "LAYERED_TO",
+        "color": "#f97316",
+        "style": "solid"
+      }
+    },
+    {
+      "data": {
+        "id": "e_dev_5192038475_SBI_IMEI: 866910283746574",
+        "source": "5192038475_SBI",
+        "target": "IMEI: 866910283746574",
+        "label": "OPERATED_FROM",
+        "color": "#fbbf24",
+        "style": "dashed"
+      }
+    },
+    {
+      "data": {
+        "id": "e_ncrp_5192038475_SBI_NCRP/BH/2024/011204",
+        "source": "5192038475_SBI",
+        "target": "NCRP/BH/2024/011204",
+        "label": "LINKED_NCRP_1930",
+        "color": "#ec4899",
+        "style": "dotted"
+      }
+    },
+    {
+      "data": {
+        "id": "e_ip_5192038475_SBI_IP_HHG-011",
+        "source": "5192038475_SBI",
+        "target": "IP_HHG-011",
+        "label": "CO_LOCATED_IP",
+        "color": "#c084fc",
+        "style": "dotted"
+      }
+    }
+  ]
+}
