@@ -14,20 +14,20 @@ from pydantic import BaseModel, Field
 # ---------------------------------------------------------------------------
 
 class ActionType(str, Enum):
-    ALLOW_TRANSACTION      = "ALLOW_TRANSACTION"
-    DECLINE_TRANSACTION    = "DECLINE_TRANSACTION"
-    MONITOR_CARD           = "MONITOR_CARD"
-    MONITOR_CONNECTED_CARDS = "MONITOR_CONNECTED_CARDS"
-    WARN_CUSTOMER          = "WARN_CUSTOMER"
-    VERIFY_WITH_CUSTOMER   = "VERIFY_WITH_CUSTOMER"
-    STEP_UP_AUTH           = "STEP_UP_AUTH"
-    BLOCK_CARD             = "BLOCK_CARD"
-    BLOCK_ALL_CARDS        = "BLOCK_ALL_CARDS"
-    GENERATE_REPORT        = "GENERATE_REPORT"
-    CREATE_CASE            = "CREATE_CASE"
-    FILE_REPORT            = "FILE_REPORT"
-    ESCALATE_TO_ANALYST    = "ESCALATE_TO_ANALYST"
-    CLOSE_NO_FRAUD         = "CLOSE_NO_FRAUD"
+    # Mule Account Investigation Actions — Bihar Police / CFCFRMS / FIU-IND
+    ALLOW_TRANSACTION            = "ALLOW_TRANSACTION"           # Clear — no fraud evidence
+    ROUTINE_MONITORING           = "ROUTINE_MONITORING"          # Continue passive watch
+    ENHANCED_KYC_MONITORING      = "ENHANCED_KYC_MONITORING"    # Step up account monitoring
+    VERIFY_ACCOUNT_HOLDER        = "VERIFY_ACCOUNT_HOLDER"      # Contact account holder for verification
+    INITIATE_DEBIT_FREEZE_1930   = "INITIATE_DEBIT_FREEZE_1930" # Emergency freeze via 1930 CFCFRMS Golden Hour
+    ISSUE_BANK_NODAL_NOTICE      = "ISSUE_BANK_NODAL_NOTICE"    # Formal notice to bank nodal officer
+    REGISTER_FIR_SEC_66D         = "REGISTER_FIR_SEC_66D"       # FIR under IT Act Section 66D (cheating by personation)
+    FLAG_STR_FIU_IND             = "FLAG_STR_FIU_IND"           # Suspicious Transaction Report to FIU-IND
+    REFER_TO_EOU                 = "REFER_TO_EOU"               # Escalate to Bihar Police Economic Offences Unit
+    CREATE_CASE                  = "CREATE_CASE"                # Open formal investigation case
+    GENERATE_REPORT              = "GENERATE_REPORT"            # Generate Section 65B court-ready evidence report
+    ESCALATE_TO_ANALYST          = "ESCALATE_TO_ANALYST"        # Route to senior cyber crime analyst
+    CLOSE_NO_FRAUD               = "CLOSE_NO_FRAUD"             # Close — legitimate account activity confirmed
 
 
 class ApprovalRoute(str, Enum):
@@ -37,13 +37,17 @@ class ApprovalRoute(str, Enum):
 
 
 class Pattern(str, Enum):
-    CARD_TESTING    = "card_testing"
-    CNP_FRAUD       = "card_not_present_fraud"
-    CNP_NEW_DEVICE  = "card_not_present_new_device"
-    OUT_OF_REGION   = "out_of_region_use"
-    ACCOUNT_TAKEOVER = "account_takeover"
-    UNDOCUMENTED    = "undocumented"
-    NONE            = "none"
+    # Bihar Police Cybercrime Fraud Typologies — 1930 Helpline Classification
+    DIGITAL_ARREST_FRAUD     = "digital_arrest_fraud"      # Fake CBI/Police/Income Tax officer call
+    FAKE_INVESTMENT_PLATFORM = "fake_investment_platform"  # Pig butchering / stock market scam
+    UPI_OTP_PHISHING         = "upi_otp_phishing"          # SIM swap / KYC expiry / OTP theft
+    ROMANCE_SCAM             = "romance_scam"              # Matrimonial / army officer impersonation
+    FAKE_JOB_OFFER           = "fake_job_offer"            # Govt job / security deposit fraud
+    MULE_ACCOUNT_HUB         = "mule_account_hub"          # Central pass-through node in fraud chain
+    LAYERING_CONDUIT         = "layering_conduit"          # Intermediary in multi-hop layering chain
+    CASHOUT_NODE             = "cashout_node"              # Terminal ATM/POS/crypto withdrawal point
+    UNDOCUMENTED             = "undocumented"              # Novel pattern — not yet classified
+    NONE                     = "none"                      # Legitimate account — no fraud pattern
 
 
 class Verdict(str, Enum):

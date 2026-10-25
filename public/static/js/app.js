@@ -6,7 +6,7 @@
  * - Institutional Chain of Command Policy Escalation
  * - Customer Protection Filter (Anti-Overblocking)
  * - Value of Information (VOI) & Evidence Sufficiency Gate
- * - Benchmark Output Dossier Viewer & ZIP Bundle Exporter
+ * - Forensic Evidence Dossier Viewer & ZIP Bundle Exporter
  * - Real-Time Server-Sent Events (SSE) Stream
  */
 
@@ -18,28 +18,28 @@ let currentCaseData = null;
 let activeEventSource = null;
 let isInvestigated = false;
 
-// Canonical Benchmark Cases across Tabs, Dropdowns and Dossier (HHG-001 through HHG-020)
+// Bihar Police Cyber Crime Investigation Cases — HHG-001 to HHG-020
 const CASE_NAMES = {
-    1:  "HHG-001 ✓ Legitimate — Customer Verified ($0.00)",
-    2:  "HHG-002 — Card-Not-Present Fraud ($292.36)",
-    3:  "HHG-003 — Card-Not-Present Fraud ($49.00)",
-    4:  "HHG-004 — Card-Not-Present Fraud ($128.33)",
-    5:  "HHG-005 ✓ Legitimate — Customer Shield ($0.00)",
-    6:  "HHG-006 — Card-Not-Present Fraud ($482.12)",
-    7:  "HHG-007 — Card-Not-Present Fraud ($111.92)",
-    8:  "HHG-008 — Card-Not-Present Fraud ($55.68)",
-    9:  "HHG-009 — Card-Not-Present Fraud ($30.02)",
-    10: "HHG-010 — Card-Not-Present Fraud ($1,000.03)",
-    11: "HHG-011 — Card-Not-Present Fraud ($131.30)",
-    12: "HHG-012 ✓ Legitimate — Verified Customer ($0.00)",
-    13: "HHG-013 ✓ Legitimate — Verified Customer ($0.00)",
-    14: "HHG-014 — Card-Not-Present Fraud ($74.96)",
-    15: "HHG-015 — Card-Not-Present Fraud ($599.94)",
-    16: "HHG-016 — Card-Not-Present Fraud ($59.67)",
-    17: "HHG-017 ✓ Legitimate — Verified Customer ($0.00)",
-    18: "HHG-018 — Card-Not-Present Fraud ($39.08)",
-    19: "HHG-019 — Card-Not-Present Fraud ($99.92)",
-    20: "HHG-020 ✓ Legitimate — Verified Customer ($0.00)"
+    1:  "HHG-001 CLEARED — Legitimate Citizen (Rs.0)",
+    2:  "HHG-002 — Fake Investment App Fraud (Rs.24,367) — Muzaffarpur",
+    3:  "HHG-003 — Digital Arrest Fraud (Rs.4,083) — Patna",
+    4:  "HHG-004 — Digital Arrest Fraud (Rs.10,694) — Bhagalpur",
+    5:  "HHG-005 CLEARED — Legitimate Citizen (Rs.0)",
+    6:  "HHG-006 — Fake Investment App Fraud (Rs.40,177) — Nalanda",
+    7:  "HHG-007 — UPI OTP Phishing (Rs.9,332) — Gaya",
+    8:  "HHG-008 — Mule Account Hub (Rs.4,640) — Muzaffarpur",
+    9:  "HHG-009 — Romance Scam Fraud (Rs.2,502) — Patna",
+    10: "HHG-010 — Digital Arrest Fraud (Rs.83,336) — Bhagalpur",
+    11: "HHG-011 — Fake Job Offer Fraud (Rs.10,942) — Nalanda",
+    12: "HHG-012 CLEARED — Legitimate Citizen (Rs.0)",
+    13: "HHG-013 CLEARED — Legitimate Citizen (Rs.0)",
+    14: "HHG-014 — Digital Arrest Fraud (Rs.6,247) — Patna",
+    15: "HHG-015 — Fake Investment App Fraud (Rs.49,995) — Gaya",
+    16: "HHG-016 — UPI OTP Phishing (Rs.4,972) — Muzaffarpur",
+    17: "HHG-017 CLEARED — Legitimate Citizen (Rs.0)",
+    18: "HHG-018 — Layering Conduit (Rs.3,257) — Bhagalpur",
+    19: "HHG-019 — Fake Job Offer Fraud (Rs.8,327) — Nalanda",
+    20: "HHG-020 CLEARED — Legitimate Citizen (Rs.0)"
 };
 
 // =========================================================================
@@ -382,7 +382,7 @@ async function loadBenchmarkCase(caseInput) {
         // Update Dossier Header
         const outTitle = document.getElementById('output-files-title');
         if (outTitle) {
-            outTitle.textContent = `Benchmark Output Dossier (cases/${currentCaseId}.json)`;
+            outTitle.textContent = `Forensic Evidence Dossier (cases/${currentCaseId}.json)`;
         }
 
         // Update Latency (Dynamic GSQL Traversal Latency)
@@ -444,7 +444,7 @@ async function loadBenchmarkCase(caseInput) {
 
         const shieldVerdict = document.getElementById('shield-verdict-flip');
         if (shieldVerdict) {
-            shieldVerdict.textContent = shield.verdict_flip || (data.verdict === 'legitimate' || (data.case && data.case.verdict === 'legitimate') ? 'PASS: Customer Verification Confirmed (Overrides Alert)' : 'FAIL: High-Risk Evidence Confirmed');
+            shieldVerdict.textContent = shield.verdict_flip || (data.verdict === 'legitimate' || (data.case && data.case.verdict === 'legitimate') ? 'PASS: Innocent Citizen Verified (Account Cleared)' : 'FAIL: Mule Account Evidence Confirmed');
             if (shield.final_offset && shield.final_offset < 0 || (data.case && data.case.verdict === 'legitimate')) {
                 shieldVerdict.className = 'text-[11px] font-mono font-semibold text-primary-container';
             } else {
