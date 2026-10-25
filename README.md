@@ -352,7 +352,6 @@ This is a working proof-of-concept built in hackathon conditions. For production
 
 Built for the **Bihar Police Cyber Hackathon** by Team Roadies.
 
-- **Suwid Shreyansh** — Graph Analytics & TigerGraph Architecture
-- **Harsimar Singh** — AI Agent Design & Gemini Integration  
+
 
 *For evaluation access, questions, or a live walkthrough, please contact the repository maintainers via GitHub.*
