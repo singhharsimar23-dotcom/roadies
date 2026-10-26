@@ -85,5 +85,5 @@ Given more time and transition to enterprise banking infrastructure, I would exp
 
 *Live Production Cockpit: https://fraud-detectorgraph.vercel.app*  
 *GitHub Repository: https://github.com/SuwidShreyansh/roadies*  
-*Demo Video: https://www.loom.com/share/0b70ae2b7e374277bf2cf554b97d04d0*
+*Demo Video: https://www.loom.com/share/651f612fd2994658b4f545ed7211be72*
 

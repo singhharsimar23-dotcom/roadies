@@ -20,7 +20,7 @@ Check out our full open-source codebase, architecture blueprints, and live inter
 👉 https://github.com/SuwidShreyansh/roadies
 
 Live Cockpit: https://fraud-detectorgraph.vercel.app  
-Demo Video: https://www.loom.com/share/0b70ae2b7e374277bf2cf554b97d04d0  
+Demo Video: https://www.loom.com/share/651f612fd2994658b4f545ed7211be72  
 Repo: https://github.com/SuwidShreyansh/roadies  
 
 #BiharPolice #CyberCrime #TigerGraph #MuleAccounts #GraphAnalytics #AI #LangGraph #MachineLearning #Cybersecurity #I4C #NCRP #DigitalIndia

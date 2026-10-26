@@ -1,195 +1,200 @@
-# 🎬 FraudSight — Bihar Police Cybercrime Hackathon
-## Final 8-Minute Video Demo Script (100% Live UI — Zero Code Openings)
-**Platform URL:** `https://fraud-detectorgraph.vercel.app` (or `localhost:8000`)  
-**Target Audience:** Senior Police Leadership (DGP, ADG Cyber, SPs, DSPs), Hackathon Evaluation Jury, and Bank Nodal Officers  
-**Key Principle:** The entire 8-minute presentation takes place **exclusively within the live Web UI**. You never open VS Code, Python files, or terminals. Everything the judges need to see is beautifully rendered in the Cockpit, Network Graph, and Dossier.
+# FraudSight — Bihar Police Cybercrime Hackathon
+## 8-Minute Demo Script
+
+**Live URL:** `https://fraud-detectorgraph.vercel.app`
+**Audience:** Hackathon jury, senior Bihar Police officers (DGP / ADG Cyber / SPs), bank nodal officers
+**Rule:** Stay entirely in the browser. No code files, no terminals, no slides.
 
 ---
 
-## ⏱️ Video Timeline Overview
-| Timestamp | Scene Name | What is on Screen | Key Message for Judges |
-| :--- | :--- | :--- | :--- |
-| **0:00 – 1:15** | **The Crisis & Problem Statement** | Problem Intro & Cockpit Load | The Golden Hour crisis in Bihar: ₹3.4L lost in minutes across 5 districts. |
-| **1:15 – 2:30** | **The Police Cockpit (6 Pillars)** | FraudSight Main Cockpit (`/`) | All 6 mandatory pillars live in one operational command center. |
-| **2:30 – 3:45** | **Syndicate Hub & 1930 Helpline** | Complaint Correlation & Leaderboard | 3 complaints, 3 districts, 1 mule account: instant debit freeze via 1930. |
-| **3:45 – 5:00** | **Live AI Autonomous Investigation** | Timeline & Interactive Graph | Live click of "Launch Autonomous Investigation" on Case HHG-014. |
-| **5:00 – 6:15** | **Money Trail & IMEI Device Sharing** | Cytoscape Visual Network Graph | Click nodes: Victim → Mule L1 → Mule L2 → ATM Cashout & shared hardware. |
-| **6:15 – 7:15** | **Citizen Protection Shield** | Case HHG-001 (Cleared Citizen) | Anti-Overblocking: Why we do NOT freeze innocent citizens' accounts. |
-| **7:15 – 8:00** | **Court Dossier & Final Summary** | Dossier Viewer, Cases & Analytics | Court-ready Sec 65B evidence, 20-case ledger, and production readiness. |
+## Timeline at a Glance
+
+| Time | What's on screen | What you're showing |
+|---|---|---|
+| 0:00 – 1:15 | Cockpit landing page | The problem — why Bihar PS officers lose the golden hour |
+| 1:15 – 2:30 | 6-pillar bar, cockpit overview | How the system covers each requirement from the problem statement |
+| 2:30 – 3:45 | 1930 Complaint panel + Leaderboard | Cross-district correlation revealing an organized syndicate |
+| 3:45 – 5:00 | Investigation timeline + graph | The automated investigation running live |
+| 5:00 – 6:15 | Cytoscape network graph | Money trail and shared device evidence |
+| 6:15 – 7:15 | HHG-001 (cleared citizen) | Why the system does not freeze legitimate accounts |
+| 7:15 – 8:00 | Dossier tabs + /cases ledger | Court-ready evidence and closing |
 
 ---
 
-## 📋 Pre-Recording Setup
-1. Open browser in full screen (F11 or maximize) at `https://fraud-detectorgraph.vercel.app`.
-2. Ensure Dark Mode is active (default).
-3. Reset view so Case `HHG-014` is selected by default.
-4. Keep tabs ready for `/cases` and `/analytics` in background tabs if needed.
-5. Speak with confidence, calm authority, and clear pacing.
+## Pre-Recording Checklist
+
+1. Browser fullscreen at `https://fraud-detectorgraph.vercel.app`
+2. Case HHG-014 loaded and selected by default
+3. Background tabs open: `/cases`, `/analytics`
+4. Speak at a measured pace — pause after each point lands on screen
 
 ---
 
-## 🎬 SCENE-BY-SCENE PRESENTATION SCRIPT
-
-### 📍 SCENE 1: THE CRISIS & BIHAR POLICE PROBLEM STATEMENT (0:00 – 1:15)
-**Screen:** FraudSight Cockpit landing page (`/`), showing the top bar: "Bihar Police Cyber Command • TigerGraph Grid".
-
-> **[PRESENTER — DELIBERATE & AUTHORITATIVE]**
->
-> *"Respected members of the jury and senior officers of Bihar Police.*
->
-> *Every single day across Patna, Gaya, Muzaffarpur, Bhagalpur, and Nalanda, ordinary citizens receive a terrifying WhatsApp video call. The person on the screen wears a police uniform or displays a fake CBI badge. They say: 'Your Aadhaar card has been linked to a narcotics shipment. You are under Digital Arrest. Transfer your savings to this court-authorized verification account, or a police team will break your door down.'*
->
-> *Panicked, the victim transfers ₹6,247 or ₹45,000 or ₹1,20,000. Within 180 seconds, that money is moved through two intermediate mule accounts and cashed out at an ATM 150 kilometers away.*
->
-> *When the victim calls the 1930 National Cybercrime Helpline, the investigating officer faces three massive roadblocks:*
-> 1. *First: Tracing layered mule bank accounts manually across different banks takes days.*
-> 2. *Second: By the time notices are issued, the account is emptied.*
-> 3. *Third: Blunt automated blocks frequently freeze innocent citizens' salary accounts, causing public harassment.*
->
-> *This is FraudSight: Bihar Police's Autonomous Cybercrime Investigation and Mule Account Detection Cockpit. Powered by TigerGraph's graph engine, it analyzes multi-hop money trails, correlates 1930 complaints in real-time, and executes legal debit freezes within the golden hour."*
+## Scene-by-Scene Script
 
 ---
 
-### 📍 SCENE 2: THE POLICE COCKPIT & 6 PILLARS (1:15 – 2:30)
-**Screen:** Hover and point smoothly across the 6 Pillars Bar at the top of the screen.
+### SCENE 1 — The Problem (0:00 – 1:15)
 
-> **[PRESENTER]**
->
-> *"Looking at the screen, notice how FraudSight addresses every single requirement of the hackathon problem statement through our top Command Strip:*
-> - *[Hover over Pillar 1]* **Pillar 1: Transaction Analysis** — Ingesting live transaction logs with sub-second GSQL traversal.
-> - *[Hover over Pillar 2]* **Pillar 2: Mule Detection** — Multi-factor XAI scoring ranking account risk from 0 to 1.
-> - *[Hover over Pillar 3]* **Pillar 3: Money Trail** — 4-hop deep topological path traversal showing exactly where victim funds moved.
-> - *[Hover over Pillar 4]* **Pillar 4: 1930 NCRP Correlation** — Linking independent complaints across multiple Bihar police stations to unmask organized syndicates.
-> - *[Hover over Pillar 5]* **Pillar 5: Graph Visualization** — Real-time interactive Cytoscape network view.
-> - *[Hover over Pillar 6]* **Pillar 6: Police Cockpit & Evidence Dossier** — Court-ready Section 65B Indian Evidence Act certificates and 1930 debit freeze execution.
->
-> *Everything is in Indian Rupees, grounded in Bihar's jurisdiction, and built specifically for police operations."*
+*Screen: Cockpit landing page. Let it fully load before speaking.*
 
----
+Good morning. I want to start with a specific situation that repeats itself every day across Bihar.
 
-### 📍 SCENE 3: SYNDICATE HUB & 1930 HELPLINE GOLDEN HOUR (2:30 – 3:45)
-**Screen:** Left Column — Focus on the **1930 / NCRP Complaint Correlation** panel and **Mule Risk Leaderboard**.
+A resident of Patna — a teacher, a shopkeeper, a daily wage worker — receives a WhatsApp video call. The caller is in a police uniform. They say the person's Aadhaar has been flagged in a narcotics trafficking case and they are under digital arrest. They must transfer money to a verification account immediately, or a police team will come to their home.
 
-> **[PRESENTER]**
->
-> *"[Point to the pulsing red box labeled 'SYNDICATE HUB DETECTED']*
->
-> *Here is the power of cross-district graph correlation. Notice account **9123456789_PNB**.*
->
-> *An investigating officer sitting in Patna Cyber PS might think this is just an isolated complaint of ₹6,247.*
-> *But FraudSight instantly correlates the graph across the entire state of Bihar:*
-> - *Complaint 1: `NCRP/BH/2024/001234` filed in Patna — Digital Arrest extortion.*
-> - *Complaint 2: `NCRP/BH/2024/002891` filed in Gaya — Fake Investment App scam.*
-> - *Complaint 3: `NCRP/BH/2024/003445` filed in Muzaffarpur — UPI OTP Phishing.*
->
-> *Three separate victims. Three different districts. Yet all three funneled money into this exact same PNB account!*
->
-> *This is an organized cybercrime syndicate operating across Bihar. FraudSight immediately triggers an automated disposition:*
-> **`INITIATE_DEBIT_FREEZE_1930`** *under Section 66D of the IT Act through the Citizen Financial Cyber Fraud Reporting and Management System (CFCFRMS).*
->
-> *Looking at the Mule Account Leaderboard below, this account ranks #1 with a Critical Risk Score of **0.94**."*
+The victim transfers ₹6,247. Within about two and a half minutes, that money moves through two intermediate accounts and is withdrawn from an ATM in Muzaffarpur — 150 kilometres away.
+
+When the victim calls 1930, the national cybercrime helpline, the officer at the police station runs into three real problems. First, tracking which accounts the money passed through, across different banks, takes days of manual coordination. Second, by the time any bank notice is issued, the account is already empty. Third, if the system responds too broadly and starts freezing accounts without verification, it catches legitimate people — a government employee's salary account, a pensioner's account — and that causes its own set of complaints.
+
+FraudSight is built around those three constraints. It connects to the transaction network, traces where money moved, checks whether an account belongs to a genuine citizen, and if the evidence is sufficient, it triggers a debit freeze through the 1930 CFCFRMS portal — within the same session the complaint comes in.
 
 ---
 
-### 📍 SCENE 4: LIVE AI AUTONOMOUS INVESTIGATION (3:45 – 5:00)
-**Screen:** Center/Right — Point to the **Launch Autonomous Investigation** button, click it, and watch the live timeline and graph react.
+### SCENE 2 — System Overview: 6 Pillars (1:15 – 2:30)
 
-> **[PRESENTER]**
->
-> *"Now, let us watch the AI conduct an autonomous forensic investigation live on screen.*
->
-> *[Click the 'Launch Autonomous Investigation' button]*
->
-> *Watch the Investigation Timeline terminal stream in real-time:*
-> 1. *At `00:00.08` — Ingest: 1930 complaint ingested for Account `9123456789_PNB` with ₹6,247 victim loss.*
-> 2. *At `00:00.18` — Traversal: TigerGraph executes a 2-hop topological query in just 21 milliseconds.*
-> 3. *At `00:00.32` — Evidence Extraction: 4 forensic signals extracted — velocity burst, multi-district linkage, shared hardware.*
-> 4. *At `00:00.44` — Citizen Filter: Checks salary and utility patterns. The account has zero salary credits, no utility bills, and is only 45 days old. Citizen Check: FAIL — Mule Account Confirmed.*
-> 5. *At `00:00.56` — Stopping Gate: Information-Theoretic VOI is 0.031, passing the 0.05 threshold. The AI mathematically proves it has sufficient evidence to conclude.*
-> 6. *At `00:00.68` — Disposition: Status updates to **CONFIRMED FRAUD — FREEZE EXECUTED**.*
->
-> *Notice that the investigator didn't have to write queries or wait days. In under 1 second, the investigation is concluded with mathematical precision."*
+*Screen: Hover slowly across each pillar tile at the top of the cockpit. Rest on each one for two seconds before moving.*
 
----
+The system is organized around the six capability areas from the problem statement. Let me go through each one briefly.
 
-### 📍 SCENE 5: INTERACTIVE MONEY TRAIL & SHARED HARDWARE GRAPH (5:00 – 6:15)
-**Screen:** Main Visual Graph in the center. Click on nodes to demonstrate interactivity.
+*(hover over Pillar 1)*
+Transaction Analysis — the system ingests account-level transaction logs and looks for velocity patterns. An account that receives funds and moves 95% of them forward within 140 seconds is a textbook pass-through mule. That pattern alone triggers a flag.
 
-> **[PRESENTER]**
->
-> *"Now look at the visual graph in the center of the cockpit.*
->
-> *[Click on the green hexagon node: 'Victim: Ramesh Yadav']*
-> *Here is the victim in Patna. The drawer on the right shows his transfer.*
->
-> *[Click on the red diamond node: 'Txn: Rs.6,247']*
-> *Here is the coerced transfer of ₹6,247.*
->
-> *[Click on the red ellipse node: 'Mule Account 9123456789_PNB']*
-> *Here is the primary mule account in Patna. But look where the edges lead:*
->
-> *1. First, an orange edge **LAYERED_TO** connects to `Mule L2: 9876543210_SBI` in Muzaffarpur. The fraudsters immediately moved the money to a second layer to evade detection.*
->
-> *2. Second, look at the amber node: **`IMEI: 864209041234567`**. This is shared mobile hardware. FraudSight discovered that this single physical device was used to log into 4 different bank accounts! That is definitive forensic proof of a professional mule handler operating multiple burner SIMs on one handset.*
->
-> *3. Third, the pink diamond connects directly to the **1930 National Cybercrime Portal complaint**.*
->
-> *Every node is color-coded, labeled in Indian Rupees, and clickable. A non-technical investigating officer can understand this entire syndicate in 10 seconds."*
+*(hover over Pillar 2)*
+Mule Risk Scoring — each flagged account gets a score between 0 and 1, built from four signals: how fast it moves money, how central it is in the transaction network, how many 1930 complaints name it, and whether the mobile device associated with it has appeared on other flagged accounts. The score determines what action is recommended.
+
+*(hover over Pillar 3)*
+Money Trail — the system follows the actual fund movement up to four hops from the victim's account to wherever the money ends up. Each step is tracked and timestamped.
+
+*(hover over Pillar 4)*
+1930 Complaint Correlation — complaints filed at different police stations across Bihar are connected through the graph. When two or three complaints from different districts point to the same receiving account, that is a syndicate pattern, not isolated incidents.
+
+*(hover over Pillar 5)*
+Network Visualization — the transaction network is rendered as an interactive graph. An officer can click any node and see what it is connected to and why it was flagged, without needing to read through a report.
+
+*(hover over Pillar 6)*
+Evidence Dossier — every completed investigation generates structured output: the full case record, a Suspicious Transaction Report formatted for FIU-IND, and the relevant legal citations under Section 66D of the IT Act and Section 65B of the Indian Evidence Act. One bundle, ready to go into the chargesheet.
 
 ---
 
-### 📍 SCENE 6: CITIZEN PROTECTION SHIELD (ANTI-OVERBLOCKING) (6:15 – 7:15)
-**Screen:** Left Queue — Click on **HHG-001 - Account CLEARED (Legitimate Citizen - Rs.0)**.
+### SCENE 3 — Cross-District Syndicate Detection (2:30 – 3:45)
 
-> **[PRESENTER]**
->
-> *"Now let us demonstrate the most critical feature for public trust: **Anti-Overblocking**.*
->
-> *[Click on 'HHG-001' in the queue]*
->
-> *In any cybercrime operation, there is always a danger of wrongful freezes. An innocent shopkeeper or teacher receives a payment that happened to touch a flagged account, and suddenly their life savings are frozen.*
->
-> *Look at what FraudSight does for Case HHG-001 — a citizen named Amit Kumar in Patna:*
-> - *Look at the Citizen Protection Filter panel on the left:*
->   - *Recurring Salary Credits: **PASS (Active)** — Monthly salary verified from Bihar Government Finance Department.*
->   - *Utility Bill Payment History: **PASS (Active)** — Regular payments to SBPDCL Electricity Board for over 2 years.*
->   - *Account Tenure: **PASS (Active)** — Established account with a 3-year spotless history.*
->
-> *[Look at the graph]*
-> *The graph displays verified green connections: Salary Credit, Utility Bill, and Routine UPI.*
->
-> *The Citizen Protection Shield instantly fires: **PASS — Innocent Citizen Verified. Account remains active.** Risk score is 0.04. The action is **CLOSE_NO_FRAUD**.*
->
-> *Out of our 20 benchmark cases, 6 legitimate citizens were completely protected from wrongful freezing. We catch the criminals without harassing the citizens."*
+*Screen: Left column. Point to the 1930 Complaint Correlation panel, then scroll down to the Mule Risk Leaderboard.*
+
+*(point to the Syndicate Hub Detected box)*
+
+This is the result for account 9123456789 PNB.
+
+An officer looking at only one complaint would see a ₹6,247 transfer — small amount, easy to deprioritize in a busy station. But the system does not evaluate a complaint in isolation. It checks whether the same receiving account appears in any other complaint filed anywhere in Bihar.
+
+In this case, the same PNB account appears in three separate 1930 complaints. One from Patna — a digital arrest case. One from Gaya — a fake investment scheme. One from Muzaffarpur — UPI phishing. Three different victims, three different districts, three different fraud types, all routing money into the same account.
+
+That is not coincidence. That is a coordinated operation across Bihar.
+
+The system marks this account as a syndicate hub and recommends a debit freeze under Section 66D of the IT Act through the CFCFRMS portal. On the leaderboard below, this account sits at the top with a risk score of 0.94.
 
 ---
 
-### 📍 SCENE 7: COURT DOSSIER & FINAL PRODUCTION READINESS (7:15 – 8:00)
-**Screen:** Click tabs in the Forensic Evidence Dossier (bottom right), then briefly show the `/cases` directory.
+### SCENE 4 — Autonomous Investigation (3:45 – 5:00)
 
-> **[PRESENTER]**
->
-> *"Finally, an investigation is only as good as the evidence presented in a court of law.*
->
-> *[Click the Dossier tabs: 'case_record', 'sar', 'action_before', 'action_after']*
->
-> *At the bottom right, FraudSight automatically produces the complete legal evidence package:*
-> - *`case_record`: The full GSQL traversal trail with microsecond timestamps.*
-> - *`sar`: The Suspicious Transaction Report formatted for FIU-IND and I4C.*
-> - *Legal References: Cited under Section 66D of the IT Act and Section 65B of the Indian Evidence Act (now Bharatiya Sakshya Adhiniyam).*
-> - *[Hover over 'Download Evidence Bundle (ZIP)']* An officer can download the entire evidentiary bundle with one click to attach to the Chargesheet.*
->
-> *[Briefly navigate to `/cases`]*
-> *Here is the full Cybercrime Syndicate Ledger — 20 verified Bihar cases spanning Digital Arrest, Fake Investment Apps, UPI Phishing, and Job Scams across Muzaffarpur, Gaya, Patna, Bhagalpur, and Nalanda.*
->
-> *In conclusion: FraudSight is not a prototype or concept. It is a live, resilient, zero-BS command platform built to empower Bihar Police to win the golden hour and dismantle cyber syndicates across the state.*
->
-> *Jai Hind. Thank you."*
+*Screen: Click the "Run Investigation" button. Wait 2–3 seconds after clicking before speaking — let the first few timeline entries appear on screen.*
+
+*(click the button, then pause)*
+
+I will narrate what the system is doing as the timeline runs through.
+
+The first step is pulling the 1930 complaint data for this account along with the relevant transaction records. That takes under 100 milliseconds.
+
+The second step is the graph query — the system follows the edges from this account outward, two hops, and returns all connected accounts and how they are related. That runs in about 20 milliseconds.
+
+Third, it extracts the four evidence signals: how quickly funds moved out, where this account sits in the broader network, how many complaints name it, and whether the device IMEI used to operate it has been seen on other flagged accounts.
+
+Fourth — and this step is important for preventing wrongful action — it runs the citizen check. It looks for recurring salary credits, utility bill payment history, and how old the account is. For this account: no payroll credits, no utility payments, 45 days old. That does not match a legitimate personal account. The citizen check fails. This is a mule account, not a genuine holder who happened to be near a fraud network.
+
+Fifth, the system checks whether it has collected enough evidence to close the investigation. There is a numeric threshold for this so the process does not run indefinitely. The score here is 0.031, well below the 0.05 cutoff. Evidence is sufficient.
+
+Final output: confirmed fraud, debit freeze recommended.
+
+The officer reviews this output and approves the action. The automated portion takes under a second.
 
 ---
 
-## 🎯 Presenter Tips
-1. **Never mention technical code files** (do not say "in `mule_risk_scorer.py`", say "our multi-factor XAI engine").
-2. **Always point out Bihar specifics** (say "Patna Cyber PS", "Gaya", "Muzaffarpur", "1930 Helpline", "CFCFRMS").
-3. **Keep your mouse smooth** — avoid erratic cursor movements; let each click rest on screen for 2-3 seconds so the judges can read the data.
-4. **Emphasize the Rupees** — whenever discussing amounts, say "Rupees" or "₹", emphasizing how it represents real citizen savings.
+### SCENE 5 — Money Trail and Device Graph (5:00 – 6:15)
+
+*Screen: Central Cytoscape graph. Click nodes slowly — 2 to 3 seconds between each click.*
+
+*(click the green victim node)*
+
+This is the victim, Ramesh Yadav, Patna. The panel on the right shows the ₹6,247 transfer.
+
+*(click the mule account node)*
+
+This is account 9123456789 PNB — the primary receiving account. Look at the edges coming out of it.
+
+*(trace the orange edge toward Muzaffarpur)*
+
+One edge goes forward to a second account in Muzaffarpur. The money moved there within 92 seconds. That is the layering step — the goal is to put distance between the funds and the original account before any freeze can be issued.
+
+*(click the IMEI node)*
+
+This amber node is the mobile device IMEI. The system found that this one physical handset was used to log into four different bank accounts. That points to someone managing multiple accounts from a single device — different SIMs, same phone, one operator behind it.
+
+*(click the complaint node)*
+
+This node is the 1930 complaint. It is part of the same graph, which means the full chain — from the victim's complaint to the accounts the money moved through — is connected and auditable in one place.
+
+The value of this view is practical. An officer can sit with a bank nodal officer, open this on screen, and walk through exactly which accounts to freeze and the reason behind each one. There is no ambiguity.
+
+---
+
+### SCENE 6 — Citizen Protection (6:15 – 7:15)
+
+*Screen: Click HHG-001 in the investigation queue on the left.*
+
+*(click HHG-001)*
+
+I want to show this case, because getting this right matters as much as catching fraud.
+
+This is Amit Kumar in Patna. His account was flagged because a payment he received connected to the broader fraud network the system was tracking. Under a blunt rule-based system, that proximity could trigger a freeze on his account.
+
+Look at what the citizen protection check finds. He has consistent monthly salary credits from Bihar Government Finance Department. He has regular SBPDCL electricity bill payments going back over two years. His account is three years old with a normal transaction history.
+
+All three checks pass. Risk score is 0.04. The system closes the case — no action, account stays active.
+
+Across the 20 test cases in the benchmark, 6 were legitimate accounts. All 6 were correctly cleared. The system does not treat proximity to a flagged account as evidence of wrongdoing. It requires the account to actually fail the citizen checks before any freeze is recommended.
+
+This matters legally — a wrongful freeze on a salary account is a serious error with real consequences. And it matters practically, because those errors damage public trust and create their own complaints. The system is built to make that mistake as unlikely as possible.
+
+---
+
+### SCENE 7 — Evidence Dossier and Close (7:15 – 8:00)
+
+*Screen: Click each dossier tab at the bottom right. Pause briefly on each. Then navigate to /cases.*
+
+*(click through: investigation_record → str_fiu_ind → initial_actions → final_actions)*
+
+Every completed investigation automatically generates four output files.
+
+The investigation record is the full case detail — every signal evaluated, the graph traversal steps, timestamps, the final disposition. This is the chain of custody document for the investigation.
+
+The STR is the Suspicious Transaction Report, formatted for submission to FIU-IND and I4C. The officer does not write this manually — it is produced from the case data.
+
+The action files show what the system recommended at the outset and what the final disposition was after the investigation completed. That gap is the audit trail — evidence that human review happened before anything was executed.
+
+The officer clicks Export Dossier, downloads the bundle, and attaches it to the chargesheet. The legal references — Section 66D of the IT Act, Section 65B of the Indian Evidence Act — are already cited inside the document.
+
+*(navigate to /cases)*
+
+This is the full case ledger. 20 cases from across Bihar — Patna, Gaya, Muzaffarpur, Bhagalpur, Nalanda. Digital arrest, fake investment apps, UPI phishing, fake recruitment scams. 14 confirmed fraud, 6 cleared. No missed detections, no wrongful freezes across the benchmark set.
+
+The system is live at fraud-detectorgraph.vercel.app. Thank you.
+
+---
+
+## Presenter Notes
+
+- **Pace**: Slower than feels natural. The judges are reading the screen while you are speaking — let each element settle before you move to the next point.
+- **Lists**: When the script has a sequence of items, speak them as connected sentences rather than reading them as a list. "The system checks X, then Y, and then verifies Z" — not "Point one: X. Point two: Y."
+- **Technical terms**: Any time you use a technical phrase, immediately follow it with what it actually did in plain language. The term only earns its place if the explanation follows.
+- **Amounts**: Say "rupees" clearly, not just the number. "Six thousand two hundred and forty-seven rupees" lands differently from reading out digits.
+- **Pointing**: Point to or hover over a screen element before naming it. Give the judges a moment to locate it before you explain it.
+- **Transitions**: The scene labels are reference points, not pauses. Move between sections with a connecting phrase rather than stopping cold.

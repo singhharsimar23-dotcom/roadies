@@ -12,7 +12,7 @@
 [![Cytoscape](https://img.shields.io/badge/Cytoscape.js-Network_Graph-EA580C?style=for-the-badge)](https://js.cytoscape.org)
 [![Compliance](https://img.shields.io/badge/Compliant-Sec_65B_IEA_%7C_Sec_66D_IT_Act_%7C_1930_CFCFRMS-blue?style=for-the-badge)](https://cybercrime.gov.in)
 
-[🌐 **Live Investigation Cockpit**](https://fraud-detectorgraph.vercel.app) • [📹 **Video Demo**](https://www.loom.com/share/0b70ae2b7e374277bf2cf554b97d04d0) • [📐 System Architecture](docs/ARCHITECTURE.md) • [📋 20 Benchmark Cases](public/cases.html)
+[🌐 **Live Investigation Cockpit**](https://fraud-detectorgraph.vercel.app) • [📹 **Video Demo**](https://www.loom.com/share/651f612fd2994658b4f545ed7211be72) • [📐 System Architecture](docs/ARCHITECTURE.md) • [📋 20 Benchmark Cases](public/cases.html)
 
 </div>
 
@@ -345,7 +345,6 @@ This is a working proof-of-concept built in hackathon conditions. For production
 3. **Multi-District Deployment** — federated nodes at Patna, Gaya, Muzaffarpur, Bhagalpur, and Purnia cyber cells
 4. **Mobile App for Field Officers** — alert delivery and case review on Android for SHO-level access
 5. **Expanded NCRP Integration** — automated polling of the National Cybercrime Reporting Portal for new complaints
-6. https://drive.google.com/file/d/1oXugcH8AGolk22vp6dxpsAiYkXV_dNBg/view
 
 ---
 
